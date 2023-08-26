@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{celulaTipo.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{celulaTipo.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/celulaTipos/add}" th:text="#{celulaTipo.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${celulaTipos.empty}" th:text="#{celulaTipo.list.empty}"/>
+    <div th:if="${!celulaTipos.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{celulaTipo.tipo.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="celulaTipo : ${celulaTipos}">
+        <td th:text="${celulaTipo.id}" />
+        <td th:text="${celulaTipo.version}"/>
+        <td th:text="${celulaTipo.tipo}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/celulaTipos/edit/{id}(id=${celulaTipo.id})}"
+                   th:text="#{celulaTipo.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${celulaTipo.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${celulaTipo.id}, link='celulaTipos')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/celulaTipos/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

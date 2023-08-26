@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{equipamentoLog.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{equipamentoLog.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/equipamentoLogs}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('equipamentoLog')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='descricao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='dataInicio', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='dataFim', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='atividade', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='equipamento', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='usuarioInicio', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='usuarioFim', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='anexo', type='select')}" />
+</div>
+</html>

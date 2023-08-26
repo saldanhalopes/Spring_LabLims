@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{arquivos.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{arquivos.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/arquivoss/add}" th:text="#{arquivos.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${arquivoss.empty}" th:text="#{arquivos.list.empty}"/>
+    <div th:if="${!arquivoss.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{arquivos.nome.label}" scope="col" />
+    <th th:text="#{arquivos.tipo.label}" scope="col" />
+    <th th:text="#{arquivos.descricao.label}" scope="col" />
+    <th th:text="#{arquivos.tamanho.label}" scope="col" />
+    <th th:text="#{arquivos.arquivo.label}" scope="col" />
+    <th th:text="#{arquivos.dataCriacao.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="arquivos : ${arquivoss}">
+        <td th:text="${arquivos.id}" />
+        <td th:text="${arquivos.version}"/>
+        <td th:text="${arquivos.nome}" />
+        <td th:text="${arquivos.tipo}" />
+        <td th:text="${arquivos.descricao}" />
+        <td th:text="${arquivos.tamanho}" />
+        <td th:text="${arquivos.arquivo}" />
+        <td th:text="${arquivos.dataCriacao}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/arquivoss/edit/{id}(id=${arquivos.id})}"
+                   th:text="#{arquivos.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${arquivos.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${arquivos.id}, link='arquivoss')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/arquivoss/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

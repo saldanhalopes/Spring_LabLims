@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{colunaLog.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{colunaLog.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/colunaLogs}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('colunaLog')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='dataIncio')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='dataFim')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='sentido')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='precoluna')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='prefiltro')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='injecoes')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='colunaUtil', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='usuarioInicio', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='usuarioFim', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='campanha', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='analise', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='equipamento', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaLog', field='anexo', type='select')}" />
+</div>
+</html>

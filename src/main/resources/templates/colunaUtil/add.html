@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{colunaUtil.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{colunaUtil.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/colunaUtils}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('colunaUtil')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='codigoColuna')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='serialNumber')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='dataAtivacao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='dataVerificacao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='dataDescarte')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='estoque', type='checkbox')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='coluna', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='setor', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='metodologiaVersao', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='analise', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='colunaVaga', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='certificado', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='anexos', type='multiselect')}" />
+</div>
+</html>

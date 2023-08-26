@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{campanha.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{campanha.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/campanhas}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{campanha.previsaoInicio.label}" scope="col" />
+    <th th:text="#{campanha.previsaoFim.label}" scope="col" />
+    <th th:text="#{campanha.dataInicio.label}" scope="col" />
+    <th th:text="#{campanha.dataFim.label}" scope="col" />
+    <th th:text="#{campanha.status.label}" scope="col" />
+    <th th:text="#{campanha.obs.label}" scope="col" />
+    <th th:text="#{campanha.ordem.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getPrevisaoInicio()}"></td>
+    <td th:text="${a.getEntidade().getPrevisaoFim()}"></td>
+    <td th:text="${a.getEntidade().getDataInicio()}"></td>
+    <td th:text="${a.getEntidade().getDataFim()}"></td>
+    <td th:text="${a.getEntidade().getStatus()}"></td>
+    <td th:text="${a.getEntidade().getObs()}"></td>
+    <td th:text="${a.getEntidade().getOrdem()}"></td>
+</span>
+</html>
+

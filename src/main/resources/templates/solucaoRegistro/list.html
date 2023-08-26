@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{solucaoRegistro.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{solucaoRegistro.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/solucaoRegistros/add}" th:text="#{solucaoRegistro.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='solucaoRegistro')}" />
+            <div th:if="${solucaoRegistros.empty}" th:text="#{solucaoRegistro.list.empty}" />
+            <div th:if="${!solucaoRegistros.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{solucaoRegistro.id.label}" scope="col" />
+                            <th th:text="#{solucaoRegistro.descricao.label}" scope="col" />
+                            <th th:text="#{solucaoRegistro.lote.label}" scope="col" />
+                            <th th:text="#{solucaoRegistro.tipo.label}" scope="col" />
+                            <th th:text="#{solucaoRegistro.referencia.label}" scope="col" />
+                            <th th:text="#{solucaoRegistro.armazenamento.label}" scope="col" />
+                            <th th:text="#{solucaoRegistro.dataPreparo.label}" scope="col" />
+                            <th th:text="#{solucaoRegistro.dataValidade.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="solucaoRegistro : ${solucaoRegistros}">
+                            <td th:text="${solucaoRegistro.id}" />
+                            <td th:text="${solucaoRegistro.descricao}" />
+                            <td th:text="${solucaoRegistro.lote}" />
+                            <td th:text="${solucaoRegistro.tipo}" />
+                            <td th:text="${solucaoRegistro.referencia}" />
+                            <td th:text="${solucaoRegistro.armazenamento}" />
+                            <td th:text="${solucaoRegistro.dataPreparo}" />
+                            <td th:text="${solucaoRegistro.dataValidade}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/solucaoRegistros/edit/{id}(id=${solucaoRegistro.id})}" th:text="#{solucaoRegistro.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/solucaoRegistros/delete/{id}(id=${solucaoRegistro.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{solucaoRegistro.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

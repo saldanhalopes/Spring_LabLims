@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{celula.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{celula.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/celulas}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('celula')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='celula')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='descricao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='equipamento', type='multiselect')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='usuario', type='multiselect')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='tipo', type='select')}" />
+</div>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{colunaUtil.edit.headline}"/>
+</head>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{colunaUtil.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/colunaUtils}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/colunaUtils/audit/{id}(id=${colunaUtil.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('colunaUtil')}"/>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='codigoColuna')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='serialNumber')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='dataAtivacao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='dataVerificacao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='dataDescarte')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='estoque', type='checkbox')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='coluna', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='setor', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='metodologiaVersao', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='analise', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='colunaVaga', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='certificado', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaUtil', field='anexos', type='multiselect')}" />
+</div>
+</html>

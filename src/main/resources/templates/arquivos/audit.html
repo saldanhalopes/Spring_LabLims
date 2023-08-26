@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{arquivos.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{arquivos.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/arquivoss}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{arquivos.nome.label}" scope="col" />
+    <th th:text="#{arquivos.tipo.label}" scope="col" />
+    <th th:text="#{arquivos.descricao.label}" scope="col" />
+    <th th:text="#{arquivos.tamanho.label}" scope="col" />
+    <th th:text="#{arquivos.arquivo.label}" scope="col" />
+    <th th:text="#{arquivos.dataCriacao.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getNome()}"></td>
+    <td th:text="${a.getEntidade().getTipo()}"></td>
+    <td th:text="${a.getEntidade().getDescricao()}"></td>
+    <td th:text="${a.getEntidade().getTamanho()}"></td>
+    <td th:text="${a.getEntidade().getArquivo()}"></td>
+</span>
+</html>
+

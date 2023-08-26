@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{grupo.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{grupo.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/grupos/add}" th:text="#{grupo.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${grupos.empty}" th:text="#{grupo.list.empty}"/>
+    <div th:if="${!grupos.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{grupo.grupo.label}" scope="col" />
+    <th th:text="#{grupo.tipo.label}" scope="col" />
+    <th th:text="#{grupo.regra.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="grupo : ${grupos}">
+        <td th:text="${grupo.id}"/>
+        <td th:text="${grupo.version}"/>
+        <td th:text="${grupo.grupo}" />
+        <td th:text="${grupo.tipo}" />
+        <td th:text="${grupo.regra}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/grupos/edit/{id}(id=${grupo.id})}"
+                   th:text="#{grupo.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${grupo.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${grupo.id}, link='grupos')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/grupos/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

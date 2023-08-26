@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{amostraTipo.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{amostraTipo.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/amostraTipos/add}" th:text="#{amostraTipo.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${amostraTipos.empty}" th:text="#{amostraTipo.list.empty}"/>
+    <div th:if="${!amostraTipos.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{amostraTipo.tipo.label}" scope="col"/>
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="amostraTipo : ${amostraTipos}">
+        <td th:text="${amostraTipo.id}"/>
+        <td th:text="${amostraTipo.version}"/>
+        <td th:text="${amostraTipo.tipo}"/>
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/amostraTipos/edit/{id}(id=${amostraTipo.id})}"
+                   th:text="#{amostraTipo.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${amostraTipo.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${amostraTipo.id}, link='amostraTipos')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/amostraTipos/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>
+
+

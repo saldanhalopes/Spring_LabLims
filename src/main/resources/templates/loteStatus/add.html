@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{loteStatus.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{loteStatus.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/loteStatuss}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('loteStatus')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='dataStatus', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='dataPrevisao', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='dataProgramado', inputClass='js-timepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='dataConferencia1', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='dataConferencia2', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='lote', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='planoAnalise', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='analiseStatus', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='conferente1', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='loteStatus', field='conferente2', type='select')}" />
+</div>
+</html>

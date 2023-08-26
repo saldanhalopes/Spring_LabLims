@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{analiseStatus.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{analiseStatus.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/analiseStatuss}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{analiseStatus.analiseStatus.label}" scope="col" />
+    <th th:text="#{analiseStatus.siglaAnaliseStatus.label}" scope="col" />
+    <th th:text="#{analiseStatus.descricaoAnaliseStatus.label}" scope="col" />
+    <th th:text="#{analiseStatus.analiseProdutividade.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getAnaliseStatus()}"></td>
+    <td th:text="${a.getEntidade().getSiglaAnaliseStatus()}"></td>
+    <td th:text="${a.getEntidade().getDescricaoAnaliseStatus()}"></td>
+    <td th:text="${a.getEntidade().getAnaliseProdutividade().getId()}"></td>
+</span>
+</html>

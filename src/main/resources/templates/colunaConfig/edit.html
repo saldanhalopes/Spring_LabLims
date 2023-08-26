@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{colunaConfig.edit.headline}"/>
+</head>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{colunaConfig.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/colunaConfigs}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/colunaConfigs/audit/{id}(id=${colunaConfig.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('colunaConfig')}"/>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='colunaConfig', field='tipo')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaConfig', field='configuracao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaConfig', field='descricao')}" />
+</div>
+</html>

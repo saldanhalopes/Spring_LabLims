@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{analiseTipo.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{analiseTipo.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/analiseTipos}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('analiseTipo')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='analiseTipo')}"/>
+    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='siglaAnaliseTipo')}"/>
+    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='descricaoAnaliseTipo')}"/>
+</div>
+</html>

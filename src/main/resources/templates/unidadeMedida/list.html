@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{unidadeMedida.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{unidadeMedida.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/unidadeMedidas/add}" th:text="#{unidadeMedida.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='unidadeMedida')}" />
+            <div th:if="${unidadeMedidas.empty}" th:text="#{unidadeMedida.list.empty}" />
+            <div th:if="${!unidadeMedidas.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{unidadeMedida.id.label}" scope="col" />
+                            <th th:text="#{unidadeMedida.unidade.label}" scope="col" />
+                            <th th:text="#{unidadeMedida.escalaMedida.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="unidadeMedida : ${unidadeMedidas}">
+                            <td th:text="${unidadeMedida.id}" />
+                            <td th:text="${unidadeMedida.unidade}" />
+                            <td th:text="${unidadeMedida.escalaMedida}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/unidadeMedidas/edit/{id}(id=${unidadeMedida.id})}" th:text="#{unidadeMedida.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/unidadeMedidas/delete/{id}(id=${unidadeMedida.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{unidadeMedida.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

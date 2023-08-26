@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="sidebar" class='active' th:fragment="sidebar"><!--sidebar-->
+    <div class="sidebar-wrapper active">
+        <div class="container col-md-12 justify-content-center">
+            <img src="/images/logo.png" alt="Max-width 100%" srcset="" class="col-md-12 mt-2 justify-content-center">
+        </div>
+        <div class="sidebar-menu">
+            <ul class="menu">
+
+                <li class='sidebar-title'>Menu Principal</li>
+
+                <!--Dashboard-->
+                <li class="sidebar-item active ">
+                    <a href="/index" class='sidebar-link'>
+                        <i data-feather="home" width="20"></i>
+                        <span>Dashboard</span>
+                    </a>
+
+                </li>
+
+                <!--Cadastro-->
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i data-feather="briefcase" width="20"></i>
+                        <span>Cadastro</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li>
+                            <a href="/material">Material Home</a>
+                        </li>
+
+                        <li>
+                            <a href="/parameters">Parametros</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <!--________________________________________-->
+                <li class='sidebar-title'>Admin Config</li>
+                <!--________________________________________-->
+
+                <!--Security-->
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i data-feather="user" width="20"></i>
+                        <span>Segurança</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li>
+                            <a href="/security">Security Home</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+
+        <div class="list-group">
+            <a th:href="@{/materialTipos}" th:text="#{materialTipo.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/materials}" th:text="#{material.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/usuarios}" th:text="#{usuario.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/departamentos}" th:text="#{departamento.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/unidadeMedidas}" th:text="#{unidadeMedida.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/escalaMedidas}" th:text="#{escalaMedida.list.headline}" class="list-group-item list-group-item-action" />
+
+            <a th:href="@{/metodologias}" th:text="#{metodologia.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/metodologiaVesaos}" th:text="#{metodologiaVesao.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/arquivoss}" th:text="#{arquivos.list.headline}" class="list-group-item list-group-item-action" />
+
+
+
+            <a th:href="@{/colunaStorages}" th:text="#{colunaStorage.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/colunaVagas}" th:text="#{colunaVaga.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/colunaConfigs}" th:text="#{colunaConfig.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/colunas}" th:text="#{coluna.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/colunaUtils}" th:text="#{colunaUtil.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/colunaLogs}" th:text="#{colunaLog.list.headline}" class="list-group-item list-group-item-action" />
+
+            <a th:href="@{/celulaTipos}" th:text="#{celulaTipo.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/metodologiaStatuss}" th:text="#{metodologiaStatus.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/campanhas}" th:text="#{campanha.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/equipamentoTipos}" th:text="#{equipamentoTipo.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/equipamentos}" th:text="#{equipamento.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/celulas}" th:text="#{celula.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/turnos}" th:text="#{turno.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/ataTurnos}" th:text="#{ataTurno.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/grupos}" th:text="#{grupo.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/planoAnalises}" th:text="#{planoAnalise.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/planoAnaliseColunas}" th:text="#{planoAnaliseColuna.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/planoAnaliseReagentes}" th:text="#{planoAnaliseReagente.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/reagentes}" th:text="#{reagente.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/equipamentoLogs}" th:text="#{equipamentoLog.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/equipamentoAtividades}" th:text="#{equipamentoAtividade.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/lotes}" th:text="#{lote.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/loteStatuss}" th:text="#{loteStatus.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/solucaoRegistros}" th:text="#{solucaoRegistro.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/solucaoTipos}" th:text="#{solucaoTipo.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/solucaoParemetros}" th:text="#{solucaoParemetro.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/solucaoEquipamentos}" th:text="#{solucaoEquipamento.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/solucaoReagentes}" th:text="#{solucaoReagente.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/setors}" th:text="#{setor.list.headline}" class="list-group-item list-group-item-action" />
+            <a th:href="@{/colunaStorageTipos}" th:text="#{colunaStorageTipo.list.headline}" class="list-group-item list-group-item-action" />
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
+
+

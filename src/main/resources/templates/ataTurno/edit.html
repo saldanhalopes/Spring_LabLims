@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{ataTurno.edit.headline}"/>
+</head>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{ataTurno.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/ataTurnos}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/ataTurnos/audit/{id}(id=${ataTurno.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('ataTurno')}"/>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='ataTurno', field='passagem', type='textarea')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='ataTurno', field='agrupador')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='ataTurno', field='turno', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='ataTurno', field='setor', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='ataTurno', field='usuario', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='ataTurno', field='equipamentos', type='multiselect')}" />
+</div>
+</html>

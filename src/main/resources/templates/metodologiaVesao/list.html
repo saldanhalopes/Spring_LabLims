@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{metodologiaVesao.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{metodologiaVesao.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/metodologiaVesaos/add}" th:text="#{metodologiaVesao.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='metodologiaVesao')}" />
+            <div th:if="${metodologiaVesaos.empty}" th:text="#{metodologiaVesao.list.empty}" />
+            <div th:if="${!metodologiaVesaos.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{metodologiaVesao.id.label}" scope="col" />
+                            <th th:text="#{metodologiaVesao.dataRevisao.label}" scope="col" />
+                            <th th:text="#{metodologiaVesao.dataProximaRevisao.label}" scope="col" />
+                            <th th:text="#{metodologiaVesao.obs.label}" scope="col" />
+                            <th th:text="#{metodologiaVesao.metodologia.label}" scope="col" />
+                            <th th:text="#{metodologiaVesao.anexo.label}" scope="col" />
+                            <th th:text="#{metodologiaVesao.status.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="metodologiaVesao : ${metodologiaVesaos}">
+                            <td th:text="${metodologiaVesao.id}" />
+                            <td th:text="${metodologiaVesao.dataRevisao}" />
+                            <td th:text="${metodologiaVesao.dataProximaRevisao}" />
+                            <td th:text="${metodologiaVesao.obs}" />
+                            <td th:text="${metodologiaVesao.metodologia}" />
+                            <td th:text="${metodologiaVesao.anexo}" />
+                            <td th:text="${metodologiaVesao.status}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/metodologiaVesaos/edit/{id}(id=${metodologiaVesao.id})}" th:text="#{metodologiaVesao.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/metodologiaVesaos/delete/{id}(id=${metodologiaVesao.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{metodologiaVesao.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

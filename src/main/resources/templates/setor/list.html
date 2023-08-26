@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{setor.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{setor.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/setors/add}" th:text="#{setor.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='setor')}" />
+            <div th:if="${setors.empty}" th:text="#{setor.list.empty}" />
+            <div th:if="${!setors.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{setor.id.label}" scope="col" />
+                            <th th:text="#{setor.setor.label}" scope="col" />
+                            <th th:text="#{setor.siglaSetor.label}" scope="col" />
+                            <th th:text="#{setor.descricao.label}" scope="col" />
+                            <th th:text="#{setor.tipo.label}" scope="col" />
+                            <th th:text="#{setor.departamento.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="setor : ${setors}">
+                            <td th:text="${setor.id}" />
+                            <td th:text="${setor.setor}" />
+                            <td th:text="${setor.siglaSetor}" />
+                            <td th:text="${setor.descricao}" />
+                            <td th:text="${setor.tipo}" />
+                            <td th:text="${setor.departamento}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/setors/edit/{id}(id=${setor.id})}" th:text="#{setor.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/setors/delete/{id}(id=${setor.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{setor.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

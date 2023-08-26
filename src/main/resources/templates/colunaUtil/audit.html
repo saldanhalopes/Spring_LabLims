@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{colunaUtil.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{colunaUtil.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/colunaUtils}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{colunaUtil.codigoColuna.label}" scope="col" />
+    <th th:text="#{colunaUtil.serialNumber.label}" scope="col" />
+    <th th:text="#{colunaUtil.dataAtivacao.label}" scope="col" />
+    <th th:text="#{colunaUtil.dataVerificacao.label}" scope="col" />
+    <th th:text="#{colunaUtil.dataDescarte.label}" scope="col" />
+    <th th:text="#{colunaUtil.estoque.label}" scope="col" />
+    <th th:text="#{colunaUtil.obs.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getCodigoColuna()}"></td>
+    <td th:text="${a.getEntidade().getSerialNumber()}"></td>
+    <td th:text="${a.getEntidade().getDataAtivacao()}"></td>
+    <td th:text="${a.getEntidade().getDataVerificacao()}"></td>
+    <td th:text="${a.getEntidade().getDataDescarte()}"></td>
+    <td th:text="${a.getEntidade().getEstoque()}"></td>
+    <td th:text="${a.getEntidade().getObs()}"></td>
+</span>
+</html>
+

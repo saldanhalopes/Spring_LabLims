@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{analiseProdutividade.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{analiseProdutividade.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/analiseProdutividades}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('analiseProdutividade')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='analiseProdutividade', field='analiseProdutividade')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='analiseProdutividade', field='siglaProdutividade')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='analiseProdutividade', field='descricaoProdutividade')}" />
+    <div th:replace="~{fragments/forms::selectColorRow(object='analiseProdutividade', field='corProdutividade' , type='select')}" />
+</div>
+</html>

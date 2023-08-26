@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{colunaStorage.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{colunaStorage.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/colunaStorages}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{colunaStorage.codigo.label}" scope="col" />
+    <th th:text="#{colunaStorage.obs.label}" scope="col" />
+    <th th:text="#{colunaStorage.setor.label}" scope="col" />
+    <th th:text="#{colunaStorage.tipo.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getCodigo()}"></td>
+    <td th:text="${a.getEntidade().getObs()}"></td>
+    <td th:text="${a.getEntidade().getSetor().getId()}"></td>
+    <td th:text="${a.getEntidade().getTipo().getId()}"></td>
+</span>
+</html>
+

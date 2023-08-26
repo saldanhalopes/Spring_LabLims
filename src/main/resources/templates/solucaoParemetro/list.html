@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{solucaoParemetro.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{solucaoParemetro.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/solucaoParemetros/add}" th:text="#{solucaoParemetro.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='solucaoParemetro')}" />
+            <div th:if="${solucaoParemetros.empty}" th:text="#{solucaoParemetro.list.empty}" />
+            <div th:if="${!solucaoParemetros.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{solucaoParemetro.id.label}" scope="col" />
+                            <th th:text="#{solucaoParemetro.paremetro.label}" scope="col" />
+                            <th th:text="#{solucaoParemetro.valor.label}" scope="col" />
+                            <th th:text="#{solucaoParemetro.solucaoRegistro.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="solucaoParemetro : ${solucaoParemetros}">
+                            <td th:text="${solucaoParemetro.id}" />
+                            <td th:text="${solucaoParemetro.paremetro}" />
+                            <td th:text="${solucaoParemetro.valor}" />
+                            <td th:text="${solucaoParemetro.solucaoRegistro}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/solucaoParemetros/edit/{id}(id=${solucaoParemetro.id})}" th:text="#{solucaoParemetro.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/solucaoParemetros/delete/{id}(id=${solucaoParemetro.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{solucaoParemetro.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

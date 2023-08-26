@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{material.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{material.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/materials}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('material')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='controleEspecial', type='checkbox')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='fiscalizado')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='item', type='number')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='material')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='tipoMaterial', type='select')}" />
+</div>
+</html>

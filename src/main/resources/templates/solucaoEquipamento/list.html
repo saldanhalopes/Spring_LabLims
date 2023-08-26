@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{solucaoEquipamento.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{solucaoEquipamento.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/solucaoEquipamentos/add}" th:text="#{solucaoEquipamento.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='solucaoEquipamento')}" />
+            <div th:if="${solucaoEquipamentos.empty}" th:text="#{solucaoEquipamento.list.empty}" />
+            <div th:if="${!solucaoEquipamentos.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{solucaoEquipamento.id.label}" scope="col" />
+                            <th th:text="#{solucaoEquipamento.solucaoRegistro.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="solucaoEquipamento : ${solucaoEquipamentos}">
+                            <td th:text="${solucaoEquipamento.id}" />
+                            <td th:text="${solucaoEquipamento.solucaoRegistro}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/solucaoEquipamentos/edit/{id}(id=${solucaoEquipamento.id})}" th:text="#{solucaoEquipamento.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/solucaoEquipamentos/delete/{id}(id=${solucaoEquipamento.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{solucaoEquipamento.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>
