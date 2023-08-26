@@ -26,6 +26,7 @@ jobs:
         run: mvn clean install
 
       - name: Upload artifact for deployment job
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v3
         with:
           name: 'Spring-LabLims'
@@ -43,6 +44,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: 'Spring-LabLims'
+          path: '${{ github.workspace }}/target/*.war'
+
+      - name: Caminho
+        run: ls -R
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
