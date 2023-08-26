@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          creds: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CBDAA60893684EC08EE50297F76DEF6D }}
       - uses: actions/checkout@v3
       - name: Set up Java version
         uses: actions/setup-java@v3
