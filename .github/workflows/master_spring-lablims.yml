@@ -13,9 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CBDAA60893684EC08EE50297F76DEF6D }}
       - uses: actions/checkout@v3
       - name: Set up Java version
         uses: actions/setup-java@v3
@@ -35,9 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CBDAA60893684EC08EE50297F76DEF6D }}
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
@@ -48,5 +42,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: java-app
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CBDAA60893684EC08EE50297F76DEF6D }}
           package: ./target/*.war
