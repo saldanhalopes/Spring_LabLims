@@ -12,19 +12,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up Java version
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
-
       - name: Build with Maven
         run: mvn clean install
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
@@ -35,17 +31,15 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     needs: build
-
     steps:
-      - name: Caminho
-        run: ls -R
-
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
           name: java-app
           path: ./target
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
