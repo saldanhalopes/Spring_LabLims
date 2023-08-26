@@ -28,7 +28,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: java-app
+          name: 'Spring-LabLims'
           path: '${{ github.workspace }}/target/*.war'
 
   deploy:
@@ -42,7 +42,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: java-app
+          name: 'Spring-LabLims'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
