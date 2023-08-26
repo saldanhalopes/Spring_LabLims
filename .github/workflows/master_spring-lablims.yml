@@ -26,11 +26,10 @@ jobs:
         run: mvn clean install
 
       - name: Upload artifact for deployment job
-        if: ${{ failure() }}
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: ./target
 
   deploy:
     name: Deploy
