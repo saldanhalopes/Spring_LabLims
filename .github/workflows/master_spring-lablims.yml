@@ -10,38 +10,46 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    name:   Build and Deploy
+  build:
     runs-on: ubuntu-latest
+
     steps:
-#      - uses: actions/checkout@v3
-#      - name: Set up Java version
-#        uses: actions/setup-java@v3
-#        with:
-#          distribution: 'zulu'
-#          java-version: '17'
-#      - name: Build with Maven
-#        run: mvn clean install
-#      - name: Upload artifact for deployment job
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: java-app
-#          path: ./target
-      - name: Az CLI login
-        uses: azure/login@v1
+      - uses: actions/checkout@v3
+
+      - name: Set up Java version
+        uses: actions/setup-java@v3
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#      - name: Download artifact from build job
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: java-app
-#          path: ./target
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: java-app
+          path: ./target
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: java-app
+          path: ./target
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: java-app
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CBDAA60893684EC08EE50297F76DEF6D }}
-          package: ./target/*.war
+          app-name: 'Spring-LabLims'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0A970C7986DC4482A82AA1409F88846C }}
+          package: '*.war'
