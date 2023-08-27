@@ -52,4 +52,4 @@ jobs:
           app-name: 'Spring-LabLims'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0A970C7986DC4482A82AA1409F88846C }}
-          package: '*.jar'
+          package: '*.war'
