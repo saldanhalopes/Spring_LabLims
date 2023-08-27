@@ -45,21 +45,11 @@ jobs:
          name: java-app
          path: ./target
          
-     - name: deploy to production with artifact
-       uses: azure/spring-cloud-deploy@v1
+     - name: Deploy to Azure Web App
+       id: deploy-to-webapp
+       uses: azure/webapps-deploy@v2
        with:
-         azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
-         action: Deploy
-         service-name: lablims-apps
-         app-name: spring-lablims
-         use-staging-deployment: false
-         package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
-
-#      - name: Deploy to Azure Web App
-#        id: deploy-to-webapp
-#        uses: azure/webapps-deploy@v2
-#        with:
-#          app-name: 'Spring-LabLims'
-#          slot-name: 'Production'
-#          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0A970C7986DC4482A82AA1409F88846C }}
-#          package: '*.war'
+         app-name: 'Spring-LabLims'
+         slot-name: 'Production'
+         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0A970C7986DC4482A82AA1409F88846C }}
+         package: '*.jar'
