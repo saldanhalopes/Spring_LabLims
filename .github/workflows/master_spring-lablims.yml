@@ -80,7 +80,7 @@ jobs:
           mvn clean package -DskipTests
 
       - name: Login via Azure CLI
-        uses: Azure/azure/login@v1
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           environment: 'Production'
