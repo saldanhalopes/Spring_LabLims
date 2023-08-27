@@ -3,47 +3,57 @@
 
 #name: Build and deploy WAR app to Azure Web App - Spring-LabLims
 
-#on:
-#  push:
-#    branches:
-#      - master
-#  workflow_dispatch:
+on:
+ push:
+   branches:
+     - master
+ workflow_dispatch:
 
-#jobs:
-#  build:
-#    runs-on: ubuntu-latest
+jobs:
+ build:
+   runs-on: ubuntu-latest
 
-#    steps:
-#      - uses: actions/checkout@v3
+   steps:
+     - uses: actions/checkout@v3
 
-#      - name: Set up Java version
-#        uses: actions/setup-java@v3
-#        with:
-#          distribution: 'zulu'
-#          java-version: '17'
+     - name: Set up Java version
+       uses: actions/setup-java@v3
+       with:
+         distribution: 'zulu'
+         java-version: '17'
 
-#      - name: Build with Maven
-#        run: mvn clean install
+     - name: Build with Maven
+       run: mvn clean install
 
-#      - name: Upload artifact for deployment job
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: java-app
-#          path: ./target
+     - name: Upload artifact for deployment job
+       uses: actions/upload-artifact@v3
+       with:
+         name: java-app
+         path: ./target
 
-#  deploy:
-#    runs-on: ubuntu-latest
-#    needs: build
-#    environment:
-#      name: 'Production'
-#      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+ deploy:
+   runs-on: ubuntu-latest
+   needs: build
+   environment:
+     name: 'Production'
+     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-#    steps:
-#      - name: Download artifact from build job
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: java-app
-#          path: ./target
+   steps:
+     - name: Download artifact from build job
+       uses: actions/download-artifact@v3
+       with:
+         name: java-app
+         path: ./target
+         
+     - name: deploy to production with artifact
+       uses: azure/spring-cloud-deploy@v1
+       with:
+         azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+         action: Deploy
+         service-name: lablims-apps
+         app-name: spring-lablims
+         use-staging-deployment: false
+         package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
 
 #      - name: Deploy to Azure Web App
 #        id: deploy-to-webapp
@@ -53,46 +63,3 @@
 #          slot-name: 'Production'
 #          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0A970C7986DC4482A82AA1409F88846C }}
 #          package: '*.war'
-
-name: AzureSpringCloud
-on: push
-env:
-  ASC_PACKAGE_PATH: ${{ github.workspace }}
-  JAVA_VERSION: 17
-  AZURE_SUBSCRIPTION: 5f29a38e-22c6-4147-8d71-7eacd8955004
-
-jobs:
-  deploy_to_production:
-    runs-on: ubuntu-latest
-    name: deploy to production with artifact
-    steps:
-      - name: Checkout Github Action
-        uses: actions/checkout@v3
-        
-      - name: Set up Java version
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: maven build, clean
-        run: |
-          mvn clean package -DskipTests
-
-      - name: Login via Azure CLI
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          environment: 'Production'
-
-      - name: deploy to production with artifact
-        uses: azure/spring-cloud-deploy@v1
-        with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
-          action: Deploy
-          service-name: lablims-apps
-          app-name: lablims-apps
-          use-staging-deployment: false
-          package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
