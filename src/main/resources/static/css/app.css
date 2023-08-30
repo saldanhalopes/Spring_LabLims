@@ -1065,10 +1065,6 @@ footer {
     color: #fff
 }
 
-.pricing .card-highlighted ul li i, .pricing .card-highlighted ul li svg {
-    color: tint-color(#28a745, 2)
-}
-
 .pricing .card-highlighted .card-footer {
     background-color: #5a8dee
 }
@@ -1407,7 +1403,7 @@ footer {
     background: #6c757d;
     min-height: 100vh;
     padding-top: 100px;
-    background-image: url(../images/auth.jpg)
+    background-image: url(../images/auth.webp)
 }
 
 #auth .card {

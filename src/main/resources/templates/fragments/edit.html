@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <body>
 <div layout:fragment="content">
@@ -24,15 +24,15 @@
             <form th:action="${T(br.com.lablims.spring_lablims.util.WebUtils).getRequest().requestURI}" method="post">
                 <div class="card-body">
                     <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
-                         class="alert alert-danger alert-dismissible fade show" role="alert"/>
-                    <div layout:fragment="editGlobalErrors"/>
-                    <div class="main-content container-fluid" layout:fragment="editContent"/>
+                         class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+                    <div layout:fragment="editGlobalErrors"></div>
+                    <div class="main-content container-fluid" layout:fragment="editContent"></div>
                 </div>
                 <div class="card-footer">
                     <div class="col-sm-12 d-flex justify-content-start">
                         <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal"
                                 th:attr="data-bs-target='#edit'" th:text="#{edit.btn}"
-                                sec:authorize="hasAnyAuthority('ADMIN','MASTERUSER')"/>
+                                sec:authorize="hasAnyAuthority('ADMIN','MASTERUSER')"></button>
                     </div>
                 </div>
                 <div th:replace="fragments/modal :: modalEdit"></div>

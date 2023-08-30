@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <body>
 <div layout:fragment="content">
@@ -21,8 +21,8 @@
                 <div class="card-body">
                     <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
                          class="alert alert-danger alert-dismissible fade show" role="alert"/>
-                    <div layout:fragment="addGlobalErrors"/>
-                    <div class="main-content container-fluid" layout:fragment="addContent"/>
+                    <div layout:fragment="addGlobalErrors"></div>
+                    <div class="main-content container-fluid" layout:fragment="addContent"></div>
                     <div class="card-footer">
                         <div class="col-sm-12 d-flex justify-content-start">
                             <button type="button" class="btn btn-success mt-4" data-bs-toggle="modal"
@@ -30,7 +30,7 @@
                                     sec:authorize="hasAnyAuthority('ADMIN','MASTERUSER','POWERUSER')"/>
                         </div>
                     </div>
-                    <div th:replace="~{fragments/modal :: modalAdd}"/>
+                    <div th:replace="~{fragments/modal :: modalAdd}"></div>
                 </div>
             </form>
         </div>

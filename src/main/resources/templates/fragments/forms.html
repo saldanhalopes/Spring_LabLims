@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
     <body>
         <div th:fragment="inputRow(object, field)" th:with="type=${type} ?: 'text', required=${required}, inputClass=${inputClass}" th:object="${__${object}__}" class="row mb-3">
             <div th:if="${type == 'checkbox'}" class="col-md-10 offset-md-2">
@@ -7,20 +7,20 @@
                     <input th:type="${type}" th:field="*{__${field}__}" th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}" class="form-check-input" />
                     <label th:for="${#ids.prev(field)}" class="form-check-label">
                         <span th:text="#{__${object}__.__${field}__.label}" /><!--/*
-                        */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" />
+                        */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" ></span>
                     </label>
                 </div>
-                <div th:replace="~{:: fieldErrors(${object}, ${field})}" />
+                <div th:replace="~{:: fieldErrors(${object}, ${field})}" ></div>
             </div>
             <label th:if="${type != 'checkbox'}" th:for="${field}" class="col-md-2 col-form-label">
                 <span th:text="#{__${object}__.__${field}__.label}" /><!--/*
-                */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" />
+                */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" ></span>
             </label>
             <div th:if="${type != 'checkbox'}" class="col-md-10">
                 <input th:if="${type == 'text' || type == 'password' || type == 'email' || type == 'tel' || type == 'number'}"
                         th:type="${type}" th:field="*{__${field}__}" th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}" class="form-control" />
                 <textarea th:if="${type == 'textarea'}" th:field="*{__${field}__}"
-                        th:classappend="${#fields.hasErrors(field) || #fields.hasErrors(field + '.*') ? 'is-invalid' : ''} + ' ' + ${inputClass}" class="form-control" />
+                        th:classappend="${#fields.hasErrors(field) || #fields.hasErrors(field + '.*') ? 'is-invalid' : ''} + ' ' + ${inputClass}" class="form-control" ></textarea>
                 <select th:if="${type == 'select' || type == 'multiselect'}" th:field="*{__${field}__}"
                         th:multiple="${type == 'multiselect'}" th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}" class="form-select">
                     <option th:if="${type == 'select'}" value="" th:text="#{select.empty.label}" />
@@ -37,14 +37,14 @@
                     <input th:field="*{__${field}__}" th:value="${radioValue}" th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}" type="radio" class="form-check-input" />
                     <label th:for="${#ids.prev(field)}" th:text="${radioValue}" class="form-check-label" />
                 </div>
-                <div th:replace="~{:: fieldErrors(${object}, ${field})}" />
+                <div th:replace="~{:: fieldErrors(${object}, ${field})}" ></div>
             </div>
         </div>
 
         <div th:fragment="selectColorRow(object, field)" th:with="type=${type} ?: 'text', required=${required}, inputClass=${inputClass}" th:object="${__${object}__}" class="row mb-3">
             <label th:for="${field}" class="col-md-2 col-form-label">
                 <span th:text="#{__${object}__.__${field}__.label}" /><!--/*
-                */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" />
+                */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" ></span>
             </label>
             <div class="col-md-10">
                 <select th:if="${type == 'select' || type == 'multiselect'}" th:field="*{__${field}__}"
@@ -53,7 +53,7 @@
                     <option th:if="${type == 'select'}" th:each="optionValue : ${T(br.com.lablims.spring_lablims.util.Color).values()}"
                             th:value="${optionValue.getCor()}" th:text="${optionValue}" th:classappend="${optionValue.getCor()}"/>
                 </select>
-                <div th:replace="~{:: fieldErrors(${object}, ${field})}" />
+                <div th:replace="~{:: fieldErrors(${object}, ${field})}" ></div>
             </div>
         </div>
 

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+      layout:decorate="~{layout}" xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <div layout:fragment="content">
     <section class="wrapper">
@@ -10,46 +10,45 @@
                     <div class="card-header border-bottom d-flex justify-content-between align-items-center">
                         <h4 class="card-title d-flex">
                             <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
-                            <span layout:fragment="listHeadline"/>
+                            <span layout:fragment="listHeadline"></span>
                         </h4>
                         <ul class="list-inline d-flex mb-0">
                             <li class="d-flex align-items-center">
                                 <i class="bx bx-check-circle font-medium-3 me-50"></i>
-                                <span layout:fragment="createNew"/>
+                                <span layout:fragment="createNew"></span>
                             </li>
                             <li class="d-flex align-items-center">
                                 <i class="bx bx-sort me-50 ml-50 font-medium-3"></i>
-                                <span layout:fragment="listBackMenu"/>
+                                <span layout:fragment="listBackMenu"></span>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body mt-3">
                         <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
-                             class="alert alert-danger alert-dismissible fade show" role="alert"/>
+                             class="alert alert-danger alert-dismissible fade show" role="alert"></div>
                         <div th:if="${MSG_INFO != null}" th:text="${MSG_INFO}" id="infoAlert"
-                             class="alert alert-info alert-dismissible fade show" role="alert"/>
+                             class="alert alert-info alert-dismissible fade show" role="alert"></div>
                         <div th:if="${MSG_SUCCESS != null}" th:text="${MSG_SUCCESS}" id="succesAlert"
-                             class="alert alert-success alert-dismissible fade show" role="alert"/>
-                        <div layout:fragment="listErrors"/>
-                            <table class="table table-striped table-hover align-middle table-sm" id="tableList">
+                             class="alert alert-success alert-dismissible fade show" role="alert"></div>
+                        <div layout:fragment="listErrors"></div>
+                        <table class="table table-striped table-hover align-middle table-sm" id="tableList">
                                 <thead>
                                 <tr>
                                     <th th:text="#{id.label}" scope="col"/>
                                     <th th:text="#{audit.version}" scope="col"/>
-                                    <span layout:fragment="listHeader"/>
+                                    <span layout:fragment="listHeader"></span>
                                     <th><!-- --></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <span layout:fragment="listContent"/>
+                                    <span layout:fragment="listContent"></span>
                                 </tbody>
                             </table>
-                        </div>
                     </div>
                     <div class="card-footer">
-                        <div th:replace="~{fragments/utils::pagination()}"/>
+                        <div th:replace="~{fragments/utils::pagination()}"></div>
                         <div class="col-sm-12 d-flex justify-content-start">
-                            <span layout:fragment="listAudit"/>
+                            <span layout:fragment="listAudit"></span>
                         </div>
                     </div>
                 </div>

@@ -90,9 +90,15 @@
             <artifactId>flyway-core</artifactId>
             <version>9.21.2</version>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.22</version>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>Spring_LabLims</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
