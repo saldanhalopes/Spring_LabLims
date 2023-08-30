@@ -13,7 +13,7 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
  * Load Thymeleaf files from the file system during development, without any caching.
  */
 @Configuration
-@Profile("local")
+@Profile("Local")
 public class LocalDevConfig {
 
     @SneakyThrows
@@ -23,8 +23,8 @@ public class LocalDevConfig {
             sourceRoot = sourceRoot.getParentFile();
         }
         final FileTemplateResolver fileTemplateResolver = new FileTemplateResolver();
-//        fileTemplateResolver.setPrefix(sourceRoot.getPath() + "/src/main/resources/templates/");
-        fileTemplateResolver.setPrefix("classpath:/templates/");
+        fileTemplateResolver.setPrefix(sourceRoot.getPath() + "/src/main/resources/templates/");
+        System.out.println(sourceRoot.getPath() + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         fileTemplateResolver.setSuffix(".html");
         fileTemplateResolver.setCacheable(false);
         fileTemplateResolver.setCharacterEncoding("UTF-8");
