@@ -18,12 +18,12 @@
 <div id="app"><!--Main content-->
     <span th:replace="~{fragments/sidebar :: sidebar}"></span>
     <div id="main"><!--Content id-->
-        <span th:replace="~{fragments/header :: header}"/></span>
-        <div class="main-content container-fluid" layout:fragment="content"><!--dynamic content-->
+        <span th:replace="~{fragments/header :: header}"></span>
+        <div class="main-content container-fluid" layout:fragment="content">
+            <!--dynamic content-->
             <!--you can replace this using page-->
         </div>
     </div>
-
 </div>
 <script th:src="@{/js/feather.min.js}"></script>
 <script th:src="@{/js/perfect-scrollbar.min.js}"></script>

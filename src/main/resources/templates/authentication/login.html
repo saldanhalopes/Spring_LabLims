@@ -34,12 +34,7 @@
                                 </div>
                             </div>
                             <div class="form-group position-relative has-icon-left">
-                                <div class="clearfix">
-                                    <label for="password">Password</label>
-                                    <a href="auth-forgot-password.html" class="float-end">
-                                        <small>Forgot password?</small>
-                                    </a>
-                                </div>
+                                <label for="password">Password</label>
                                 <div class="position-relative">
                                     <input type="password" class="form-control" id="password" th:name="password"/>
                                     <div class="form-control-icon">
@@ -51,7 +46,12 @@
                                 <input type="submit" th:value="#{authentication.login.headline}" class="btn btn-primary float-end" />
                             </div>
                         </form>
-                        <p th:utext="#{authentication.registerNow}" class="mt-5" />
+                        <p th:utext="#{authentication.registerNow}" class="mt-5"></p>
+                        <div class="clearfix">
+                            <a href="auth-forgot-password.html" class="float-end">
+                                <small>Forgot password?</small>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
