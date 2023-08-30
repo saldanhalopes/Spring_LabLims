@@ -23,12 +23,12 @@ public class LocalDevConfig {
             sourceRoot = sourceRoot.getParentFile();
         }
         final FileTemplateResolver fileTemplateResolver = new FileTemplateResolver();
-        fileTemplateResolver.setPrefix(sourceRoot.getPath() + "/src/main/resources/templates/");
+//        fileTemplateResolver.setPrefix(sourceRoot.getPath() + "/src/main/resources/templates/");
+        fileTemplateResolver.setPrefix("classpath:/templates/");
         fileTemplateResolver.setSuffix(".html");
         fileTemplateResolver.setCacheable(false);
         fileTemplateResolver.setCharacterEncoding("UTF-8");
         fileTemplateResolver.setCheckExistence(true);
-
         templateEngine.setTemplateResolver(fileTemplateResolver);
     }
 
