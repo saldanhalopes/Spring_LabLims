@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div layout:fragment="breadcrumb"></div>
+        </div>
+    </section>
+    <div class="container-fluid">
+        <div class="card card-success card-outline">
+            <div class="card-header">
+                <h5 class="card-title d-flex">
+                    <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
+                    <span layout:fragment="addHeadline"></span>
+                </h5>
+            </div>
+            <form th:action="${T(br.com.lablims.spring_lablims.util.WebUtils).getRequest().requestURI}"
+                  method="post">
+                <div class="card-body">
+                    <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
+                         class="alert alert-danger alert-dismissible fade show" role="alert"/>
+                    <div layout:fragment="addGlobalErrors"></div>
+                    <div class="main-content container-fluid" layout:fragment="addContent"></div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-success" data-toggle="modal"
+                            th:attr="data-target='#add'" th:text="#{add.btn}"
+                            sec:authorize="hasAnyAuthority('ADMIN','MASTERUSER','POWERUSER')"/>
+                    <span layout:fragment="addBack"></span>
+                </div>
+                <div th:replace="~{fragments/modal :: modalAdd}"></div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<span layout:fragment="script">
+    <script th:inline="javascript">
+        window.setTimeout(function () {
+            $('#errorAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
+    </script>
+</span>
+</html>

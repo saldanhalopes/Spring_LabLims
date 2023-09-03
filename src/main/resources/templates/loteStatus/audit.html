@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{loteStatus.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{loteStatus.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/loteStatuss}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{loteStatus.dataStatus.label}" scope="col" />
+    <th th:text="#{loteStatus.dataPrevisao.label}" scope="col" />
+    <th th:text="#{loteStatus.dataProgramado.label}" scope="col" />
+    <th th:text="#{loteStatus.dataConferencia1.label}" scope="col" />
+    <th th:text="#{loteStatus.dataConferencia2.label}" scope="col" />
+    <th th:text="#{loteStatus.obs.label}" scope="col" />
+    <th th:text="#{loteStatus.lote.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getDataStatus()}"></td>
+    <td th:text="${a.getEntidade().getDataPrevisao()}"></td>
+    <td th:text="${a.getEntidade().getDataProgramado()}"></td>
+    <td th:text="${a.getEntidade().getDataConferencia1()}"></td>
+    <td th:text="${a.getEntidade().getDataConferencia2()}"></td>
+    <td th:text="${a.getEntidade().getObs()}"></td>
+    <td th:text="${a.getEntidade().getLote()}"></td>
+</span>
+</html>
+

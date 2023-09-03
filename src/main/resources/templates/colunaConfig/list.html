@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{colunaConfig.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{colunaConfig.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/colunaConfigs/add}" th:text="#{colunaConfig.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${colunaConfigs.empty}" th:text="#{colunaConfig.list.empty}"/>
+    <div th:if="${!colunaConfigs.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{colunaConfig.tipo.label}" scope="col" />
+    <th th:text="#{colunaConfig.configuracao.label}" scope="col" />
+    <th th:text="#{colunaConfig.descricao.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="colunaConfig : ${colunaConfigs}">
+        <td th:text="${colunaConfig.id}" />
+        <td th:text="${colunaConfig.version}" />
+        <td th:text="${colunaConfig.tipo}" />
+        <td th:text="${colunaConfig.configuracao}" />
+        <td th:text="${colunaConfig.descricao}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/colunaConfigs/edit/{id}(id=${colunaConfig.id})}"
+                   th:text="#{colunaConfig.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${colunaConfig.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${colunaConfig.id}, link='colunaConfigs')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/colunaConfigs/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

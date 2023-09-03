@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{planoAnaliseReagente.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{planoAnaliseReagente.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/planoAnaliseReagentes/add}" th:text="#{planoAnaliseReagente.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='planoAnaliseReagente')}" />
+            <div th:if="${planoAnaliseReagentes.empty}" th:text="#{planoAnaliseReagente.list.empty}" />
+            <div th:if="${!planoAnaliseReagentes.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{planoAnaliseReagente.id.label}" scope="col" />
+                            <th th:text="#{planoAnaliseReagente.qtdUtilizada.label}" scope="col" />
+                            <th th:text="#{planoAnaliseReagente.obs.label}" scope="col" />
+                            <th th:text="#{planoAnaliseReagente.reagente.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="planoAnaliseReagente : ${planoAnaliseReagentes}">
+                            <td th:text="${planoAnaliseReagente.id}" />
+                            <td th:text="${planoAnaliseReagente.qtdUtilizada}" />
+                            <td th:text="${planoAnaliseReagente.obs}" />
+                            <td th:text="${planoAnaliseReagente.reagente}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/planoAnaliseReagentes/edit/{id}(id=${planoAnaliseReagente.id})}" th:text="#{planoAnaliseReagente.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/planoAnaliseReagentes/delete/{id}(id=${planoAnaliseReagente.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{planoAnaliseReagente.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{coluna.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{coluna.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/colunas}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{coluna.codigo.label}" scope="col" />
+    <th th:text="#{coluna.partNumber.label}" scope="col" />
+    <th th:text="#{coluna.obs.label}" scope="col" />
+    <th th:text="#{coluna.tipoColuna.label}" scope="col" />
+    <th th:text="#{coluna.fabricanteColuna.label}" scope="col" />
+    <th th:text="#{coluna.marcaColuna.label}" scope="col" />
+    <th th:text="#{coluna.faseColuna.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getCodigo()}"></td>
+    <td th:text="${a.getEntidade().getPartNumber()}"></td>
+    <td th:text="${a.getEntidade().getObs()}"></td>
+    <td th:text="${a.getEntidade().getTipoColuna()}"></td>
+    <td th:text="${a.getEntidade().getFabricanteColuna()}"></td>
+    <td th:text="${a.getEntidade().getMarcaColuna()}"></td>
+    <td th:text="${a.getEntidade().getFaseColuna()}"></td>
+</span>
+</html>
+

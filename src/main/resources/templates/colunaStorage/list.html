@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{colunaStorage.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{colunaStorage.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/colunaStorages/add}" th:text="#{colunaStorage.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${colunaStorages.empty}" th:text="#{colunaStorage.list.empty}"/>
+    <div th:if="${!colunaStorages.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{colunaStorage.codigo.label}" scope="col" />
+    <th th:text="#{colunaStorage.obs.label}" scope="col" />
+    <th th:text="#{colunaStorage.setor.label}" scope="col" />
+    <th th:text="#{colunaStorage.tipo.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="colunaStorage : ${colunaStorages}">
+        <td th:text="${colunaStorage.id}" />
+        <td th:text="${colunaStorage.version}"/>
+        <td th:text="${colunaStorage.codigo}" />
+        <td th:text="${colunaStorage.obs}" />
+        <td th:text="${colunaStorage.setor}" />
+        <td th:text="${colunaStorage.tipo}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/colunaStorages/edit/{id}(id=${colunaStorage.id})}"
+                   th:text="#{colunaStorage.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${colunaStorage.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${colunaStorage.id}, link='colunaStorages')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/colunaStorages/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

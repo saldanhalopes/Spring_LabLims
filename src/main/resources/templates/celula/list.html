@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{celula.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{celula.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/celulas/add}" th:text="#{celula.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${celulas.empty}" th:text="#{celula.list.empty}"/>
+    <div th:if="${!celulas.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{celula.celula.label}" scope="col" />
+    <th th:text="#{celula.descricao.label}" scope="col" />
+    <th th:text="#{celula.tipo.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="celula : ${celulas}">
+        <td th:text="${celula.id}" />
+        <td th:text="${celula.version}"/>
+        <td th:text="${celula.celula}" />
+        <td th:text="${celula.descricao}" />
+        <td th:text="${celula.tipo}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/celulas/edit/{id}(id=${celula.id})}"
+                   th:text="#{celula.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${celula.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${celula.id}, link='celulas')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/celulas/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

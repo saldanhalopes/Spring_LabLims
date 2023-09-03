@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{campanha.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{campanha.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/campanhas/add}" th:text="#{campanha.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${campanhas.empty}" th:text="#{campanha.list.empty}"/>
+    <div th:if="${!campanhas.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{campanha.previsaoInicio.label}" scope="col" />
+    <th th:text="#{campanha.previsaoFim.label}" scope="col" />
+    <th th:text="#{campanha.dataInicio.label}" scope="col" />
+    <th th:text="#{campanha.dataFim.label}" scope="col" />
+    <th th:text="#{campanha.status.label}" scope="col" />
+    <th th:text="#{campanha.obs.label}" scope="col" />
+    <th th:text="#{campanha.ordem.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="campanha : ${campanhas}">
+        <td th:text="${campanha.id}" />
+        <td th:text="${campanha.version}"/>
+        <td th:text="${campanha.previsaoInicio}" />
+        <td th:text="${campanha.previsaoFim}" />
+        <td th:text="${campanha.dataInicio}" />
+        <td th:text="${campanha.dataFim}" />
+        <td th:text="${campanha.status}" />
+        <td th:text="${campanha.obs}" />
+        <td th:text="${campanha.ordem}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/campanhas/edit/{id}(id=${campanha.id})}"
+                   th:text="#{campanha.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${campanha.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${campanha.id}, link='campanhas')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/campanhas/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

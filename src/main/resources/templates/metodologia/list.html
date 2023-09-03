@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{metodologia.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{metodologia.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/metodologias/add}" th:text="#{metodologia.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='metodologia')}" />
+            <div th:if="${metodologias.empty}" th:text="#{metodologia.list.empty}" />
+            <div th:if="${!metodologias.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{metodologia.id.label}" scope="col" />
+                            <th th:text="#{metodologia.codigo.label}" scope="col" />
+                            <th th:text="#{metodologia.metodo.label}" scope="col" />
+                            <th th:text="#{metodologia.obs.label}" scope="col" />
+                            <th th:text="#{metodologia.categoriaMetodologia.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="metodologia : ${metodologias}">
+                            <td th:text="${metodologia.id}" />
+                            <td th:text="${metodologia.codigo}" />
+                            <td th:text="${metodologia.metodo}" />
+                            <td th:text="${metodologia.obs}" />
+                            <td th:text="${metodologia.categoriaMetodologia}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/metodologias/edit/{id}(id=${metodologia.id})}" th:text="#{metodologia.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/metodologias/delete/{id}(id=${metodologia.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{metodologia.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

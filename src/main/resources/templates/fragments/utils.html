@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="pagination()" th:if="${paginationModel != null}" class="row mt-4">
+    <nav th:if="${paginationModel.steps.size > 3}" class="col-sm-8">
+        <ul class="pagination">
+            <li th:each="step : ${paginationModel.steps}"
+                th:classappend="${(step.active ? 'active' : '') + (step.disabled ? ' disabled' : '')}"
+                class="page-item">
+                <a th:href="${step.url}" th:text="${step.label}" class="page-link"/>
+            </li>
+        </ul>
+    </nav>
+    <div th:text="${paginationModel.elements}" th:classappend="${paginationModel.steps.size <= 3}? offset-sm-8"
+         class="col-sm-4 pt-sm-2 text-sm-right"/>
+</div>
+
+<form th:fragment="searchFilter(object)" th:if="${!__${object}__s.empty || filter != null}"
+      th:action="${T(br.com.lablims.spring_lablims.util.WebUtils).getRequest().requestURI}" method="get"
+      class="col-md-6 col-lg-4">
+    <div class="input-group mb-3">
+        <input type="text" name="filter" th:value="${filter == null ? '' : filter}"
+               th:placeholder="#{__${object}__.list.filter}" class="form-control">
+        <button type="submit" th:text="#{searchFilter.apply}" class="btn btn-secondary"/>
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{planoAnalise.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{planoAnalise.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/planoAnalises/add}" th:text="#{planoAnalise.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='planoAnalise')}" />
+            <div th:if="${planoAnalises.empty}" th:text="#{planoAnalise.list.empty}" />
+            <div th:if="${!planoAnalises.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{planoAnalise.id.label}" scope="col" />
+                            <th th:text="#{planoAnalise.descricao.label}" scope="col" />
+                            <th th:text="#{planoAnalise.leadTimeMin.label}" scope="col" />
+                            <th th:text="#{planoAnalise.leadTimeMedio.label}" scope="col" />
+                            <th th:text="#{planoAnalise.leadTimeMax.label}" scope="col" />
+                            <th th:text="#{planoAnalise.metodologiaVersao.label}" scope="col" />
+                            <th th:text="#{planoAnalise.analise.label}" scope="col" />
+                            <th th:text="#{planoAnalise.analiseTipo.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="planoAnalise : ${planoAnalises}">
+                            <td th:text="${planoAnalise.id}" />
+                            <td th:text="${planoAnalise.descricao}" />
+                            <td th:text="${planoAnalise.leadTimeMin}" />
+                            <td th:text="${planoAnalise.leadTimeMedio}" />
+                            <td th:text="${planoAnalise.leadTimeMax}" />
+                            <td th:text="${planoAnalise.metodologiaVersao}" />
+                            <td th:text="${planoAnalise.analise}" />
+                            <td th:text="${planoAnalise.analiseTipo}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/planoAnalises/edit/{id}(id=${planoAnalise.id})}" th:text="#{planoAnalise.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/planoAnalises/delete/{id}(id=${planoAnalise.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{planoAnalise.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

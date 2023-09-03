@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{colunaLog.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{colunaLog.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/colunaLogs}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{colunaLog.dataIncio.label}" scope="col" />
+    <th th:text="#{colunaLog.dataFim.label}" scope="col" />
+    <th th:text="#{colunaLog.sentido.label}" scope="col" />
+    <th th:text="#{colunaLog.precoluna.label}" scope="col" />
+    <th th:text="#{colunaLog.prefiltro.label}" scope="col" />
+    <th th:text="#{colunaLog.injecoes.label}" scope="col" />
+    <th th:text="#{colunaLog.colunaUtil.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getDataIncio()}"></td>
+    <td th:text="${a.getEntidade().getDataFim()}"></td>
+    <td th:text="${a.getEntidade().getSentido()}"></td>
+    <td th:text="${a.getEntidade().getPrecoluna()}"></td>
+    <td th:text="${a.getEntidade().getPrefiltro()}"></td>
+    <td th:text="${a.getEntidade().getInjecoes()}"></td>
+    <td th:text="${a.getEntidade().getColunaUtil()}"></td>
+</span>
+</html>
+

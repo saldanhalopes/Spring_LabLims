@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{equipamento.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{equipamento.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/equipamentos}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{equipamento.descricao.label}" scope="col" />
+    <th th:text="#{equipamento.tag.label}" scope="col" />
+    <th th:text="#{equipamento.fabricante.label}" scope="col" />
+    <th th:text="#{equipamento.marca.label}" scope="col" />
+    <th th:text="#{equipamento.modelo.label}" scope="col" />
+    <th th:text="#{equipamento.ultimaCalibracao.label}" scope="col" />
+    <th th:text="#{equipamento.proximaCalibracao.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getDescricao()}"></td>
+    <td th:text="${a.getEntidade().getTag()}"></td>
+    <td th:text="${a.getEntidade().getFabricante()}"></td>
+    <td th:text="${a.getEntidade().getMarca()}"></td>
+    <td th:text="${a.getEntidade().getModelo()}"></td>
+    <td th:text="${a.getEntidade().getUltimaCalibracao()}"></td>
+    <td th:text="${a.getEntidade().getProximaCalibracao()}"></td>
+</span>
+</html>
+

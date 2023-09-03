@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{colunaStorageTipo.edit.headline}"/>
+</head>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{colunaStorageTipo.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/colunaStorageTipos}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/colunaStorageTipos/audit/{id}(id=${colunaStorageTipo.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('colunaStorageTipo')}"/>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='colunaStorageTipo', field='tipo')}"/>
+</div>
+</html>

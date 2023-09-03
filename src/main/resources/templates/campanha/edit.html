@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{campanha.edit.headline}"/>
+</head>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{campanha.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/campanhas}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/campanhas/audit/{id}(id=${campanha.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('campanha')}"/>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='previsaoInicio', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='previsaoFim', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='dataInicio', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='dataFim', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='status')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='ordem')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='prioridade')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='setor', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='celula', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='lotes', type='multiselect')}" />
+</div>
+</html>

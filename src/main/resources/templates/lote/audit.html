@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{lote.list.headline} + ' ' + Auditoria"/>
+</head>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{lote.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/lotes}" th:text="#{edit.back}" class="btn btn-secondary"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{lote.lote.label}" scope="col" />
+    <th th:text="#{lote.qtdEstoque.label}" scope="col" />
+    <th th:text="#{lote.dataStatus.label}" scope="col" />
+    <th th:text="#{lote.dataEntrada.label}" scope="col" />
+    <th th:text="#{lote.dataInicioAnalise.label}" scope="col" />
+    <th th:text="#{lote.dataLiberacao.label}" scope="col" />
+    <th th:text="#{lote.dataEnvioGarantia.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getLote()}"></td>
+    <td th:text="${a.getEntidade().getQtdEstoque()}"></td>
+    <td th:text="${a.getEntidade().getDataStatus()}"></td>
+    <td th:text="${a.getEntidade().getDataEntrada()}"></td>
+    <td th:text="${a.getEntidade().getDataInicioAnalise()}"></td>
+    <td th:text="${a.getEntidade().getDataLiberacao()}"></td>
+    <td th:text="${a.getEntidade().getDataEnvioGarantia()}"></td>
+</span>
+</html>
+

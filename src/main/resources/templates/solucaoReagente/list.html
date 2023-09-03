@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{solucaoReagente.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{solucaoReagente.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/solucaoReagentes/add}" th:text="#{solucaoReagente.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='solucaoReagente')}" />
+            <div th:if="${solucaoReagentes.empty}" th:text="#{solucaoReagente.list.empty}" />
+            <div th:if="${!solucaoReagentes.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{solucaoReagente.id.label}" scope="col" />
+                            <th th:text="#{solucaoReagente.lote.label}" scope="col" />
+                            <th th:text="#{solucaoReagente.qtd.label}" scope="col" />
+                            <th th:text="#{solucaoReagente.fabricante.label}" scope="col" />
+                            <th th:text="#{solucaoReagente.validade.label}" scope="col" />
+                            <th th:text="#{solucaoReagente.solucaoRegistro.label}" scope="col" />
+                            <th th:text="#{solucaoReagente.reagente.label}" scope="col" />
+                            <th th:text="#{solucaoReagente.unidade.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="solucaoReagente : ${solucaoReagentes}">
+                            <td th:text="${solucaoReagente.id}" />
+                            <td th:text="${solucaoReagente.lote}" />
+                            <td th:text="${solucaoReagente.qtd}" />
+                            <td th:text="${solucaoReagente.fabricante}" />
+                            <td th:text="${solucaoReagente.validade}" />
+                            <td th:text="${solucaoReagente.solucaoRegistro}" />
+                            <td th:text="${solucaoReagente.reagente}" />
+                            <td th:text="${solucaoReagente.unidade}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/solucaoReagentes/edit/{id}(id=${solucaoReagente.id})}" th:text="#{solucaoReagente.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/solucaoReagentes/delete/{id}(id=${solucaoReagente.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{solucaoReagente.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

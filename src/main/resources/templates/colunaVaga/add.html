@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{colunaVaga.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{colunaVaga.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/colunaVagas}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('colunaVaga')}"/>
+</div>
+<div layout:fragment="addContent">
+    <<div th:replace="~{fragments/forms::inputRow(object='colunaVaga', field='vaga', type='number')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaVaga', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='colunaVaga', field='colunaStorage', type='select')}" />
+</div>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{arquivos.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{arquivos.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/arquivoss}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('arquivos')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='arquivos', field='nome')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='arquivos', field='tipo')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='arquivos', field='descricao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='arquivos', field='tamanho')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='arquivos', field='arquivo', type='number')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='arquivos', field='dataCriacao', inputClass='js-datetimepicker')}" />
+</div>
+</html>

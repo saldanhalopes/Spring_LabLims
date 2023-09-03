@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{solucaoReagente.edit.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{solucaoReagente.edit.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/solucaoReagentes}" th:text="#{solucaoReagente.edit.back}" class="btn btn-secondary" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('solucaoReagente')}" />
+            <form th:action="${T(br.com.lablims.spring_lablims.util.WebUtils).getRequest().requestURI}" method="post">
+                <div th:replace="~{fragments/forms::inputRow(object='solucaoReagente', field='lote')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='solucaoReagente', field='qtd')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='solucaoReagente', field='fabricante')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='solucaoReagente', field='validade', inputClass='js-datetimepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='solucaoReagente', field='solucaoRegistro', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='solucaoReagente', field='reagente', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='solucaoReagente', field='unidade', type='select')}" />
+                <input type="submit" th:value="#{solucaoReagente.edit.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

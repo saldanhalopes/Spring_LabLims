@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{usuario.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{usuario.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/usuarios/add}" th:text="#{usuario.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='usuario')}" />
+            <div th:if="${usuarios.empty}" th:text="#{usuario.list.empty}" />
+            <div th:if="${!usuarios.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{usuario.id.label}" scope="col" />
+                            <th th:text="#{usuario.cep.label}" scope="col" />
+                            <th th:text="#{usuario.changePass.label}" scope="col" />
+                            <th th:text="#{usuario.cidade.label}" scope="col" />
+                            <th th:text="#{usuario.cpf.label}" scope="col" />
+                            <th th:text="#{usuario.detalhes.label}" scope="col" />
+                            <th th:text="#{usuario.email.label}" scope="col" />
+                            <th th:text="#{usuario.endereco.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="usuario : ${usuarios}">
+                            <td th:text="${usuario.id}" />
+                            <td th:text="${usuario.cep}" />
+                            <td th:text="${usuario.changePass}" />
+                            <td th:text="${usuario.cidade}" />
+                            <td th:text="${usuario.cpf}" />
+                            <td th:text="${usuario.detalhes}" />
+                            <td th:text="${usuario.email}" />
+                            <td th:text="${usuario.endereco}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/usuarios/edit/{id}(id=${usuario.id})}" th:text="#{usuario.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/usuarios/delete/{id}(id=${usuario.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{usuario.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

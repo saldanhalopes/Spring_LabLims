@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        .dataTables_filter {
+            text-align: right;
+        }
+        .dataTables_filter input {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div layout:fragment="breadcrumb"></div>
+        </div>
+    </section>
+    <div class="container-fluid">
+        <div class="card card-info card-outline">
+            <div class="card-header">
+                <h5 class="card-title d-flex">
+                    <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
+                    <span layout:fragment="listHeadline"></span>
+                </h5>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item">
+                            <span layout:fragment="createNew"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
+                     class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+                <div th:if="${MSG_INFO != null}" th:text="${MSG_INFO}" id="infoAlert"
+                     class="alert alert-info alert-dismissible fade show" role="alert"></div>
+                <div th:if="${MSG_SUCCESS != null}" th:text="${MSG_SUCCESS}" id="succesAlert"
+                     class="alert alert-success alert-dismissible fade show" role="alert"></div>
+                <div layout:fragment="listErrors"></div>
+                <table class="table table-bordered table-striped" id="tableList">
+                    <thead>
+                    <tr>
+                        <th th:text="#{id.label}" scope="col"/>
+                        <th th:text="#{audit.version}" scope="col"/>
+                        <span layout:fragment="listHeader"></span>
+                        <th><!-- --></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <span layout:fragment="listContent"></span>
+                    </tbody>
+                </table>
+                <div th:replace="~{fragments/utils::pagination()}"></div>
+            </div>
+            <div class="card-footer">
+                <span layout:fragment="listAudit"></span>
+                <span layout:fragment="listBackMenu"></span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<span layout:fragment="script">
+    <!-- DataTables  & Plugins -->
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#tableList').DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": false,
+                "responsive": true,
+                "autoWidth": false,
+                "buttons": [
+                    {
+                        extend: 'copy',
+                        exportOptions: {columns: ':visible:not(:eq(-1))' }
+                    }, {
+                        extend: 'csv',
+                        exportOptions: {columns: ':visible:not(:eq(-1))' }
+                    }, {
+                        extend: 'excel',
+                        exportOptions: {columns: ':visible:not(:eq(-1))' }
+                    }, {
+                        extend: 'print',
+                        exportOptions: {columns: ':visible:not(:eq(-1))' }
+                    }]
+            }).buttons().container().appendTo('#tableList_wrapper .col-md-6:eq(0)');
+        });
+        window.setTimeout(function () {
+            $('#infoAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+            $('#errorAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+            $('#succesAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
+    </script>
+
+</span>
+</html>
+
+
+

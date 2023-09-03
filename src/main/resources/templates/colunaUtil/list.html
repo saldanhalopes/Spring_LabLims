@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{colunaUtil.list.headline}"/>
+</head>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{colunaUtil.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/colunaUtils/add}" th:text="#{colunaUtil.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${colunaUtils.empty}" th:text="#{colunaUtil.list.empty}"/>
+    <div th:if="${!colunaUtils.empty}" class="table-responsive"/>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{colunaUtil.codigoColuna.label}" scope="col" />
+    <th th:text="#{colunaUtil.serialNumber.label}" scope="col" />
+    <th th:text="#{colunaUtil.dataAtivacao.label}" scope="col" />
+    <th th:text="#{colunaUtil.dataVerificacao.label}" scope="col" />
+    <th th:text="#{colunaUtil.dataDescarte.label}" scope="col" />
+    <th th:text="#{colunaUtil.estoque.label}" scope="col" />
+    <th th:text="#{colunaUtil.obs.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="colunaUtil : ${colunaUtils}">
+        <td th:text="${colunaUtil.id}" />
+        <td th:text="${colunaUtil.version}" />
+        <td th:text="${colunaUtil.codigoColuna}" />
+        <td th:text="${colunaUtil.serialNumber}" />
+        <td th:text="${colunaUtil.dataAtivacao}" />
+        <td th:text="${colunaUtil.dataVerificacao}" />
+        <td th:text="${colunaUtil.dataDescarte}" />
+        <td th:text="${colunaUtil.estoque}" />
+        <td th:text="${colunaUtil.obs}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/colunaUtils/edit/{id}(id=${colunaUtil.id})}"
+                   th:text="#{colunaUtil.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#remover_'+${colunaUtil.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${colunaUtil.id}, link='colunaUtils')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/colunaUtils/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

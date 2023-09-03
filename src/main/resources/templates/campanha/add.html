@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{campanha.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{campanha.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/campanhas}" th:text="#{add.back}" class="btn btn-secondary"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('campanha')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='previsaoInicio', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='previsaoFim', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='dataInicio', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='dataFim', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='status')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='ordem')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='prioridade')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='setor', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='celula', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='campanha', field='lotes', type='multiselect')}" />
+</div>
+</html>
