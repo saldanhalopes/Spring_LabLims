@@ -27,51 +27,8 @@
     <div class="container-fluid">
         <section class="wrapper">
             <div class="row">
-                <div class="col-lg-4">
-                    <section class="panel">
-                        <div class="panel-body">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title"><h3><b><label th:text="#{analiseTipo.list.headline}"/></b>
-                                    </h3></h5>
-                                    <a th:href="@{/analiseTipos}" th:text="#{analiseTipo.list.headline}"
-                                       class="btn btn-primary"/>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-lg-4">
-                    <section class="panel">
-                        <div class="panel-body">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title"><h3><b><label th:text="#{analiseStatus.list.headline}"/></b>
-                                    </h3></h5>
-                                    <a th:href="@{/analiseStatuss}" th:text="#{analiseStatus.list.headline}"
-                                       class="btn btn-primary"/>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-lg-4">
-                    <section class="panel">
-                        <div class="panel-body">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title"><h3><b><label
-                                            th:text="#{analiseProdutividade.list.headline}"/></b></h3></h5>
-                                    <a th:href="@{/analiseProdutividades}"
-                                       th:text="#{analiseProdutividade.list.headline}" class="btn btn-primary"/>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
+                <!--amostraTipo-->
+                <div class="col-lg-3">
                     <section class="panel">
                         <div class="panel-body">
                             <div class="card">
@@ -85,21 +42,8 @@
                         </div>
                     </section>
                 </div>
-                <div class="col-lg-4">
-                    <section class="panel">
-                        <div class="panel-body">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title"><h3><b><label
-                                            th:text="#{categoriaMetodologia.list.headline}"/></b></h3></h5>
-                                    <a th:href="@{/categoriaMetodologias}"
-                                       th:text="#{categoriaMetodologia.list.headline}" class="btn btn-primary"/>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-lg-4">
+                <!--analise-->
+                <div class="col-lg-3">
                     <section class="panel">
                         <div class="panel-body">
                             <div class="card">
@@ -113,30 +57,341 @@
                         </div>
                     </section>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
+                <!--analiseProdutividade-->
+                <div class="col-lg-3">
                     <section class="panel">
                         <div class="panel-body">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title"><h3><b>States</b></h3></h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional
-                                        content.</p>
-                                    <a href="/parameters/states" class="btn btn-primary">Manage States</a>
+                                    <h5 class="card-title"><h3><b><label
+                                            th:text="#{analiseProdutividade.list.headline}"/></b></h3></h5>
+                                    <a th:href="@{/analiseProdutividades}"
+                                       th:text="#{analiseProdutividade.list.headline}" class="btn btn-primary"/>
                                 </div>
                             </div>
                         </div>
                     </section>
                 </div>
-                <div class="col-lg-4">
+                <!--analiseStatus-->
+                <div class="col-lg-3">
                     <section class="panel">
                         <div class="panel-body">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title"><h3><b>Metodos</b></h3></h5>
-                                    <p class="card-text">Adicionar metodos</p>
-                                    <a href="/parameters/metodos" class="btn btn-primary">Metodos</a>
+                                    <h5 class="card-title"><h3><b><label th:text="#{analiseStatus.list.headline}"/></b>
+                                    </h3></h5>
+                                    <a th:href="@{/analiseStatuss}" th:text="#{analiseStatus.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <!--analiseTipo-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{analiseTipo.list.headline}"/></b>
+                                    </h3></h5>
+                                    <a th:href="@{/analiseTipos}" th:text="#{analiseTipo.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--categoriaMetodologia-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label
+                                            th:text="#{categoriaMetodologia.list.headline}"/></b></h3></h5>
+                                    <a th:href="@{/categoriaMetodologias}"
+                                       th:text="#{categoriaMetodologia.list.headline}" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--celula-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{celula.list.headline}"/></b>
+                                    </h3></h5>
+                                    <a th:href="@{/celulas}" th:text="#{celula.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--celulaTipo-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{celulaTipo.list.headline}"/></b>
+                                    </h3></h5>
+                                    <a th:href="@{/celulaTipos}" th:text="#{celulaTipo.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <!--departamento-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{departamento.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/departamentos}" th:text="#{departamento.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--equipamento-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{equipamento.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/equipamentos}" th:text="#{equipamento.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--equipamentoAtividade-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{equipamentoAtividade.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/equipamentoAtividades}" th:text="#{equipamentoAtividade.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--equipamentoTipo-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{equipamentoTipo.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/equipamentoTipos}" th:text="#{equipamentoTipo.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <!--escalaMedida-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{escalaMedida.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/escalaMedidas}" th:text="#{escalaMedida.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--loteStatus-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{loteStatus.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/loteStatuss}" th:text="#{loteStatus.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--material-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{material.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/materials}" th:text="#{material.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--materialTipo-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{materialTipo.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/materialTipos}" th:text="#{materialTipo.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <!--metodologia-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{metodologia.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/metodologias}" th:text="#{metodologia.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--metodologiaStatus-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{metodologiaStatus.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/metodologiaStatuss}" th:text="#{metodologiaStatus.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--metodologiaVersao-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{metodologiaVersao.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/metodologiaVersaos}" th:text="#{metodologiaVersao.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--reagente-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{reagente.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/reagentes}" th:text="#{reagente.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <!--setor-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{setor.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/setors}" th:text="#{setor.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--solucaoTipo-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{solucaoTipo.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/solucaoTipos}" th:text="#{solucaoTipo.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--turno-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{turno.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/turnos}" th:text="#{turno.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--unidadeMedida-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{unidadeMedida.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/unidadeMedidas}" th:text="#{unidadeMedida.list.headline}"
+                                       class="btn btn-primary"/>
                                 </div>
                             </div>
                         </div>

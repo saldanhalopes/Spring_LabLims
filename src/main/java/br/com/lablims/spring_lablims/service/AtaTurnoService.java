@@ -1,10 +1,6 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.AtaTurno;
-import br.com.lablims.spring_lablims.domain.Equipamento;
-import br.com.lablims.spring_lablims.domain.Setor;
-import br.com.lablims.spring_lablims.domain.Turno;
-import br.com.lablims.spring_lablims.domain.Usuario;
+import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.AtaTurnoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AtaTurnoRepository;
@@ -13,6 +9,7 @@ import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.repos.TurnoRepository;
 import br.com.lablims.spring_lablims.repos.UsuarioRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
+import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
@@ -124,5 +121,6 @@ public class AtaTurnoService {
         ataTurno.setEquipamentos(equipamentos.stream().collect(Collectors.toSet()));
         return ataTurno;
     }
+
 
 }

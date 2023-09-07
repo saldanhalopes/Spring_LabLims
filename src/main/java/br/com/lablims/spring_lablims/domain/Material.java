@@ -39,6 +39,6 @@ public class Material {
     private MaterialTipo tipoMaterial;
 
     @ManyToMany(mappedBy = "material")
-    private Set<MetodologiaVesao> metodologiaVersao;
+    private Set<MetodologiaVersao> metodologiaVersao;
 
 }

@@ -3,13 +3,13 @@ package br.com.lablims.spring_lablims.service;
 import br.com.lablims.spring_lablims.domain.Lote;
 import br.com.lablims.spring_lablims.domain.Material;
 import br.com.lablims.spring_lablims.domain.MaterialTipo;
-import br.com.lablims.spring_lablims.domain.MetodologiaVesao;
+import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.model.MaterialDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.LoteRepository;
 import br.com.lablims.spring_lablims.repos.MaterialRepository;
 import br.com.lablims.spring_lablims.repos.MaterialTipoRepository;
-import br.com.lablims.spring_lablims.repos.MetodologiaVesaoRepository;
+import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.transaction.Transactional;
@@ -24,7 +24,7 @@ public class MaterialService {
 
     private final MaterialRepository materialRepository;
     private final MaterialTipoRepository materialTipoRepository;
-    private final MetodologiaVesaoRepository metodologiaVesaoRepository;
+    private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final LoteRepository loteRepository;
 
     public Material findById(Integer id){
@@ -33,11 +33,11 @@ public class MaterialService {
 
     public MaterialService(final MaterialRepository materialRepository,
             final MaterialTipoRepository materialTipoRepository,
-            final MetodologiaVesaoRepository metodologiaVesaoRepository,
+            final MetodologiaVersaoRepository metodologiaVersaoRepository,
             final LoteRepository loteRepository) {
         this.materialRepository = materialRepository;
         this.materialTipoRepository = materialTipoRepository;
-        this.metodologiaVesaoRepository = metodologiaVesaoRepository;
+        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
         this.loteRepository = loteRepository;
     }
 
@@ -84,8 +84,8 @@ public class MaterialService {
         final Material material = materialRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         // remove many-to-many relations at owning side
-        metodologiaVesaoRepository.findAllByMaterial(material)
-                .forEach(metodologiaVesao -> metodologiaVesao.getMaterial().remove(material));
+        metodologiaVersaoRepository.findAllByMaterial(material)
+                .forEach(metodologiaVersao -> metodologiaVersao.getMaterial().remove(material));
         materialRepository.delete(material);
     }
 
@@ -114,9 +114,9 @@ public class MaterialService {
     public String getReferencedWarning(final Integer id) {
         final Material material = materialRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final MetodologiaVesao materialMetodologiaVesao = metodologiaVesaoRepository.findFirstByMaterial(material);
-        if (materialMetodologiaVesao != null) {
-            return WebUtils.getMessage("material.metodologiaVesao.material.referenced", materialMetodologiaVesao.getId());
+        final MetodologiaVersao materialMetodologiaVersao = metodologiaVersaoRepository.findFirstByMaterial(material);
+        if (materialMetodologiaVersao != null) {
+            return WebUtils.getMessage("material.metodologiaVersao.material.referenced", materialMetodologiaVersao.getId());
         }
         final Lote materialLote = loteRepository.findFirstByMaterial(material);
         if (materialLote != null) {

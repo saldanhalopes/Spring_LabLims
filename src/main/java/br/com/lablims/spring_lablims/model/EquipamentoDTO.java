@@ -1,10 +1,11 @@
 package br.com.lablims.spring_lablims.model;
 
 import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -28,10 +29,10 @@ public class EquipamentoDTO {
     @Size(max = 255)
     private String modelo;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime ultimaCalibracao;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime proximaCalibracao;
 
     private Boolean ativo;
@@ -48,11 +49,11 @@ public class EquipamentoDTO {
 
     private Integer setor;
 
-    private Integer certificado;
+    private byte[] certificado;
 
-    private Integer manual;
+    private byte[] manual;
 
-    private Integer procedimento;
+    private byte[] procedimento;
 
     private Integer escala;
 

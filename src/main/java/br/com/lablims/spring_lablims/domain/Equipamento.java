@@ -1,12 +1,13 @@
 package br.com.lablims.spring_lablims.domain;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -52,7 +53,7 @@ public class Equipamento {
 
     @NotAudited
     @Lob
-    @Column(name = "imagem")
+    @Column()
     @Basic(fetch = FetchType.LAZY)
     private byte[] imagem;
 
@@ -67,17 +68,23 @@ public class Equipamento {
     @JoinColumn(name = "setor_id")
     private Setor setor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "certificado_id")
-    private Arquivos certificado;
+    @NotAudited
+    @Lob
+    @Column()
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] certificado;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manual_id")
-    private Arquivos manual;
+    @NotAudited
+    @Lob
+    @Column()
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] manual;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "procedimento_id")
-    private Arquivos procedimento;
+    @NotAudited
+    @Lob
+    @Column()
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] procedimento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "escala_id")

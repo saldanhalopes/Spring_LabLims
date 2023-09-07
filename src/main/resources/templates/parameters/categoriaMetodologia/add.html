@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{categoriaMetodologia.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/categoriaMetodologias}" th:text="#{categoriaMetodologia.categoriaMetodologia.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{categoriaMetodologia.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{categoriaMetodologia.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/categoriaMetodologias}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('categoriaMetodologia')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='categoriaMetodologia', field='categoria')}" />
+</div>
+</html>

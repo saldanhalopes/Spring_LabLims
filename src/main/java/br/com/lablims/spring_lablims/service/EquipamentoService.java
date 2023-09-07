@@ -27,6 +27,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 
 @Service
 @Transactional
@@ -35,28 +37,27 @@ public class EquipamentoService {
     private final EquipamentoRepository equipamentoRepository;
     private final EquipamentoTipoRepository equipamentoTipoRepository;
     private final SetorRepository setorRepository;
-    private final ArquivosRepository arquivosRepository;
     private final EscalaMedidaRepository escalaMedidaRepository;
     private final CelulaRepository celulaRepository;
     private final AtaTurnoRepository ataTurnoRepository;
     private final ColunaLogRepository colunaLogRepository;
     private final EquipamentoLogRepository equipamentoLogRepository;
 
-    public Equipamento findById(Integer id){
+    public Equipamento findById(Integer id) {
         return equipamentoRepository.findById(id).orElse(null);
     }
 
     public EquipamentoService(final EquipamentoRepository equipamentoRepository,
-            final EquipamentoTipoRepository equipamentoTipoRepository,
-            final SetorRepository setorRepository, final ArquivosRepository arquivosRepository,
-            final EscalaMedidaRepository escalaMedidaRepository,
-            final CelulaRepository celulaRepository, final AtaTurnoRepository ataTurnoRepository,
-            final ColunaLogRepository colunaLogRepository,
-            final EquipamentoLogRepository equipamentoLogRepository) {
+                              final EquipamentoTipoRepository equipamentoTipoRepository,
+                              final SetorRepository setorRepository,
+                              final EscalaMedidaRepository escalaMedidaRepository,
+                              final CelulaRepository celulaRepository,
+                              final AtaTurnoRepository ataTurnoRepository,
+                              final ColunaLogRepository colunaLogRepository,
+                              final EquipamentoLogRepository equipamentoLogRepository) {
         this.equipamentoRepository = equipamentoRepository;
         this.equipamentoTipoRepository = equipamentoTipoRepository;
         this.setorRepository = setorRepository;
-        this.arquivosRepository = arquivosRepository;
         this.escalaMedidaRepository = escalaMedidaRepository;
         this.celulaRepository = celulaRepository;
         this.ataTurnoRepository = ataTurnoRepository;
@@ -90,6 +91,10 @@ public class EquipamentoService {
                 .orElseThrow(NotFoundException::new);
     }
 
+    public Integer save(final Equipamento equipamento) {
+        return equipamentoRepository.save(equipamento).getId();
+    }
+
     public Integer create(final EquipamentoDTO equipamentoDTO) {
         final Equipamento equipamento = new Equipamento();
         mapToEntity(equipamentoDTO, equipamento);
@@ -115,7 +120,7 @@ public class EquipamentoService {
     }
 
     private EquipamentoDTO mapToDTO(final Equipamento equipamento,
-            final EquipamentoDTO equipamentoDTO) {
+                                    final EquipamentoDTO equipamentoDTO) {
         equipamentoDTO.setId(equipamento.getId());
         equipamentoDTO.setDescricao(equipamento.getDescricao());
         equipamentoDTO.setTag(equipamento.getTag());
@@ -127,19 +132,19 @@ public class EquipamentoService {
         equipamentoDTO.setAtivo(equipamento.getAtivo());
         equipamentoDTO.setObs(equipamento.getObs());
         equipamentoDTO.setImagem(equipamento.getImagem());
+        equipamentoDTO.setCertificado(equipamento.getCertificado());
+        equipamentoDTO.setManual(equipamento.getManual());
+        equipamentoDTO.setProcedimento(equipamento.getProcedimento());
         equipamentoDTO.setSerialNumber(equipamento.getSerialNumber());
         equipamentoDTO.setTipo(equipamento.getTipo() == null ? null : equipamento.getTipo().getId());
         equipamentoDTO.setSetor(equipamento.getSetor() == null ? null : equipamento.getSetor().getId());
-        equipamentoDTO.setCertificado(equipamento.getCertificado() == null ? null : equipamento.getCertificado().getId());
-        equipamentoDTO.setManual(equipamento.getManual() == null ? null : equipamento.getManual().getId());
-        equipamentoDTO.setProcedimento(equipamento.getProcedimento() == null ? null : equipamento.getProcedimento().getId());
         equipamentoDTO.setEscala(equipamento.getEscala() == null ? null : equipamento.getEscala().getId());
         equipamentoDTO.setVersion(equipamento.getVersion());
         return equipamentoDTO;
     }
 
     private Equipamento mapToEntity(final EquipamentoDTO equipamentoDTO,
-            final Equipamento equipamento) {
+                                    final Equipamento equipamento) {
         equipamento.setDescricao(equipamentoDTO.getDescricao());
         equipamento.setTag(equipamentoDTO.getTag());
         equipamento.setFabricante(equipamentoDTO.getFabricante());
@@ -150,6 +155,9 @@ public class EquipamentoService {
         equipamento.setAtivo(equipamentoDTO.getAtivo());
         equipamento.setObs(equipamentoDTO.getObs());
         equipamento.setImagem(equipamentoDTO.getImagem());
+        equipamento.setCertificado(equipamentoDTO.getCertificado());
+        equipamento.setManual(equipamentoDTO.getManual());
+        equipamento.setProcedimento(equipamentoDTO.getProcedimento());
         equipamento.setSerialNumber(equipamentoDTO.getSerialNumber());
         final EquipamentoTipo tipo = equipamentoDTO.getTipo() == null ? null : equipamentoTipoRepository.findById(equipamentoDTO.getTipo())
                 .orElseThrow(() -> new NotFoundException("tipo not found"));
@@ -157,15 +165,6 @@ public class EquipamentoService {
         final Setor setor = equipamentoDTO.getSetor() == null ? null : setorRepository.findById(equipamentoDTO.getSetor())
                 .orElseThrow(() -> new NotFoundException("setor not found"));
         equipamento.setSetor(setor);
-        final Arquivos certificado = equipamentoDTO.getCertificado() == null ? null : arquivosRepository.findById(equipamentoDTO.getCertificado())
-                .orElseThrow(() -> new NotFoundException("certificado not found"));
-        equipamento.setCertificado(certificado);
-        final Arquivos manual = equipamentoDTO.getManual() == null ? null : arquivosRepository.findById(equipamentoDTO.getManual())
-                .orElseThrow(() -> new NotFoundException("manual not found"));
-        equipamento.setManual(manual);
-        final Arquivos procedimento = equipamentoDTO.getProcedimento() == null ? null : arquivosRepository.findById(equipamentoDTO.getProcedimento())
-                .orElseThrow(() -> new NotFoundException("procedimento not found"));
-        equipamento.setProcedimento(procedimento);
         final EscalaMedida escala = equipamentoDTO.getEscala() == null ? null : escalaMedidaRepository.findById(equipamentoDTO.getEscala())
                 .orElseThrow(() -> new NotFoundException("escala not found"));
         equipamento.setEscala(escala);

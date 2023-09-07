@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{reagente.edit.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/reagentes}" th:text="#{reagente.reagente.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{reagente.edit.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{reagente.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/reagentes}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/reagentes/audit/{id}(id=${reagente.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('reagente')}"/>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='codigo')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='reagente')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='casNumber')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='qtdEstoqueMin', type='number')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='qtdEstoqueMax', type='number')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='compraUnica', type='checkbox')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='enderecamento')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='numeroIdentificacao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='armazenamento')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='grau')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='pureza')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='classe')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='controlado')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='saude', type='number')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='inflamabilidade', type='number')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='reatividade', type='number')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='especifico')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='unidade', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='reagente', field='fds', type='select')}" />
+</div>
+</html>

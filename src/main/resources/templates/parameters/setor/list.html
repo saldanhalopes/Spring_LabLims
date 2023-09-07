@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{setor.list.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item" th:text="#{setor.setor.label}"></li>
+    </ol>
+</div>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{setor.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/setors/add}" th:text="#{setor.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${setors.empty}" th:text="#{setor.list.empty}"></div>
+    <div th:if="${!setors.empty}" class="table-responsive"></div>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{setor.setor.label}" scope="col" />
+    <th th:text="#{setor.siglaSetor.label}" scope="col" />
+    <th th:text="#{setor.descricao.label}" scope="col" />
+    <th th:text="#{setor.tipo.label}" scope="col" />
+    <th th:text="#{setor.departamento.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="setor : ${setors}">
+        <td th:text="${setor.id}" />
+        <td th:text="${setor.version}"/>
+        <td th:text="${setor.setor}" />
+        <td th:text="${setor.siglaSetor}" />
+        <td th:text="${setor.descricao}" />
+        <td th:text="${setor.tipo}" />
+        <td th:text="${setor.departamento}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/setors/edit/{id}(id=${setor.id})}"
+                   th:text="#{setor.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        th:attr="data-target='#remover_'+${setor.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${setor.id}, link='setors')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/setors/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>
+
+

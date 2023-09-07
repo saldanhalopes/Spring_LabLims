@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{celula.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/celulas}" th:text="#{celula.celula.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{celula.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{celula.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/celulas}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('celula')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='celula')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='descricao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='equipamento', type='multiselect')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='usuario', type='multiselect')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='celula', field='tipo', type='select')}" />
+</div>
+</html>

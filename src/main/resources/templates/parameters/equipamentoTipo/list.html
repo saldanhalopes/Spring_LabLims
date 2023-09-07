@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{equipamentoTipo.list.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item" th:text="#{equipamentoTipo.equipamentoTipo.label}"></li>
+    </ol>
+</div>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{equipamentoTipo.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/equipamentoTipos/add}" th:text="#{equipamentoTipo.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${equipamentoTipos.empty}" th:text="#{equipamentoTipo.list.empty}"></div>
+    <div th:if="${!equipamentoTipos.empty}" class="table-responsive"></div>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{equipamentoTipo.tipo.label}" scope="col"/>
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="equipamentoTipo : ${equipamentoTipos}">
+        <td th:text="${equipamentoTipo.id}"/>
+        <td th:text="${equipamentoTipo.version}"/>
+        <td th:text="${equipamentoTipo.tipo}"/>
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/equipamentoTipos/edit/{id}(id=${equipamentoTipo.id})}"
+                   th:text="#{equipamentoTipo.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        th:attr="data-target='#remover_'+${equipamentoTipo.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${equipamentoTipo.id}, link='equipamentoTipos')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/equipamentoTipos/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

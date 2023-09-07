@@ -5,7 +5,7 @@ import br.com.lablims.spring_lablims.domain.Arquivos;
 import br.com.lablims.spring_lablims.domain.Coluna;
 import br.com.lablims.spring_lablims.domain.ColunaUtil;
 import br.com.lablims.spring_lablims.domain.ColunaVaga;
-import br.com.lablims.spring_lablims.domain.MetodologiaVesao;
+import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.domain.Setor;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ public interface ColunaUtilRepository extends JpaRepository<ColunaUtil, Integer>
 
     ColunaUtil findFirstBySetor(Setor setor);
 
-    ColunaUtil findFirstByMetodologiaVersao(MetodologiaVesao metodologiaVesao);
+    ColunaUtil findFirstByMetodologiaVersao(MetodologiaVersao metodologiaVersao);
 
     List<ColunaUtil> findAllByAnexos(Arquivos arquivos);
 

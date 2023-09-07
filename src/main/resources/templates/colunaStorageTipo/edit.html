@@ -8,7 +8,7 @@
     <h1 th:text="#{colunaStorageTipo.edit.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="editBack">
-    <a th:href="@{/colunaStorageTipos}" th:text="#{edit.back}" class="btn btn-secondary"/>
+    <a th:href="@{/colunaStorageTipos}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
 <span layout:fragment="editAudit">
     <a th:href="@{/colunaStorageTipos/audit/{id}(id=${colunaStorageTipo.id})}" th:text="#{audit.list}"

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{setor.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/setors}" th:text="#{setor.setor.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{setor.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{setor.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/setors}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('setor')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='setor', field='setor')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='setor', field='siglaSetor')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='setor', field='descricao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='setor', field='tipo')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='setor', field='departamento', type='select')}" />
+</div>
+</html>

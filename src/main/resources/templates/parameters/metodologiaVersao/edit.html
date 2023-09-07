@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{metodologiaVersao.edit.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/metodologiaVersaos}" th:text="#{metodologiaVersao.metodologiaVersao.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{metodologiaVersao.edit.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{metodologiaVersao.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/metodologiaVersaos}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/metodologiaVersaos/audit/{id}(id=${metodologiaVersao.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('metodologiaVersao')}"/>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='dataRevisao', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='dataProximaRevisao', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='metodologia', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='anexo', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='material', type='multiselect')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='status', type='select')}" />
+</div>
+</html>

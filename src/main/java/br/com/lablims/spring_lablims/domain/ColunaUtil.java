@@ -54,7 +54,7 @@ public class ColunaUtil {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "metodologia_versao_id")
-    private MetodologiaVesao metodologiaVersao;
+    private MetodologiaVersao metodologiaVersao;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "analise_id")

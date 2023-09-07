@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{metodologiaVersao.list.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item" th:text="#{metodologiaVersao.metodologiaVersao.label}"></li>
+    </ol>
+</div>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{metodologiaVersao.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/metodologiaVersaos/add}" th:text="#{metodologiaVersao.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${metodologiaVersaos.empty}" th:text="#{metodologiaVersao.list.empty}"></div>
+    <div th:if="${!metodologiaVersaos.empty}" class="table-responsive"></div>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{metodologiaVersao.dataRevisao.label}" scope="col" />
+    <th th:text="#{metodologiaVersao.dataProximaRevisao.label}" scope="col" />
+    <th th:text="#{metodologiaVersao.obs.label}" scope="col" />
+    <th th:text="#{metodologiaVersao.metodologia.label}" scope="col" />
+    <th th:text="#{metodologiaVersao.anexo.label}" scope="col" />
+    <th th:text="#{metodologiaVersao.status.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="metodologiaVersao : ${metodologiaVersaos}">
+        <td th:text="${metodologiaVersao.id}"/>
+        <td th:text="${metodologiaVersao.version}"/>
+        <td th:text="${metodologiaVersao.dataRevisao}" />
+        <td th:text="${metodologiaVersao.dataProximaRevisao}" />
+        <td th:text="${metodologiaVersao.obs}" />
+        <td th:text="${metodologiaVersao.metodologia}" />
+        <td th:text="${metodologiaVersao.anexo}" />
+        <td th:text="${metodologiaVersao.status}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/metodologiaVersaos/edit/{id}(id=${metodologiaVersao.id})}"
+                   th:text="#{metodologiaVersao.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        th:attr="data-target='#remover_'+${metodologiaVersao.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${metodologiaVersao.id}, link='metodologiaVersaos')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/metodologiaVersaos/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>
+
+

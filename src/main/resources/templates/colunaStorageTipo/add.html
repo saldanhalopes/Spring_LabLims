@@ -8,7 +8,7 @@
     <h1 th:text="#{colunaStorageTipo.add.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="addBack">
-    <a th:href="@{/colunaStorageTipos}" th:text="#{add.back}" class="btn btn-secondary"/>
+    <a th:href="@{/colunaStorageTipos}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="addGlobalErrors">
     <div th:replace="~{fragments/forms::globalErrors('colunaStorageTipo')}"/>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{reagente.list.headline} + ' ' + Auditoria"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/reagentes}" th:text="#{reagente.reagente.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{reagente.list.headline}+ ' ' + Auditoria"></li>
+    </ol>
+</div>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{reagente.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/reagentes}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="auditTHeads">
+    <th th:text="#{reagente.codigo.label}" scope="col" />
+    <th th:text="#{reagente.reagente.label}" scope="col" />
+    <th th:text="#{reagente.casNumber.label}" scope="col" />
+    <th th:text="#{reagente.qtdEstoqueMin.label}" scope="col" />
+    <th th:text="#{reagente.qtdEstoqueMax.label}" scope="col" />
+    <th th:text="#{reagente.compraUnica.label}" scope="col" />
+    <th th:text="#{reagente.enderecamento.label}" scope="col" />
+</span>
+<span layout:fragment="auditTBody">
+    <td th:text="${a.getEntidade().getCodigo()}"></td>
+    <td th:text="${a.getEntidade().getReagente()}"></td>
+    <td th:text="${a.getEntidade().getCasNumber()}"></td>
+    <td th:text="${a.getEntidade().getQtdEstoqueMin()}"></td>
+    <td th:text="${a.getEntidade().getQtdEstoqueMax()}"></td>
+    <td th:text="${a.getEntidade().getCompraUnica()}"></td>
+    <td th:text="${a.getEntidade().getEnderecamento()}"></td>
+</span>
+</html>
+

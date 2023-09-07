@@ -12,7 +12,7 @@
        class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
 </span>
 <span layout:fragment="listBackMenu">
-    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary"/>
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="listErrors">
     <div th:if="${equipamentoLogs.empty}" th:text="#{equipamentoLog.list.empty}"/>
@@ -43,8 +43,8 @@
                 <a th:href="@{/equipamentoLogs/edit/{id}(id=${equipamentoLog.id})}"
                    th:text="#{equipamentoLog.list.edit}" class="btn btn-sm btn-info"
                    sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                        th:attr="data-bs-target='#remover_'+${equipamentoLog.id}" th:text="#{delete.btn}"
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        th:attr="data-target='#remover_'+${equipamentoLog.id}" th:text="#{delete.btn}"
                         sec:authorize="hasAnyAuthority('ADMIN')"/>
                 <div th:replace="~{fragments/modal :: modalDelete(field=${equipamentoLog.id}, link='equipamentoLogs')}"></div>
             </div>

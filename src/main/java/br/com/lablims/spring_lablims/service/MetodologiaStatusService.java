@@ -1,11 +1,11 @@
 package br.com.lablims.spring_lablims.service;
 
 import br.com.lablims.spring_lablims.domain.MetodologiaStatus;
-import br.com.lablims.spring_lablims.domain.MetodologiaVesao;
+import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.model.MetodologiaStatusDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.MetodologiaStatusRepository;
-import br.com.lablims.spring_lablims.repos.MetodologiaVesaoRepository;
+import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import org.springframework.data.domain.Page;
@@ -17,16 +17,16 @@ import org.springframework.stereotype.Service;
 public class MetodologiaStatusService {
 
     private final MetodologiaStatusRepository metodologiaStatusRepository;
-    private final MetodologiaVesaoRepository metodologiaVesaoRepository;
+    private final MetodologiaVersaoRepository metodologiaVersaoRepository;
 
     public MetodologiaStatus findById(Integer id){
         return metodologiaStatusRepository.findById(id).orElse(null);
     }
 
     public MetodologiaStatusService(final MetodologiaStatusRepository metodologiaStatusRepository,
-            final MetodologiaVesaoRepository metodologiaVesaoRepository) {
+            final MetodologiaVersaoRepository metodologiaVersaoRepository) {
         this.metodologiaStatusRepository = metodologiaStatusRepository;
-        this.metodologiaVesaoRepository = metodologiaVesaoRepository;
+        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
     }
 
     public SimplePage<MetodologiaStatusDTO> findAll(final String filter, final Pageable pageable) {
@@ -89,9 +89,9 @@ public class MetodologiaStatusService {
     public String getReferencedWarning(final Integer id) {
         final MetodologiaStatus metodologiaStatus = metodologiaStatusRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final MetodologiaVesao statusMetodologiaVesao = metodologiaVesaoRepository.findFirstByStatus(metodologiaStatus);
-        if (statusMetodologiaVesao != null) {
-            return WebUtils.getMessage("metodologiaStatus.metodologiaVesao.status.referenced", statusMetodologiaVesao.getId());
+        final MetodologiaVersao statusMetodologiaVersao = metodologiaVersaoRepository.findFirstByStatus(metodologiaStatus);
+        if (statusMetodologiaVersao != null) {
+            return WebUtils.getMessage("metodologiaStatus.metodologiaVersao.status.referenced", statusMetodologiaVersao.getId());
         }
         return null;
     }

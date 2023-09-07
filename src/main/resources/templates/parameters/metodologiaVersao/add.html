@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{metodologiaVersao.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/metodologiaVersaos}" th:text="#{metodologiaVersao.metodologiaVersao.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{metodologiaVersao.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{metodologiaVersao.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/metodologiaVersaos}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('metodologiaVersao')}"/>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='dataRevisao', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='dataProximaRevisao', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='metodologia', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='anexo', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='material', type='multiselect')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologiaVersao', field='status', type='select')}" />
+</div>
+</html>

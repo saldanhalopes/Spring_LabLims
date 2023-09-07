@@ -2,12 +2,12 @@ package br.com.lablims.spring_lablims.service;
 
 import br.com.lablims.spring_lablims.domain.CategoriaMetodologia;
 import br.com.lablims.spring_lablims.domain.Metodologia;
-import br.com.lablims.spring_lablims.domain.MetodologiaVesao;
+import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.model.MetodologiaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.CategoriaMetodologiaRepository;
 import br.com.lablims.spring_lablims.repos.MetodologiaRepository;
-import br.com.lablims.spring_lablims.repos.MetodologiaVesaoRepository;
+import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ public class MetodologiaService {
 
     private final MetodologiaRepository metodologiaRepository;
     private final CategoriaMetodologiaRepository categoriaMetodologiaRepository;
-    private final MetodologiaVesaoRepository metodologiaVesaoRepository;
+    private final MetodologiaVersaoRepository metodologiaVersaoRepository;
 
     public Metodologia findById(Integer id){
         return metodologiaRepository.findById(id).orElse(null);
@@ -28,10 +28,10 @@ public class MetodologiaService {
 
     public MetodologiaService(final MetodologiaRepository metodologiaRepository,
             final CategoriaMetodologiaRepository categoriaMetodologiaRepository,
-            final MetodologiaVesaoRepository metodologiaVesaoRepository) {
+            final MetodologiaVersaoRepository metodologiaVersaoRepository) {
         this.metodologiaRepository = metodologiaRepository;
         this.categoriaMetodologiaRepository = categoriaMetodologiaRepository;
-        this.metodologiaVesaoRepository = metodologiaVesaoRepository;
+        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
     }
 
     public SimplePage<MetodologiaDTO> findAll(final String filter, final Pageable pageable) {
@@ -102,9 +102,9 @@ public class MetodologiaService {
     public String getReferencedWarning(final Integer id) {
         final Metodologia metodologia = metodologiaRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final MetodologiaVesao metodologiaMetodologiaVesao = metodologiaVesaoRepository.findFirstByMetodologia(metodologia);
-        if (metodologiaMetodologiaVesao != null) {
-            return WebUtils.getMessage("metodologia.metodologiaVesao.metodologia.referenced", metodologiaMetodologiaVesao.getId());
+        final MetodologiaVersao metodologiaMetodologiaVersao = metodologiaVersaoRepository.findFirstByMetodologia(metodologia);
+        if (metodologiaMetodologiaVersao != null) {
+            return WebUtils.getMessage("metodologia.metodologiaVersao.metodologia.referenced", metodologiaMetodologiaVersao.getId());
         }
         return null;
     }

@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{metodologia.list.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item" th:text="#{metodologia.metodologia.label}"></li>
+    </ol>
+</div>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{metodologia.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/metodologias/add}" th:text="#{metodologia.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${metodologias.empty}" th:text="#{metodologia.list.empty}"></div>
+    <div th:if="${!metodologias.empty}" class="table-responsive"></div>
+</div>
+<span layout:fragment="listHeader">
+        <th th:text="#{metodologia.codigo.label}" scope="col"/>
+        <th th:text="#{metodologia.metodo.label}" scope="col"/>
+        <th th:text="#{metodologia.obs.label}" scope="col"/>
+        <th th:text="#{metodologia.categoriaMetodologia.label}" scope="col"/>
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="metodologia : ${metodologias}">
+        <td th:text="${metodologia.id}"/>
+        <td th:text="${metodologia.version}"/>
+        <td th:text="${metodologia.codigo}"/>
+        <td th:text="${metodologia.metodo}"/>
+        <td th:text="${metodologia.obs}"/>
+        <td th:text="${metodologia.categoriaMetodologia}"/>
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/metodologias/edit/{id}(id=${metodologia.id})}"
+                   th:text="#{metodologia.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        th:attr="data-target='#remover_'+${metodologia.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${metodologia.id}, link='metodologias')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/metodologias/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2"
+       sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

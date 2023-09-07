@@ -1,12 +1,7 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.Arquivos;
-import br.com.lablims.spring_lablims.domain.ColunaLog;
-import br.com.lablims.spring_lablims.domain.ColunaUtil;
-import br.com.lablims.spring_lablims.domain.Equipamento;
-import br.com.lablims.spring_lablims.domain.EquipamentoLog;
-import br.com.lablims.spring_lablims.domain.MetodologiaVesao;
-import br.com.lablims.spring_lablims.domain.Reagente;
+import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.model.ArquivosDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ArquivosRepository;
@@ -14,7 +9,7 @@ import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
 import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoLogRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
-import br.com.lablims.spring_lablims.repos.MetodologiaVesaoRepository;
+import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.repos.ReagenteRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
@@ -30,7 +25,7 @@ public class ArquivosService {
 
     private final ArquivosRepository arquivosRepository;
     private final ColunaUtilRepository colunaUtilRepository;
-    private final MetodologiaVesaoRepository metodologiaVesaoRepository;
+    private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final EquipamentoRepository equipamentoRepository;
     private final ColunaLogRepository colunaLogRepository;
     private final ReagenteRepository reagenteRepository;
@@ -42,14 +37,14 @@ public class ArquivosService {
 
     public ArquivosService(final ArquivosRepository arquivosRepository,
             final ColunaUtilRepository colunaUtilRepository,
-            final MetodologiaVesaoRepository metodologiaVesaoRepository,
+            final MetodologiaVersaoRepository metodologiaVersaoRepository,
             final EquipamentoRepository equipamentoRepository,
             final ColunaLogRepository colunaLogRepository,
             final ReagenteRepository reagenteRepository,
             final EquipamentoLogRepository equipamentoLogRepository) {
         this.arquivosRepository = arquivosRepository;
         this.colunaUtilRepository = colunaUtilRepository;
-        this.metodologiaVesaoRepository = metodologiaVesaoRepository;
+        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
         this.equipamentoRepository = equipamentoRepository;
         this.colunaLogRepository = colunaLogRepository;
         this.reagenteRepository = reagenteRepository;
@@ -129,9 +124,9 @@ public class ArquivosService {
     public String getReferencedWarning(final Integer id) {
         final Arquivos arquivos = arquivosRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final MetodologiaVesao anexoMetodologiaVesao = metodologiaVesaoRepository.findFirstByAnexo(arquivos);
-        if (anexoMetodologiaVesao != null) {
-            return WebUtils.getMessage("arquivos.metodologiaVesao.anexo.referenced", anexoMetodologiaVesao.getId());
+        final MetodologiaVersao anexoMetodologiaVersao = metodologiaVersaoRepository.findFirstByAnexo(arquivos);
+        if (anexoMetodologiaVersao != null) {
+            return WebUtils.getMessage("arquivos.metodologiaVersao.anexo.referenced", anexoMetodologiaVersao.getId());
         }
         final ColunaUtil certificadoColunaUtil = colunaUtilRepository.findFirstByCertificado(arquivos);
         if (certificadoColunaUtil != null) {

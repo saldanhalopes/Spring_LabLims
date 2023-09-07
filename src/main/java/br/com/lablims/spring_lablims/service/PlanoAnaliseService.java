@@ -1,18 +1,13 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.Analise;
-import br.com.lablims.spring_lablims.domain.AnaliseTipo;
-import br.com.lablims.spring_lablims.domain.LoteStatus;
-import br.com.lablims.spring_lablims.domain.MetodologiaVesao;
-import br.com.lablims.spring_lablims.domain.PlanoAnalise;
-import br.com.lablims.spring_lablims.domain.PlanoAnaliseColuna;
-import br.com.lablims.spring_lablims.domain.Setor;
+import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.model.PlanoAnaliseDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AnaliseRepository;
 import br.com.lablims.spring_lablims.repos.AnaliseTipoRepository;
 import br.com.lablims.spring_lablims.repos.LoteStatusRepository;
-import br.com.lablims.spring_lablims.repos.MetodologiaVesaoRepository;
+import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseColunaRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
@@ -27,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class PlanoAnaliseService {
 
     private final PlanoAnaliseRepository planoAnaliseRepository;
-    private final MetodologiaVesaoRepository metodologiaVesaoRepository;
+    private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final AnaliseRepository analiseRepository;
     private final AnaliseTipoRepository analiseTipoRepository;
     private final SetorRepository setorRepository;
@@ -39,14 +34,14 @@ public class PlanoAnaliseService {
     }
 
     public PlanoAnaliseService(final PlanoAnaliseRepository planoAnaliseRepository,
-            final MetodologiaVesaoRepository metodologiaVesaoRepository,
+            final MetodologiaVersaoRepository metodologiaVersaoRepository,
             final AnaliseRepository analiseRepository,
             final AnaliseTipoRepository analiseTipoRepository,
             final SetorRepository setorRepository,
             final PlanoAnaliseColunaRepository planoAnaliseColunaRepository,
             final LoteStatusRepository loteStatusRepository) {
         this.planoAnaliseRepository = planoAnaliseRepository;
-        this.metodologiaVesaoRepository = metodologiaVesaoRepository;
+        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
         this.analiseRepository = analiseRepository;
         this.analiseTipoRepository = analiseTipoRepository;
         this.setorRepository = setorRepository;
@@ -118,7 +113,7 @@ public class PlanoAnaliseService {
         planoAnalise.setLeadTimeMin(planoAnaliseDTO.getLeadTimeMin());
         planoAnalise.setLeadTimeMedio(planoAnaliseDTO.getLeadTimeMedio());
         planoAnalise.setLeadTimeMax(planoAnaliseDTO.getLeadTimeMax());
-        final MetodologiaVesao metodologiaVersao = planoAnaliseDTO.getMetodologiaVersao() == null ? null : metodologiaVesaoRepository.findById(planoAnaliseDTO.getMetodologiaVersao())
+        final MetodologiaVersao metodologiaVersao = planoAnaliseDTO.getMetodologiaVersao() == null ? null : metodologiaVersaoRepository.findById(planoAnaliseDTO.getMetodologiaVersao())
                 .orElseThrow(() -> new NotFoundException("metodologiaVersao not found"));
         planoAnalise.setMetodologiaVersao(metodologiaVersao);
         final Analise analise = planoAnaliseDTO.getAnalise() == null ? null : analiseRepository.findById(planoAnaliseDTO.getAnalise())

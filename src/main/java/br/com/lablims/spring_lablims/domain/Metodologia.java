@@ -36,6 +36,6 @@ public class Metodologia {
     private CategoriaMetodologia categoriaMetodologia;
 
     @OneToMany(mappedBy = "metodologia")
-    private Set<MetodologiaVesao> metodologiaVesao;
+    private Set<MetodologiaVersao> metodologiaVersao;
 
 }

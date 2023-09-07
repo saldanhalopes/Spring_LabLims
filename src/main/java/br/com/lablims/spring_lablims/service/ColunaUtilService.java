@@ -1,13 +1,7 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.Analise;
-import br.com.lablims.spring_lablims.domain.Arquivos;
-import br.com.lablims.spring_lablims.domain.Coluna;
-import br.com.lablims.spring_lablims.domain.ColunaLog;
-import br.com.lablims.spring_lablims.domain.ColunaUtil;
-import br.com.lablims.spring_lablims.domain.ColunaVaga;
-import br.com.lablims.spring_lablims.domain.MetodologiaVesao;
-import br.com.lablims.spring_lablims.domain.Setor;
+import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.model.ColunaUtilDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AnaliseRepository;
@@ -16,7 +10,7 @@ import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
 import br.com.lablims.spring_lablims.repos.ColunaRepository;
 import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
 import br.com.lablims.spring_lablims.repos.ColunaVagaRepository;
-import br.com.lablims.spring_lablims.repos.MetodologiaVesaoRepository;
+import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
@@ -36,7 +30,7 @@ public class ColunaUtilService {
     private final ColunaUtilRepository colunaUtilRepository;
     private final ColunaRepository colunaRepository;
     private final SetorRepository setorRepository;
-    private final MetodologiaVesaoRepository metodologiaVesaoRepository;
+    private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final AnaliseRepository analiseRepository;
     private final ColunaVagaRepository colunaVagaRepository;
     private final ArquivosRepository arquivosRepository;
@@ -48,7 +42,7 @@ public class ColunaUtilService {
 
     public ColunaUtilService(final ColunaUtilRepository colunaUtilRepository,
             final ColunaRepository colunaRepository, final SetorRepository setorRepository,
-            final MetodologiaVesaoRepository metodologiaVesaoRepository,
+            final MetodologiaVersaoRepository metodologiaVersaoRepository,
             final AnaliseRepository analiseRepository,
             final ColunaVagaRepository colunaVagaRepository,
             final ArquivosRepository arquivosRepository,
@@ -56,7 +50,7 @@ public class ColunaUtilService {
         this.colunaUtilRepository = colunaUtilRepository;
         this.colunaRepository = colunaRepository;
         this.setorRepository = setorRepository;
-        this.metodologiaVesaoRepository = metodologiaVesaoRepository;
+        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
         this.analiseRepository = analiseRepository;
         this.colunaVagaRepository = colunaVagaRepository;
         this.arquivosRepository = arquivosRepository;
@@ -142,7 +136,7 @@ public class ColunaUtilService {
         final Setor setor = colunaUtilDTO.getSetor() == null ? null : setorRepository.findById(colunaUtilDTO.getSetor())
                 .orElseThrow(() -> new NotFoundException("setor not found"));
         colunaUtil.setSetor(setor);
-        final MetodologiaVesao metodologiaVersao = colunaUtilDTO.getMetodologiaVersao() == null ? null : metodologiaVesaoRepository.findById(colunaUtilDTO.getMetodologiaVersao())
+        final MetodologiaVersao metodologiaVersao = colunaUtilDTO.getMetodologiaVersao() == null ? null : metodologiaVersaoRepository.findById(colunaUtilDTO.getMetodologiaVersao())
                 .orElseThrow(() -> new NotFoundException("metodologiaVersao not found"));
         colunaUtil.setMetodologiaVersao(metodologiaVersao);
         final Analise analise = colunaUtilDTO.getAnalise() == null ? null : analiseRepository.findById(colunaUtilDTO.getAnalise())

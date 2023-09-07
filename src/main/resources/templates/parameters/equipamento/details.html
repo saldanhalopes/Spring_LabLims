@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/details}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{equipamento.equipamento.label}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentos}" th:text="#{equipamento.equipamento.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{equipamento.edit.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="detailsHeadline">
+    <h1 th:text="#{equipamento.details.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="detailsBack">
+    <a th:href="@{/equipamentos}" th:text="#{details.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="detailsAudit">
+    <a th:href="@{/equipamentos/audit/{id}(id=${equipamento.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="detailsContent">
+    <div th:replace="~{fragments/forms::imageProfile1Row(object='equipamento', field='id', title='tag', link='equipamentos/details/imagem/')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='descricao')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='fabricante')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='marca')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='modelo')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='ultimaCalibracao', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='proximaCalibracao', inputClass='js-datetimepicker')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='ativo', type='checkbox')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='obs')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='serialNumber')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='tipo', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='setor', type='select')}" />
+    <div th:replace="~{fragments/forms::linkDownloadRow(object='equipamento', field='id', title='certificado', link='equipamentos/details/certificado/')}" />
+    <div th:replace="~{fragments/forms::linkDownloadRow(object='equipamento', field='id', title='manual', link='equipamentos/details/manual/')}" />
+    <div th:replace="~{fragments/forms::linkDownloadRow(object='equipamento', field='id', title='procedimento', link='equipamentos/details/procedimento/')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='escala', type='select')}" />
+</div>
+</html>

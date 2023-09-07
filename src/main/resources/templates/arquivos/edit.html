@@ -8,7 +8,7 @@
     <h1 th:text="#{arquivos.edit.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="editBack">
-    <a th:href="@{/arquivoss}" th:text="#{edit.back}" class="btn btn-secondary"/>
+    <a th:href="@{/arquivoss}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
 <span layout:fragment="editAudit">
     <a th:href="@{/arquivoss/audit/{id}(id=${arquivos.id})}" th:text="#{audit.list}"

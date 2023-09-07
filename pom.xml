@@ -85,12 +85,25 @@
             <artifactId>flyway-core</artifactId>
             <version>9.21.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.webjars/AdminLTE -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>AdminLTE</artifactId>
             <version>3.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-docker-compose</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-surefire-plugin</artifactId>-->
+<!--            <version>2.19.1</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

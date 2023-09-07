@@ -36,7 +36,7 @@ public class HttpSecurityConfig {
         return http
                 .csrf((csrf -> csrf.disable()))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/resources/**", "/css/**", "/images/**", "/js/**").permitAll()
+                        .requestMatchers("/login", "/resources/**", "/css/**", "/img/**", "/js/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -47,7 +47,7 @@ public class HttpSecurityConfig {
                         .loginPage("/login")
                         .failureUrl("/login?loginError=true")
                         .usernameParameter("username").passwordParameter("password")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/index")
                         .permitAll())
                 .logout(logout -> logout
                         .invalidateHttpSession(true)
