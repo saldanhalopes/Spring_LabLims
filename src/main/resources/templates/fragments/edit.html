@@ -24,7 +24,8 @@
                     </ul>
                 </div>
             </div>
-            <form th:action="${T(br.com.lablims.spring_lablims.util.WebUtils).getRequest().requestURI}" method="post">
+            <form th:action="${T(br.com.lablims.spring_lablims.util.WebUtils).getRequest().requestURI}"
+                  method="post" enctype="multipart/form-data">
                 <div class="card-body">
                     <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
                          class="alert alert-danger alert-dismissible fade show" role="alert"></div>

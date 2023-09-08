@@ -18,6 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -206,9 +210,11 @@ public class EquipamentoController {
 
     @GetMapping("/details/certificado/{id}")
     @ResponseBody
-    public void showCertificado(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-        response.getOutputStream().write(equipamentoService.get(id).getCertificado());
-        response.getOutputStream().close();
+    public ResponseEntity<?> showCertificado(@PathVariable("id") Integer id) throws IOException {
+       return ResponseEntity.status(HttpStatus.OK)
+               .contentType(MediaType.valueOf("application/pdf"))
+               .header(HttpHeaders.CONTENT_DISPOSITION, "aasdf")
+               .body(equipamentoService.get(id).getCertificado());
     }
 
     @GetMapping("/details/manual/{id}")
