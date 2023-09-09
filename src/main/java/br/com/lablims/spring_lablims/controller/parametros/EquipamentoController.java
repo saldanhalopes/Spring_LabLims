@@ -213,22 +213,26 @@ public class EquipamentoController {
     public ResponseEntity<?> showCertificado(@PathVariable("id") Integer id) throws IOException {
        return ResponseEntity.status(HttpStatus.OK)
                .contentType(MediaType.valueOf("application/pdf"))
-               .header(HttpHeaders.CONTENT_DISPOSITION, "aasdf")
+               .header(HttpHeaders.CONTENT_DISPOSITION, "Certificado")
                .body(equipamentoService.get(id).getCertificado());
     }
 
     @GetMapping("/details/manual/{id}")
     @ResponseBody
-    public void showManual(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-        response.getOutputStream().write(equipamentoService.get(id).getManual());
-        response.getOutputStream().close();
+    public ResponseEntity<?> showManual(@PathVariable("id") Integer id) throws IOException {
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/pdf"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "Manual")
+                .body(equipamentoService.get(id).getManual());
     }
 
     @GetMapping("/details/procedimento/{id}")
     @ResponseBody
-    public void showProcedimento(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
-        response.getOutputStream().write(equipamentoService.get(id).getProcedimento());
-        response.getOutputStream().close();
+    public  ResponseEntity<?> showProcedimento(@PathVariable("id") Integer id) throws IOException {
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("application/pdf"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "Procedimento")
+                .body(equipamentoService.get(id).getProcedimento());
     }
 
 }

@@ -1,4 +1,4 @@
-package br.com.lablims.spring_lablims.controller.colunas;
+package br.com.lablims.spring_lablims.controller.logs;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
 import br.com.lablims.spring_lablims.domain.*;
@@ -93,12 +93,12 @@ public class ColunaLogController {
         model.addAttribute("colunaLogs", colunaLogs);
         model.addAttribute("filter", filter);
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(colunaLogs));
-        return "pages/colunaLog/list";
+        return "logs/colunaLog/list";
     }
 
     @GetMapping("/add")
     public String add(@ModelAttribute("colunaLog") final ColunaLogDTO colunaLogDTO) {
-        return "pages/colunaLog/add";
+        return "logs/colunaLog/add";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
@@ -107,7 +107,7 @@ public class ColunaLogController {
                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
-            return "pages/colunaLog/add";
+            return "logs/colunaLog/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText("Novo Registro");
@@ -115,7 +115,7 @@ public class ColunaLogController {
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("colunaLog.create.success"));
             } else {
                 model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
-                return "pages/colunaLog/add";
+                return "logs/colunaLog/add";
             }
         }
         return "redirect:/colunaLogs";
@@ -124,7 +124,7 @@ public class ColunaLogController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable final Integer id, final Model model) {
         model.addAttribute("colunaLog", colunaLogService.get(id));
-        return "pages/colunaLog/edit";
+        return "logs/colunaLog/edit";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "')")
@@ -135,7 +135,7 @@ public class ColunaLogController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
-            return "pages/colunaLog/edit";
+            return "logs/colunaLog/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText(motivo);
@@ -143,7 +143,7 @@ public class ColunaLogController {
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("colunaLog.update.success"));
             } else {
                 model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
-                return "pages/colunaLog/edit";
+                return "logs/colunaLog/edit";
             }
         }
         return "redirect:/colunaLogs";
@@ -171,7 +171,7 @@ public class ColunaLogController {
     public String getRevisions(Model model) {
         List<EntityRevision<ColunaLog>> revisoes = genericRevisionRepository.listaRevisoes(ColunaLog.class);
         model.addAttribute("audits", revisoes);
-        return "pages/colunaLog/audit";
+        return "logs/colunaLog/audit";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
@@ -180,6 +180,6 @@ public class ColunaLogController {
         ColunaLog colunaLog = colunaLogService.findById(id);
         List<EntityRevision<ColunaLog>> revisoes = genericRevisionRepository.listaRevisoesById(colunaLog.getId(), ColunaLog.class);
         model.addAttribute("audits", revisoes);
-        return "pages/colunaLog/audit";
+        return "logs/colunaLog/audit";
     }
 }

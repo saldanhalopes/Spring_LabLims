@@ -3,6 +3,7 @@ package br.com.lablims.spring_lablims.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,9 +11,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 
-@Entity
+@Entity 
 @Getter
 @Setter
+@DynamicUpdate()
 @Audited(withModifiedFlag = true)
 public class Equipamento {
 

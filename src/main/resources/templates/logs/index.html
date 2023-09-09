@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{logs.title}"/>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark" th:text="#{logs.title}"></h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+                        <li class="breadcrumb-item active"> <span th:text="#{logs.title}"></span> </li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <div class="container-fluid">
+        <section class="wrapper">
+            <div class="row">
+                <!--equipamentoLog-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{equipamentoLog.list.headline}"/></b>
+                                    </h3></h5>
+                                    <a th:href="@{/equipamentoLogs}" th:text="#{equipamentoLog.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--colunaLog-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{colunaLog.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/colunaLogs}" th:text="#{colunaLog.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>

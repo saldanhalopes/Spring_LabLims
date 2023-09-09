@@ -2,10 +2,12 @@ package br.com.lablims.spring_lablims.controller.logs;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
 import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.model.EquipamentoDTO;
 import br.com.lablims.spring_lablims.model.EquipamentoLogDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.service.EquipamentoLogService;
+import br.com.lablims.spring_lablims.service.EquipamentoService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
@@ -32,6 +34,7 @@ import java.util.List;
 public class EquipamentoLogController {
 
     private final EquipamentoLogService equipamentoLogService;
+    private final EquipamentoService equipamentoService;
     private final EquipamentoAtividadeRepository equipamentoAtividadeRepository;
     private final EquipamentoRepository equipamentoRepository;
     private final UsuarioRepository usuarioRepository;
@@ -41,11 +44,12 @@ public class EquipamentoLogController {
     private GenericRevisionRepository genericRevisionRepository;
 
     public EquipamentoLogController(final EquipamentoLogService equipamentoLogService,
-                                    final EquipamentoAtividadeRepository equipamentoAtividadeRepository,
+                                    EquipamentoService equipamentoService, final EquipamentoAtividadeRepository equipamentoAtividadeRepository,
                                     final EquipamentoRepository equipamentoRepository,
                                     final UsuarioRepository usuarioRepository,
                                     final ArquivosRepository arquivosRepository) {
         this.equipamentoLogService = equipamentoLogService;
+        this.equipamentoService = equipamentoService;
         this.equipamentoAtividadeRepository = equipamentoAtividadeRepository;
         this.equipamentoRepository = equipamentoRepository;
         this.usuarioRepository = usuarioRepository;
@@ -62,10 +66,10 @@ public class EquipamentoLogController {
                 .collect(CustomCollectors.toSortedMap(Equipamento::getId, Equipamento::getDescricao)));
         model.addAttribute("usuarioInicioValues", usuarioRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(Usuario::getId, Usuario::getCep)));
+                .collect(CustomCollectors.toSortedMap(Usuario::getId, Usuario::getUsername)));
         model.addAttribute("usuarioFimValues", usuarioRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(Usuario::getId, Usuario::getCep)));
+                .collect(CustomCollectors.toSortedMap(Usuario::getId, Usuario::getUsername)));
         model.addAttribute("anexoValues", arquivosRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Arquivos::getId, Arquivos::getNome)));
@@ -75,19 +79,27 @@ public class EquipamentoLogController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public String list(@RequestParam(required = false) final String filter,
+    public String blocks(@RequestParam(required = false) final String filter,
                        @SortDefault(sort = "id") @PageableDefault(size = 20) final Pageable pageable,
                        final Model model) {
-        final SimplePage<EquipamentoLogDTO> equipamentoLogs = equipamentoLogService.findAll(filter, pageable);
-        model.addAttribute("equipamentoLogs", equipamentoLogs);
+        final SimplePage<EquipamentoDTO> equipamentos = equipamentoService.findAll(filter, pageable);
+        model.addAttribute("equipamentos", equipamentos);
         model.addAttribute("filter", filter);
-        model.addAttribute("paginationModel", WebUtils.getPaginationModel(equipamentoLogs));
-        return "pages/equipamentoLog/list";
+        model.addAttribute("paginationModel", WebUtils.getPaginationModel(equipamentos));
+        return "logs/equipamentoLog/blocks";
+    }
+
+    @GetMapping("/list/{id}")
+    public String list(@PathVariable final Integer id,
+                       @PageableDefault(size = 1) final Pageable pageable, final Model model) {
+        final SimplePage<EquipamentoLogDTO> equipamentoLogs = equipamentoLogService.findAll(id.toString(), pageable);
+        model.addAttribute("equipamentoLogs", equipamentoLogs);
+        return "logs/equipamentoLog/list";
     }
 
     @GetMapping("/add")
     public String add(@ModelAttribute("equipamentoLog") final EquipamentoLogDTO equipamentoLogDTO) {
-        return "pages/equipamentoLog/add";
+        return "logs/equipamentoLog/add";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
@@ -96,7 +108,7 @@ public class EquipamentoLogController {
                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
-            return "pages/equipamentoLog/add";
+            return "logs/equipamentoLog/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText("Novo Registro");
@@ -104,7 +116,7 @@ public class EquipamentoLogController {
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("equipamentoLog.create.success"));
             } else {
                 model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
-                return "pages/equipamentoLog/add";
+                return "logs/equipamentoLog/add";
             }
         }
         return "redirect:/equipamentoLogs";
@@ -113,7 +125,7 @@ public class EquipamentoLogController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable final Integer id, final Model model) {
         model.addAttribute("equipamentoLog", equipamentoLogService.get(id));
-        return "pages/equipamentoLog/edit";
+        return "logs/equipamentoLog/edit";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "')")
@@ -124,7 +136,7 @@ public class EquipamentoLogController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
-            return "pages/equipamentoLog/edit";
+            return "logs/equipamentoLog/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText(motivo);
@@ -132,7 +144,7 @@ public class EquipamentoLogController {
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("equipamentoLog.update.success"));
             } else {
                 model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
-                return "pages/equipamentoLog/edit";
+                return "logs/equipamentoLog/edit";
             }
         }
         return "redirect:/equipamentoLogs";
@@ -160,7 +172,7 @@ public class EquipamentoLogController {
     public String getRevisions(Model model) {
         List<EntityRevision<EquipamentoLog>> revisoes = genericRevisionRepository.listaRevisoes(EquipamentoLog.class);
         model.addAttribute("audits", revisoes);
-        return "pages/equipamentoLog/audit";
+        return "logs/equipamentoLog/audit";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
@@ -169,7 +181,7 @@ public class EquipamentoLogController {
         EquipamentoLog equipamentoLog = equipamentoLogService.findById(id);
         List<EntityRevision<EquipamentoLog>> revisoes = genericRevisionRepository.listaRevisoesById(equipamentoLog.getId(), EquipamentoLog.class);
         model.addAttribute("audits", revisoes);
-        return "pages/equipamentoLog/audit";
+        return "logs/equipamentoLog/audit";
     }
 
 }

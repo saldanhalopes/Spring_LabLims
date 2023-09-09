@@ -18,14 +18,9 @@ public class HomeController {
         return "parameters/index";
     }
 
-    @RequestMapping("/contact")
-    public String contact() {
-        return "contact";
-    }
-
-    @RequestMapping("/about")
-    public String about() {
-        return "about";
+    @GetMapping("/logs")
+    public String logs() {
+        return "logs/index";
     }
 
 }

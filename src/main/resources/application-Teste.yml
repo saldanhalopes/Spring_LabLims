@@ -1,0 +1,59 @@
+spring:
+  config:
+    activate:
+      on-profile: Teste
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      idle-timeout: '10000'
+      maximum-pool-size: '5'
+      connection-timeout: '20000'
+      pool-name: spring_lablims_pg_pooll
+      connection-test-query: select now();
+      minimum-idle: '1'
+    password: ${TESTE_POSTGRES_PASSWORD}
+    username: ${TESTE_POSTGRES_USER}
+    url: jdbc:postgresql://${TESTE_POSTGRES_SERVER}:${TESTE_POSTGRES_PORT}/${TESTE_POSTGRES_DATABASE}
+    type: com.zaxxer.hikari.HikariDataSource
+
+  jpa:
+    properties:
+      org:
+        hibernate:
+          envers:
+            revision_field_name: revision
+            do_not_audit_optimistic_locking_field: 'false'
+            store_data_at_delete: 'true'
+            default_schema: audit
+            audit_table_prefix: tba_
+            audit_table_suffix: _aud
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+        default_schema: principal
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
+    open-in-view: 'false'
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+      file-size-threshold: 2KB
+
+server:
+  port: '8080'
+  compression:
+    min-response-size: '1024'
+    enabled: 'true'
+#    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+  servlet:
+    session:
+      timeout: 30m
+  http2:
+    enabled: 'true'

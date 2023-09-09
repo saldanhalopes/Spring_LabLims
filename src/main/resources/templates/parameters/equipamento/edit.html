@@ -26,22 +26,22 @@
     <div th:replace="~{fragments/forms::globalErrors('equipamento')}"/>
 </div>
 <div layout:fragment="editContent">
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='descricao')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='tag')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='fabricante')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='marca')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='modelo')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='ultimaCalibracao', inputClass='js-datetimepicker')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='proximaCalibracao', inputClass='js-datetimepicker')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='ativo', type='checkbox')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='obs')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='imagem', type='number')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='serialNumber')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='tipo', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='setor', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='certificado', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='manual', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='procedimento', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='escala', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='descricao')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='tag')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='fabricante')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='marca')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='modelo')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='ultimaCalibracao', type='datetime-local')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='proximaCalibracao', type='datetime-local')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='ativo', type='checkbox')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='obs')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='imagem', type='file', accept='image/*')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='serialNumber')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='tipo', type='select')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='setor', type='select')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='certificado', type='file', accept='application/pdf')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='manual', type='file', accept='application/pdf')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='procedimento', type='file', accept='application/pdf')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='escala', type='select')}"></div>
 </div>
 </html>

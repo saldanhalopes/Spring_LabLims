@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div layout:fragment="breadcrumb"></div>
+        </div>
+    </section>
+    <div class="container-fluid">
+        <div class="card card-info card-outline">
+            <div class="card-header">
+                <h5 class="card-title d-flex">
+                    <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
+                    <span layout:fragment="blocksHeadline"></span>
+                </h5>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item">
+                            <span layout:fragment="blocksBackMenu"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div layout:fragment="blocksContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<span layout:fragment="script">
+    <!-- DataTables  & Plugins -->
+    <script th:inline="javascript">
+
+    </script>
+</span>
+</html>
+
+
+

@@ -29,10 +29,11 @@
                 <div th:if="${MSG_WARNING != null}" th:text="${MSG_WARNING}" class="alert alert-warning" role="alert"/>
             </div>
 
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/login}" method="post" autocomplete="off">
                 <div class="card-body">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="username" th:name="username" placeholder="Usuário"/>
+                        <input type="text" class="form-control" id="username" th:name="username"
+                               placeholder="Usuário" autocomplete="off"/>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
@@ -41,7 +42,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" id="password" th:name="password"
-                               placeholder="Senha"/>
+                               placeholder="Senha" autocomplete="off"/>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>

@@ -35,9 +35,9 @@
     <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='serialNumber')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='tipo', type='select')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='setor', type='select')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='certificado', type='file', accept='application/msword, text/plain, application/pdf')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='manual', type='file', accept='image/*,.doc, .docx,.txt,.pdf')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='procedimento', type='file', accept='image/png, image/gif, image/jpeg')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='certificado', type='file', accept='application/pdf')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='manual', type='file', accept='application/pdf')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='procedimento', type='file', accept='application/pdf')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='escala', type='select')}"></div>
 </div>
 </html>
