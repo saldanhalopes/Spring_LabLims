@@ -7,7 +7,7 @@
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
         <li class="breadcrumb-item"><a th:href="@{/analiseProdutividades}" th:text="#{analiseProdutividade.analiseProdutividade.label}"></a></li>
         <li class="breadcrumb-item active" th:text="#{amostraTipo.list.headline}+ ' ' + Auditoria"></li>
     </ol>
@@ -18,13 +18,13 @@
 <span layout:fragment="auditBack">
     <a th:href="@{/analiseProdutividades}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
+<span layout:fragment="auditHeads">
     <th th:text="#{analiseProdutividade.analiseProdutividade.label}" scope="col" />
     <th th:text="#{analiseProdutividade.siglaProdutividade.label}" scope="col" />
     <th th:text="#{analiseProdutividade.descricaoProdutividade.label}" scope="col" />
     <th th:text="#{analiseProdutividade.corProdutividade.label}" scope="col" />
 </span>
-<span layout:fragment="auditTBody">
+<span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getAnaliseProdutividade()}"></td>
     <td th:text="${a.getEntidade().getSiglaProdutividade()}"></td>
     <td th:text="${a.getEntidade().getDescricaoProdutividade()}"></td>

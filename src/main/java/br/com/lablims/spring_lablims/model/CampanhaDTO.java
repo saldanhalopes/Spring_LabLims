@@ -42,7 +42,7 @@ public class CampanhaDTO {
 
     private Integer celula;
 
-    private List<Integer> lotes;
+    private List<Integer> amostras;
 
     private Short version;
 

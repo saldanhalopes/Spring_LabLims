@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{amostra.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{amostra.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/amostras}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('amostra')}"></div>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='codigoAmostra', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='lote', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='amostraTipo', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='dataEntrada', type='datetime-local', min='2020-01-01 00:00', max='2099-12-12 23:59', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='usoInterno', type='checkbox')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='qtdAmostra', type='number', step='0.000001')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='unidade', type='select')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='fracionamento')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='localArmazenamento')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='condicoesArmazenamento')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='pontoAmostragem')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='complemento')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='referenciaCliente')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='anexo', type='file', accept='application/pdf')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='obs')}" ></div>
+</div>
+</html>

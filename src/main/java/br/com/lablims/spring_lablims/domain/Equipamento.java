@@ -8,10 +8,12 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 
-@Entity 
+@Entity
 @Getter
 @Setter
 @DynamicUpdate()
@@ -42,10 +44,10 @@ public class Equipamento {
     private String modelo;
 
     @Column
-    private LocalDateTime ultimaCalibracao;
+    private LocalDate ultimaCalibracao;
 
     @Column
-    private LocalDateTime proximaCalibracao;
+    private LocalDate proximaCalibracao;
 
     @Column
     private Boolean ativo;
@@ -70,23 +72,13 @@ public class Equipamento {
     @JoinColumn(name = "setor_id")
     private Setor setor;
 
-    @NotAudited
-    @Lob
-    @Column()
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] certificado;
-
-    @NotAudited
-    @Lob
-    @Column()
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] manual;
-
-    @NotAudited
-    @Lob
-    @Column()
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] procedimento;
+    @ManyToMany
+    @JoinTable(
+            name = "equipamento_arquivo",
+            joinColumns = @JoinColumn(name = "equipamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "arquivo_id")
+    )
+    private Set<Arquivos> arquivos;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "escala_id")

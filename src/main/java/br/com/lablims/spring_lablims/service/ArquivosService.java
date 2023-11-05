@@ -4,19 +4,15 @@ import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.model.ArquivosDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.ArquivosRepository;
-import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
-import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
-import br.com.lablims.spring_lablims.repos.EquipamentoLogRepository;
-import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
-import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
-import br.com.lablims.spring_lablims.repos.ReagenteRepository;
+import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -30,18 +26,22 @@ public class ArquivosService {
     private final ColunaLogRepository colunaLogRepository;
     private final ReagenteRepository reagenteRepository;
     private final EquipamentoLogRepository equipamentoLogRepository;
+    private final LoteRepository loteRepository;
+    private final AmostraRepository amostraRepository;
 
-    public Arquivos findById(Integer id){
+    public Arquivos findById(Integer id) {
         return arquivosRepository.findById(id).orElse(null);
     }
 
     public ArquivosService(final ArquivosRepository arquivosRepository,
-            final ColunaUtilRepository colunaUtilRepository,
-            final MetodologiaVersaoRepository metodologiaVersaoRepository,
-            final EquipamentoRepository equipamentoRepository,
-            final ColunaLogRepository colunaLogRepository,
-            final ReagenteRepository reagenteRepository,
-            final EquipamentoLogRepository equipamentoLogRepository) {
+                           final ColunaUtilRepository colunaUtilRepository,
+                           final MetodologiaVersaoRepository metodologiaVersaoRepository,
+                           final EquipamentoRepository equipamentoRepository,
+                           final ColunaLogRepository colunaLogRepository,
+                           final ReagenteRepository reagenteRepository,
+                           final EquipamentoLogRepository equipamentoLogRepository,
+                           final LoteRepository loteRepository,
+                           final AmostraRepository amostraRepository) {
         this.arquivosRepository = arquivosRepository;
         this.colunaUtilRepository = colunaUtilRepository;
         this.metodologiaVersaoRepository = metodologiaVersaoRepository;
@@ -49,6 +49,8 @@ public class ArquivosService {
         this.colunaLogRepository = colunaLogRepository;
         this.reagenteRepository = reagenteRepository;
         this.equipamentoLogRepository = equipamentoLogRepository;
+        this.loteRepository = loteRepository;
+        this.amostraRepository = amostraRepository;
     }
 
     public SimplePage<ArquivosDTO> findAll(final String filter, final Pageable pageable) {
@@ -93,9 +95,42 @@ public class ArquivosService {
     public void delete(final Integer id) {
         final Arquivos arquivos = arquivosRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
+        arquivosRepository.delete(arquivos);
+    }
+
+    public void deleteEquipamento(final Integer id) {
+        final Arquivos arquivos = arquivosRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
         // remove many-to-many relations at owning side
-        colunaUtilRepository.findAllByAnexos(arquivos)
-                .forEach(colunaUtil -> colunaUtil.getAnexos().remove(arquivos));
+        equipamentoRepository.findAllByArquivos(arquivos)
+                .forEach(equipamento -> equipamento.getArquivos().remove(arquivos));
+        arquivosRepository.delete(arquivos);
+    }
+
+    public void deleteLote(final Integer id) {
+        final Arquivos arquivos = arquivosRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        // remove many-to-many relations at owning side
+        loteRepository.findAllByArquivos(arquivos)
+                .forEach(lote -> lote.getArquivos().remove(arquivos));
+        arquivosRepository.delete(arquivos);
+    }
+
+    public void deleteEquipamentoLog(final Integer id) {
+        final Arquivos arquivos = arquivosRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        // remove many-to-many relations at owning side
+        equipamentoLogRepository.findAllByArquivos(arquivos)
+                .forEach(equipamentoLog -> equipamentoLog.getArquivos().remove(arquivos));
+        arquivosRepository.delete(arquivos);
+    }
+
+    public void deleteAmostra(final Integer id) {
+        final Arquivos arquivos = arquivosRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        // remove many-to-many relations at owning side
+        amostraRepository.findAllByArquivos(arquivos)
+                .forEach(amostra -> amostra.getArquivos().remove(arquivos));
         arquivosRepository.delete(arquivos);
     }
 
@@ -121,46 +156,5 @@ public class ArquivosService {
         return arquivos;
     }
 
-    public String getReferencedWarning(final Integer id) {
-        final Arquivos arquivos = arquivosRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
-        final MetodologiaVersao anexoMetodologiaVersao = metodologiaVersaoRepository.findFirstByAnexo(arquivos);
-        if (anexoMetodologiaVersao != null) {
-            return WebUtils.getMessage("arquivos.metodologiaVersao.anexo.referenced", anexoMetodologiaVersao.getId());
-        }
-        final ColunaUtil certificadoColunaUtil = colunaUtilRepository.findFirstByCertificado(arquivos);
-        if (certificadoColunaUtil != null) {
-            return WebUtils.getMessage("arquivos.colunaUtil.certificado.referenced", certificadoColunaUtil.getId());
-        }
-        final ColunaUtil anexosColunaUtil = colunaUtilRepository.findFirstByAnexos(arquivos);
-        if (anexosColunaUtil != null) {
-            return WebUtils.getMessage("arquivos.colunaUtil.anexos.referenced", anexosColunaUtil.getId());
-        }
-        final Equipamento certificadoEquipamento = equipamentoRepository.findFirstByCertificado(arquivos);
-        if (certificadoEquipamento != null) {
-            return WebUtils.getMessage("arquivos.equipamento.certificado.referenced", certificadoEquipamento.getId());
-        }
-        final Equipamento manualEquipamento = equipamentoRepository.findFirstByManual(arquivos);
-        if (manualEquipamento != null) {
-            return WebUtils.getMessage("arquivos.equipamento.manual.referenced", manualEquipamento.getId());
-        }
-        final Equipamento procedimentoEquipamento = equipamentoRepository.findFirstByProcedimento(arquivos);
-        if (procedimentoEquipamento != null) {
-            return WebUtils.getMessage("arquivos.equipamento.procedimento.referenced", procedimentoEquipamento.getId());
-        }
-        final ColunaLog anexoColunaLog = colunaLogRepository.findFirstByAnexo(arquivos);
-        if (anexoColunaLog != null) {
-            return WebUtils.getMessage("arquivos.colunaLog.anexo.referenced", anexoColunaLog.getId());
-        }
-        final Reagente fdsReagente = reagenteRepository.findFirstByFds(arquivos);
-        if (fdsReagente != null) {
-            return WebUtils.getMessage("arquivos.reagente.fds.referenced", fdsReagente.getId());
-        }
-        final EquipamentoLog anexoEquipamentoLog = equipamentoLogRepository.findFirstByAnexo(arquivos);
-        if (anexoEquipamentoLog != null) {
-            return WebUtils.getMessage("arquivos.equipamentoLog.anexo.referenced", anexoEquipamentoLog.getId());
-        }
-        return null;
-    }
 
 }

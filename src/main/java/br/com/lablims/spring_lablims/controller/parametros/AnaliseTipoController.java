@@ -60,8 +60,8 @@ public class AnaliseTipoController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("analiseTipo") @Valid final AnaliseTipoDTO analiseTipoDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("analiseTipo") @Valid final AnaliseTipoDTO analiseTipoDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "parameters/analiseTipo/add";
@@ -71,7 +71,7 @@ public class AnaliseTipoController {
                 analiseTipoService.create(analiseTipoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("analiseTipo.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/analiseTipo/add";
             }
         }
@@ -99,7 +99,7 @@ public class AnaliseTipoController {
                 analiseTipoService.update(id, analiseTipoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("analiseTipo.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/analiseTipo/edit";
             }
         }
@@ -122,7 +122,7 @@ public class AnaliseTipoController {
                 analiseTipoService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("analiseTipo.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
         }
         return "redirect:/analiseTipos";

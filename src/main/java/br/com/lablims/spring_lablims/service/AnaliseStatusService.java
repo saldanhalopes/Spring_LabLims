@@ -1,14 +1,13 @@
 package br.com.lablims.spring_lablims.service;
 
+import br.com.lablims.spring_lablims.domain.AmostraStatus;
 import br.com.lablims.spring_lablims.domain.AnaliseProdutividade;
 import br.com.lablims.spring_lablims.domain.AnaliseStatus;
-import br.com.lablims.spring_lablims.domain.AnaliseTipo;
-import br.com.lablims.spring_lablims.domain.LoteStatus;
 import br.com.lablims.spring_lablims.model.AnaliseStatusDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AnaliseProdutividadeRepository;
 import br.com.lablims.spring_lablims.repos.AnaliseStatusRepository;
-import br.com.lablims.spring_lablims.repos.LoteStatusRepository;
+import br.com.lablims.spring_lablims.repos.AmostraStatusRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,7 @@ public class AnaliseStatusService {
 
     private final AnaliseStatusRepository analiseStatusRepository;
     private final AnaliseProdutividadeRepository analiseProdutividadeRepository;
-    private final LoteStatusRepository loteStatusRepository;
+    private final AmostraStatusRepository amostraStatusRepository;
 
     public AnaliseStatus findById(Integer id){
         return analiseStatusRepository.findById(id).orElse(null);
@@ -29,10 +28,10 @@ public class AnaliseStatusService {
 
     public AnaliseStatusService(final AnaliseStatusRepository analiseStatusRepository,
             final AnaliseProdutividadeRepository analiseProdutividadeRepository,
-            final LoteStatusRepository loteStatusRepository) {
+            final AmostraStatusRepository amostraStatusRepository) {
         this.analiseStatusRepository = analiseStatusRepository;
         this.analiseProdutividadeRepository = analiseProdutividadeRepository;
-        this.loteStatusRepository = loteStatusRepository;
+        this.amostraStatusRepository = amostraStatusRepository;
     }
 
     public SimplePage<AnaliseStatusDTO> findAll(final String filter, final Pageable pageable) {
@@ -102,9 +101,9 @@ public class AnaliseStatusService {
     public String getReferencedWarning(final Integer id) {
         final AnaliseStatus analiseStatus = analiseStatusRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final LoteStatus analiseStatusLoteStatus = loteStatusRepository.findFirstByAnaliseStatus(analiseStatus);
-        if (analiseStatusLoteStatus != null) {
-            return WebUtils.getMessage("analiseStatus.loteStatus.analiseStatus.referenced", analiseStatusLoteStatus.getId());
+        final AmostraStatus analiseStatusAmostraStatus = amostraStatusRepository.findFirstByAnaliseStatus(analiseStatus);
+        if (analiseStatusAmostraStatus != null) {
+            return WebUtils.getMessage("analiseStatus.amostraStatus.analiseStatus.referenced", analiseStatusAmostraStatus.getId());
         }
         return null;
     }

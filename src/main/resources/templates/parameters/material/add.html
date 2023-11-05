@@ -7,7 +7,7 @@
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
         <li class="breadcrumb-item"><a th:href="@{/materials}" th:text="#{material.material.label}"></a></li>
         <li class="breadcrumb-item active" th:text="#{material.add.headline}"></li>
     </ol>
@@ -19,13 +19,13 @@
     <a th:href="@{/materials}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="addGlobalErrors">
-    <div th:replace="~{fragments/forms::globalErrors('material')}"/>
+    <div th:replace="~{fragments/forms::globalErrors('material')}"></div>
 </div>
 <div layout:fragment="addContent">
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='controleEspecial', type='checkbox')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='fiscalizado')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='item', type='number')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='material')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='tipoMaterial', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='controleEspecial', type='checkbox')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='fiscalizado')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='codigo', type='number')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='material')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='tipoMaterial', type='select')}" ></div>
 </div>
 </html>

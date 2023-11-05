@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}">
+<head>
+    <title th:text="#{cliente.edit.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/laboratorio}" th:text="#{laboratorio.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clientes}" th:text="#{cliente.cliente.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{cliente.edit.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{cliente.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/clientes}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('cliente')}"></div>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='cliente', field='cliente', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='cliente', field='descricao')}" ></div>
+</div>
+</html>

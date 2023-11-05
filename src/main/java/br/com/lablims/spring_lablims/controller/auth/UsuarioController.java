@@ -71,8 +71,8 @@ public class UsuarioController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("usuario") @Valid final UsuarioDTO usuarioDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("usuario") @Valid final UsuarioDTO usuarioDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (!bindingResult.hasFieldErrors("email") && usuarioService.emailExists(usuarioDTO.getEmail())) {
             bindingResult.rejectValue("email", "Exists.usuario.email");
@@ -88,7 +88,7 @@ public class UsuarioController {
                 usuarioService.create(usuarioDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("usuario.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "pages/usuario/add";
             }
         }
@@ -126,7 +126,7 @@ public class UsuarioController {
             usuarioService.update(id, usuarioDTO);
             redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("usuario.update.success"));
         } else {
-            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             return "pages/usuario/edit";
         }
         return "redirect:/usuarios";
@@ -148,7 +148,7 @@ public class UsuarioController {
                 usuarioService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("usuario.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
         }
         return "redirect:/usuarios";

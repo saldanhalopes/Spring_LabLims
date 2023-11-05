@@ -10,7 +10,7 @@
 <span layout:fragment="auditBack">
     <a th:href="@{/colunas}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
+<span layout:fragment="auditHeads">
     <th th:text="#{coluna.codigo.label}" scope="col" />
     <th th:text="#{coluna.partNumber.label}" scope="col" />
     <th th:text="#{coluna.obs.label}" scope="col" />
@@ -19,7 +19,7 @@
     <th th:text="#{coluna.marcaColuna.label}" scope="col" />
     <th th:text="#{coluna.faseColuna.label}" scope="col" />
 </span>
-<span layout:fragment="auditTBody">
+<span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getCodigo()}"></td>
     <td th:text="${a.getEntidade().getPartNumber()}"></td>
     <td th:text="${a.getEntidade().getObs()}"></td>

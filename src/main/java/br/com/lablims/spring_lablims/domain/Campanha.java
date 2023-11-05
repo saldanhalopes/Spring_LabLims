@@ -59,8 +59,8 @@ public class Campanha {
     @JoinTable(
             name = "campanha_lote_produto",
             joinColumns = @JoinColumn(name = "campanha_id"),
-            inverseJoinColumns = @JoinColumn(name = "lote_id")
+            inverseJoinColumns = @JoinColumn(name = "amostra_id")
     )
-    private Set<Lote> lotes;
+    private Set<Amostra> amostras;
 
 }

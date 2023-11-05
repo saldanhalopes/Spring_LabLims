@@ -61,8 +61,8 @@ public class EquipamentoAtividadeController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("equipamentoAtividade") @Valid final EquipamentoAtividadeDTO equipamentoAtividadeDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("equipamentoAtividade") @Valid final EquipamentoAtividadeDTO equipamentoAtividadeDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "parameters/equipamentoAtividade/add";
@@ -72,7 +72,7 @@ public class EquipamentoAtividadeController {
                 equipamentoAtividadeService.create(equipamentoAtividadeDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("equipamentoAtividade.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/equipamentoAtividade/add";
             }
         }
@@ -100,7 +100,7 @@ public class EquipamentoAtividadeController {
                 equipamentoAtividadeService.update(id, equipamentoAtividadeDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("equipamentoAtividade.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/equipamentoAtividade/edit";
             }
         }
@@ -123,7 +123,7 @@ public class EquipamentoAtividadeController {
                 equipamentoAtividadeService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("equipamentoAtividade.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
         }
         return "redirect:/equipamentoAtividades";

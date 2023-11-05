@@ -10,7 +10,7 @@
 <span layout:fragment="auditBack">
     <a th:href="@{/arquivoss}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
+<span layout:fragment="auditHeads">
     <th th:text="#{arquivos.nome.label}" scope="col" />
     <th th:text="#{arquivos.tipo.label}" scope="col" />
     <th th:text="#{arquivos.descricao.label}" scope="col" />
@@ -18,7 +18,7 @@
     <th th:text="#{arquivos.arquivo.label}" scope="col" />
     <th th:text="#{arquivos.dataCriacao.label}" scope="col" />
 </span>
-<span layout:fragment="auditTBody">
+<span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getNome()}"></td>
     <td th:text="${a.getEntidade().getTipo()}"></td>
     <td th:text="${a.getEntidade().getDescricao()}"></td>

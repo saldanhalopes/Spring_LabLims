@@ -64,8 +64,8 @@ public class AmostraTipoController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("amostraTipo") @Valid final AmostraTipoDTO amostraTipoDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("amostraTipo") @Valid final AmostraTipoDTO amostraTipoDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "parameters/amostraTipo/add";
@@ -75,7 +75,7 @@ public class AmostraTipoController {
                 amostraTipoService.create(amostraTipoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("amostraTipo.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/amostraTipo/add";
             }
         }
@@ -103,7 +103,7 @@ public class AmostraTipoController {
                 amostraTipoService.update(id, amostraTipoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("amostraTipo.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/amostraTipo/edit";
             }
         }
@@ -126,7 +126,7 @@ public class AmostraTipoController {
                 amostraTipoService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("amostraTipo.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
         }
         return "redirect:/amostraTipos";

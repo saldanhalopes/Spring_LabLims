@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{amostraStatus.edit.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/amostraStatuss}" th:text="#{amostraStatus.amostraStatus.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{amostraStatus.edit.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{amostraStatus.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/amostraStatuss}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/amostraStatuss/audit/{id}(id=${amostraStatus.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('amostraStatus')}"></div>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataStatus', inputClass='js-datetimepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataPrevisao', inputClass='js-datetimepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataProgramado', inputClass='js-timepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataConferencia1', inputClass='js-datetimepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataConferencia2', inputClass='js-datetimepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='obs')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='amostra', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='planoAnalise', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='analiseStatus', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='conferente1', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='conferente2', type='select')}" ></div>
+</div>
+</html>

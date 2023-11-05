@@ -10,12 +10,12 @@
 <span layout:fragment="auditBack">
     <a th:href="@{/colunaVagas}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
+<span layout:fragment="auditHeads">
     <th th:text="#{colunaVaga.vaga.label}" scope="col" />
     <th th:text="#{colunaVaga.obs.label}" scope="col" />
     <th th:text="#{colunaVaga.colunaStorage.label}" scope="col" />
 </span>
-<span layout:fragment="auditTBody">
+<span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getVaga()}"></td>
     <td th:text="${a.getEntidade().getObs()}"></td>
     <td th:text="${a.getEntidade().getColunaStorage()}"></td>

@@ -1,5 +1,6 @@
 package br.com.lablims.spring_lablims.model;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -13,16 +14,15 @@ public class ArquivosDTO {
 
     private Integer id;
 
-    @Size(max = 255)
+    @Size(max = 255, message = "Nome do arquivo invalido")
     private String nome;
 
-    @Size(max = 255)
     private String tipo;
 
-    @Size(max = 255)
     private String descricao;
 
-    private Double tamanho;
+    @Size(max = 10485760, message = "Tamanho do arquivo invalido")
+    private Long tamanho;
 
     private byte[] arquivo;
 

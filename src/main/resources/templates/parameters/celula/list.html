@@ -7,7 +7,7 @@
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
         <li class="breadcrumb-item" th:text="#{celula.celula.label}"></li>
     </ol>
 </div>
@@ -19,11 +19,10 @@
        class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
 </span>
 <span layout:fragment="listBackMenu">
-    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary float-right"/>
+    <a th:href="@{/parameters}" th:text="#{back.menu}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="listErrors">
     <div th:if="${celulas.empty}" th:text="#{celula.list.empty}"></div>
-    <div th:if="${!celulas.empty}" class="table-responsive"></div>
 </div>
 <span layout:fragment="listHeader">
     <th th:text="#{celula.celula.label}" scope="col" />

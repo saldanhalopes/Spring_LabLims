@@ -75,8 +75,8 @@ public class UnidadeMedidaController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("unidadeMedida") @Valid final UnidadeMedidaDTO unidadeMedidaDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("unidadeMedida") @Valid final UnidadeMedidaDTO unidadeMedidaDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "parameters/unidadeMedida/add";
@@ -86,7 +86,7 @@ public class UnidadeMedidaController {
                 unidadeMedidaService.create(unidadeMedidaDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("unidadeMedida.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/unidadeMedida/add";
             }
         }
@@ -114,7 +114,7 @@ public class UnidadeMedidaController {
                 unidadeMedidaService.update(id, unidadeMedidaDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("unidadeMedida.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/unidadeMedida/edit";
             }
         }
@@ -137,7 +137,7 @@ public class UnidadeMedidaController {
                 unidadeMedidaService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("unidadeMedida.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
         }
         return "redirect:/unidadeMedidas";

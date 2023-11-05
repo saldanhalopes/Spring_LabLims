@@ -1,9 +1,14 @@
 package br.com.lablims.spring_lablims.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -13,7 +18,9 @@ public class EquipamentoLogDTO {
 
     private Integer id;
 
-    @Size(max = 255)
+    @Size(max = 2555)
+    @NotNull
+    @NotBlank
     private String descricao;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -22,19 +29,31 @@ public class EquipamentoLogDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dataFim;
 
-    @Size(max = 255)
+    @Size(max = 2555)
     private String obs;
 
+    @NotNull
     private Integer atividade;
+
+    private String atividadeName;
 
     private Integer equipamento;
 
+    private String equipamentoName;
+
     private Integer usuarioInicio;
+
+    private String usuarioInicioName;
 
     private Integer usuarioFim;
 
-    private Integer anexo;
+    private String usuarioFimName;
+
+    private List<Integer> amostra;
+
+    private List<Integer> arquivos;
 
     private Short version;
+
 
 }

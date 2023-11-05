@@ -60,8 +60,8 @@ public class EscalaMedidaController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("escalaMedida") @Valid final EscalaMedidaDTO escalaMedidaDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("escalaMedida") @Valid final EscalaMedidaDTO escalaMedidaDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "parameters/escalaMedida/add";
@@ -71,7 +71,7 @@ public class EscalaMedidaController {
                 escalaMedidaService.create(escalaMedidaDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("escalaMedida.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/escalaMedida/add";
             }
         }
@@ -99,7 +99,7 @@ public class EscalaMedidaController {
                 escalaMedidaService.update(id, escalaMedidaDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("escalaMedida.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/escalaMedida/edit";
             }
         }
@@ -122,7 +122,7 @@ public class EscalaMedidaController {
                 escalaMedidaService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("escalaMedida.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
         }
         return "redirect:/escalaMedidas";

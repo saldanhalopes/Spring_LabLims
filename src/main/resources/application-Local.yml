@@ -35,7 +35,7 @@ spring:
             non_contextual_creation: 'true'
         default_schema: principal
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: 'true'
     open-in-view: 'false'
 

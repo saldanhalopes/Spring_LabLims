@@ -7,7 +7,7 @@
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
         <li class="breadcrumb-item"><a th:href="@{/equipamentos}" th:text="#{equipamento.equipamento.label}"></a></li>
         <li class="breadcrumb-item active" th:text="#{equipamento.edit.headline}"></li>
     </ol>
@@ -39,9 +39,6 @@
     <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='serialNumber')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='tipo', type='select')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='setor', type='select')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='certificado', type='file', accept='application/pdf')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='manual', type='file', accept='application/pdf')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='procedimento', type='file', accept='application/pdf')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='equipamento', field='escala', type='select')}"></div>
 </div>
 </html>

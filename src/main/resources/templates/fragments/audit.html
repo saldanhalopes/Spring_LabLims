@@ -7,6 +7,7 @@
         .dataTables_filter {
             text-align: right;
         }
+
         .dataTables_filter input {
             width: 300px;
         }
@@ -45,7 +46,7 @@
                                 <th th:text="#{audit.version}" scope="col"/>
                                 <th th:text="#{audit.tipo}" scope="col"/>
                                 <!-- FIX-->
-                                <span layout:fragment="auditTHeads"/>
+                                <span layout:fragment="auditHeads"/>
                                 <!-- FIX-->
                                 <th>Usuário</th>
                                 <th>Data</th>
@@ -60,7 +61,7 @@
                                 <td th:text="${a.getEntidade().getVersion()}"></td>
                                 <td th:text="${a.getRevisao().getRevType()}"></td>
                                 <!-- FIX-->
-                                <span layout:fragment="auditTBody"/>
+                                <span layout:fragment="auditBody"/>
                                 <!-- FIX-->
                                 <td th:text="${a.getRevisao().getUserName()}"></td>
                                 <td th:text="${#dates.format(a.getRevisao().getRevisionDate(), 'dd/MM/yyyy HH:mm:ss')}"></td>
@@ -75,7 +76,7 @@
                                 <th th:text="#{audit.version}" scope="col"/>
                                 <th th:text="#{audit.tipo}" scope="col"/>
                                 <!-- FIX-->
-                                <span layout:fragment="auditTHeads"/>
+                                <span layout:fragment="auditHeads"/>
                                 <!-- FIX-->
                                 <th>Usuário</th>
                                 <th>Data</th>
@@ -96,6 +97,20 @@
     <script th:inline="javascript">
         $(document).ready(function () {
             $('#tableAudit').DataTable({
+                "dom": '<"top"lf>rt<"bottom"B>p<"clear">',
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "responsive": false,
+                "autoWidth": true,
+                "buttons": [
+                    { extend: 'copy'},
+                    { extend: 'csv'},
+                    { extend: 'excel'},
+                    { extend: 'print'}],
+                "select": true,
                 initComplete: function () {
                     this.api().columns().every(function () {
                         var column = this;
@@ -109,7 +124,9 @@
                             });
                     });
                 }
-            });
+            }).buttons().container().appendTo('#tableAudit_wrapper .col-md-6:eq(0)');
+            $('.dataTables_filter label').addClass('input-group input-group-sm');
+            $('.dataTables_paginate').addClass('pagination justify-content-center');
         });
     </script>
 </span>

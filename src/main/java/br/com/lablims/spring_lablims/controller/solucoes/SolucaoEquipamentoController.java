@@ -74,8 +74,8 @@ public class SolucaoEquipamentoController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("solucaoEquipamento") @Valid final SolucaoEquipamentoDTO solucaoEquipamentoDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("solucaoEquipamento") @Valid final SolucaoEquipamentoDTO solucaoEquipamentoDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "pages/solucaoEquipamento/add";
@@ -85,7 +85,7 @@ public class SolucaoEquipamentoController {
                 solucaoEquipamentoService.create(solucaoEquipamentoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("solucaoEquipamento.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "pages/solucaoEquipamento/add";
             }
         }
@@ -113,7 +113,7 @@ public class SolucaoEquipamentoController {
                 solucaoEquipamentoService.update(id, solucaoEquipamentoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("solucaoEquipamento.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "pages/solucaoEquipamento/edit";
             }
         }
@@ -132,7 +132,7 @@ public class SolucaoEquipamentoController {
             solucaoEquipamentoService.delete(id);
             redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("solucaoEquipamento.delete.success"));
         } else {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
         }
         return "redirect:/solucaoEquipamentos";
     }

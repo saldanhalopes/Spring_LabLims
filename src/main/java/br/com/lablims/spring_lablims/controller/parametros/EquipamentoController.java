@@ -5,12 +5,12 @@ import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.EquipamentoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.*;
+import br.com.lablims.spring_lablims.service.ArquivosService;
 import br.com.lablims.spring_lablims.service.EquipamentoService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,21 +42,23 @@ public class EquipamentoController {
     private final SetorRepository setorRepository;
     private final ArquivosRepository arquivosRepository;
     private final EscalaMedidaRepository escalaMedidaRepository;
-
+    private final ArquivosService arquivosService;
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
     @Autowired
     private UsuarioService usuarioService;
 
     public EquipamentoController(final EquipamentoService equipamentoService,
-            final EquipamentoTipoRepository equipamentoTipoRepository,
-            final SetorRepository setorRepository, final ArquivosRepository arquivosRepository,
-            final EscalaMedidaRepository escalaMedidaRepository) {
+                                 final EquipamentoTipoRepository equipamentoTipoRepository,
+                                 final SetorRepository setorRepository,
+                                 final EscalaMedidaRepository escalaMedidaRepository,
+                                 final ArquivosService arquivosService,
+                                 final ArquivosRepository arquivosRepository) {
         this.equipamentoService = equipamentoService;
         this.equipamentoTipoRepository = equipamentoTipoRepository;
         this.setorRepository = setorRepository;
         this.arquivosRepository = arquivosRepository;
+        this.arquivosService = arquivosService;
         this.escalaMedidaRepository = escalaMedidaRepository;
     }
 
@@ -110,9 +109,9 @@ public class EquipamentoController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("equipamento") @Valid final EquipamentoDTO equipamentoDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
-                      Principal principal, @ModelAttribute("password") String pass)  {
+    public String add(@ModelAttribute("equipamento") @Valid final EquipamentoDTO equipamentoDTO, final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
+                      Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "parameters/equipamento/add";
         } else {
@@ -121,7 +120,7 @@ public class EquipamentoController {
                 equipamentoService.create(equipamentoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("equipamento.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/equipamento/add";
             }
         }
@@ -155,11 +154,48 @@ public class EquipamentoController {
                 equipamentoService.update(id, equipamentoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("equipamento.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/equipamento/edit";
             }
         }
         return "redirect:/equipamentos";
+    }
+
+    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
+    @GetMapping("/upload/{id}")
+    public String uploads(@PathVariable final Integer id,
+                          @ModelAttribute("arquivos") final Arquivos arquivos,
+                          final Model model) {
+        final List<Arquivos> arquivoss = equipamentoService.findArquivosByEquipamento(id);
+        model.addAttribute("equipamento", equipamentoService.get(id));
+        model.addAttribute("arquivoss", arquivoss);
+        return "parameters/equipamento/upload";
+    }
+
+    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
+    @PostMapping("/upload/{id}")
+    public String upload(@PathVariable final Integer id,
+                         @RequestParam("arquivo") MultipartFile file, final Model model,
+                         final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
+                         Principal principal, @ModelAttribute("password") String pass) throws IOException {
+        if (usuarioService.validarUser(principal.getName(), pass)) {
+            CustomRevisionEntity.setMotivoText(motivo);
+            Equipamento equipamento = equipamentoService.findEquipamentoWithArquivos(id);
+            Arquivos arquivos = new Arquivos();
+            arquivos.setArquivo(file.getBytes());
+            arquivos.setTamanho(file.getSize());
+            arquivos.setNome(file.getOriginalFilename());
+            arquivos.setTipo(file.getContentType());
+            arquivos.setDescricao(motivo);
+            arquivosRepository.save(arquivos);
+            equipamento.getArquivos().add(arquivos);
+            equipamentoService.update(equipamento);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("arquivos.update.success"));
+        } else {
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
+            return "redirect:/equipamentos/upload/{id}";
+        }
+        return "redirect:/equipamentos/upload/{id}";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
@@ -178,10 +214,28 @@ public class EquipamentoController {
                 equipamentoService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("equipamento.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
         }
         return "redirect:/equipamentos";
+    }
+
+    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
+    @PostMapping("/{eqId}/arquivo/delete/{id}")
+    public String deleteArquivo(@PathVariable final Integer eqId,
+                                @PathVariable final Integer id,
+                         final RedirectAttributes redirectAttributes,
+                         @ModelAttribute("motivo") String motivo,
+                         Principal principal,
+                         @ModelAttribute("password") String pass) {
+        if (usuarioService.validarUser(principal.getName(), pass)) {
+            CustomRevisionEntity.setMotivoText(motivo);
+            arquivosService.deleteEquipamento(id);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("arquivos.delete.success"));
+        } else {
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
+        }
+        return "redirect:/equipamentos/upload/{eqId}";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
@@ -206,33 +260,6 @@ public class EquipamentoController {
     public void showImage(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         response.getOutputStream().write(equipamentoService.get(id).getImagem());
         response.getOutputStream().close();
-    }
-
-    @GetMapping("/details/certificado/{id}")
-    @ResponseBody
-    public ResponseEntity<?> showCertificado(@PathVariable("id") Integer id) throws IOException {
-       return ResponseEntity.status(HttpStatus.OK)
-               .contentType(MediaType.valueOf("application/pdf"))
-               .header(HttpHeaders.CONTENT_DISPOSITION, "Certificado")
-               .body(equipamentoService.get(id).getCertificado());
-    }
-
-    @GetMapping("/details/manual/{id}")
-    @ResponseBody
-    public ResponseEntity<?> showManual(@PathVariable("id") Integer id) throws IOException {
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/pdf"))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "Manual")
-                .body(equipamentoService.get(id).getManual());
-    }
-
-    @GetMapping("/details/procedimento/{id}")
-    @ResponseBody
-    public  ResponseEntity<?> showProcedimento(@PathVariable("id") Integer id) throws IOException {
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("application/pdf"))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "Procedimento")
-                .body(equipamentoService.get(id).getProcedimento());
     }
 
 }

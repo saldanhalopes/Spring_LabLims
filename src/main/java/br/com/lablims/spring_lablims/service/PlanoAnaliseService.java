@@ -6,7 +6,7 @@ import br.com.lablims.spring_lablims.model.PlanoAnaliseDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AnaliseRepository;
 import br.com.lablims.spring_lablims.repos.AnaliseTipoRepository;
-import br.com.lablims.spring_lablims.repos.LoteStatusRepository;
+import br.com.lablims.spring_lablims.repos.AmostraStatusRepository;
 import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseColunaRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
@@ -27,7 +27,7 @@ public class PlanoAnaliseService {
     private final AnaliseTipoRepository analiseTipoRepository;
     private final SetorRepository setorRepository;
     private final PlanoAnaliseColunaRepository planoAnaliseColunaRepository;
-    private final LoteStatusRepository loteStatusRepository;
+    private final AmostraStatusRepository amostraStatusRepository;
 
     public PlanoAnalise findById(Integer id){
         return planoAnaliseRepository.findById(id).orElse(null);
@@ -39,14 +39,14 @@ public class PlanoAnaliseService {
             final AnaliseTipoRepository analiseTipoRepository,
             final SetorRepository setorRepository,
             final PlanoAnaliseColunaRepository planoAnaliseColunaRepository,
-            final LoteStatusRepository loteStatusRepository) {
+            final AmostraStatusRepository amostraStatusRepository) {
         this.planoAnaliseRepository = planoAnaliseRepository;
         this.metodologiaVersaoRepository = metodologiaVersaoRepository;
         this.analiseRepository = analiseRepository;
         this.analiseTipoRepository = analiseTipoRepository;
         this.setorRepository = setorRepository;
         this.planoAnaliseColunaRepository = planoAnaliseColunaRepository;
-        this.loteStatusRepository = loteStatusRepository;
+        this.amostraStatusRepository = amostraStatusRepository;
     }
 
     public SimplePage<PlanoAnaliseDTO> findAll(final String filter, final Pageable pageable) {
@@ -135,9 +135,9 @@ public class PlanoAnaliseService {
         if (planoAnalisePlanoAnaliseColuna != null) {
             return WebUtils.getMessage("planoAnalise.planoAnaliseColuna.planoAnalise.referenced", planoAnalisePlanoAnaliseColuna.getId());
         }
-        final LoteStatus planoAnaliseLoteStatus = loteStatusRepository.findFirstByPlanoAnalise(planoAnalise);
-        if (planoAnaliseLoteStatus != null) {
-            return WebUtils.getMessage("planoAnalise.loteStatus.planoAnalise.referenced", planoAnaliseLoteStatus.getId());
+        final AmostraStatus planoAnaliseAmostraStatus = amostraStatusRepository.findFirstByPlanoAnalise(planoAnalise);
+        if (planoAnaliseAmostraStatus != null) {
+            return WebUtils.getMessage("planoAnalise.amostraStatus.planoAnalise.referenced", planoAnaliseAmostraStatus.getId());
         }
         return null;
     }

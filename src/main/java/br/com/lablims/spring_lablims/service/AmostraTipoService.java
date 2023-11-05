@@ -2,11 +2,11 @@ package br.com.lablims.spring_lablims.service;
 
 import br.com.lablims.spring_lablims.domain.AmostraTipo;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
-import br.com.lablims.spring_lablims.domain.Lote;
+import br.com.lablims.spring_lablims.domain.Amostra;
 import br.com.lablims.spring_lablims.model.AmostraTipoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AmostraTipoRepository;
-import br.com.lablims.spring_lablims.repos.LoteRepository;
+import br.com.lablims.spring_lablims.repos.AmostraRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,16 @@ import java.util.Map;
 public class AmostraTipoService {
 
     private final AmostraTipoRepository amostraTipoRepository;
-    private final LoteRepository loteRepository;
+    private final AmostraRepository amostraRepository;
 
     public AmostraTipo findById(Integer id) {
         return amostraTipoRepository.findById(id).orElse(null);
     }
 
     public AmostraTipoService(final AmostraTipoRepository amostraTipoRepository,
-                              final LoteRepository loteRepository) {
+                              final AmostraRepository amostraRepository) {
         this.amostraTipoRepository = amostraTipoRepository;
-        this.loteRepository = loteRepository;
+        this.amostraRepository = amostraRepository;
     }
 
     public SimplePage<AmostraTipoDTO> findAll(final String filter, final Pageable pageable) {
@@ -93,9 +93,9 @@ public class AmostraTipoService {
     public String getReferencedWarning(final Integer id) {
         final AmostraTipo amostraTipo = amostraTipoRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final Lote amostraTipoLote = loteRepository.findFirstByAmostraTipo(amostraTipo);
-        if (amostraTipoLote != null) {
-            return WebUtils.getMessage("amostraTipo.lote.amostraTipo.referenced", amostraTipoLote.getId());
+        final Amostra amostraTipoAmostra = amostraRepository.findFirstByAmostraTipo(amostraTipo);
+        if (amostraTipoAmostra != null) {
+            return WebUtils.getMessage("amostraTipo.amostra.amostraTipo.referenced", amostraTipoAmostra.getId());
         }
         return null;
     }

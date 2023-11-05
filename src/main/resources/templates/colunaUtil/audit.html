@@ -10,7 +10,7 @@
 <span layout:fragment="auditBack">
     <a th:href="@{/colunaUtils}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
+<span layout:fragment="auditHeads">
     <th th:text="#{colunaUtil.codigoColuna.label}" scope="col" />
     <th th:text="#{colunaUtil.serialNumber.label}" scope="col" />
     <th th:text="#{colunaUtil.dataAtivacao.label}" scope="col" />
@@ -19,7 +19,7 @@
     <th th:text="#{colunaUtil.estoque.label}" scope="col" />
     <th th:text="#{colunaUtil.obs.label}" scope="col" />
 </span>
-<span layout:fragment="auditTBody">
+<span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getCodigoColuna()}"></td>
     <td th:text="${a.getEntidade().getSerialNumber()}"></td>
     <td th:text="${a.getEntidade().getDataAtivacao()}"></td>

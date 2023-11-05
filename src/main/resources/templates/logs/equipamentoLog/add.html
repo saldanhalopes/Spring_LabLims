@@ -4,24 +4,29 @@
 <head>
     <title th:text="#{equipamentoLog.add.headline}"/>
 </head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/logs}" th:text="#{logs.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs}" th:text="#{equipamentoLog.list.headline}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs/list/{id}(id=${equipamento.id})}"
+                                       th:text="'Tag: ' + ${equipamento.tag}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{equipamentoLog.add.headline}"></li>
+    </ol>
+</div>
 <span layout:fragment="addHeadline">
     <h1 th:text="#{equipamentoLog.add.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="addBack">
-    <a th:href="@{/equipamentoLogs}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+    <a th:href="@{/equipamentoLogs/list/{id}(id=${equipamento.id})}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="addGlobalErrors">
-    <div th:replace="~{fragments/forms::globalErrors('equipamentoLog')}"/>
+    <div th:replace="~{fragments/forms::globalErrors('equipamentoLog')}"></div>
 </div>
 <div layout:fragment="addContent">
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='descricao')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='dataInicio', inputClass='js-datetimepicker')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='dataFim', inputClass='js-datetimepicker')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='obs')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='atividade', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='equipamento', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='usuarioInicio', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='usuarioFim', type='select')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='anexo', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='atividade', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='descricao', type='textarea', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='obs', maxlength='255')}"></div>
 </div>
+
 </html>

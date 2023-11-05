@@ -1,11 +1,12 @@
 package br.com.lablims.spring_lablims.model;
 
-import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,47 +15,43 @@ public class LoteDTO {
     private Integer id;
 
     @Size(max = 255)
+    @NotBlank
+    @NotNull
     private String lote;
 
-    private Double qtdEstoque;
+    private Double tamanhoLote;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataStatus;
+    private Integer unidade;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataEntrada;
+    private String unidadeName;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataInicioAnalise;
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataFabricacao;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataLiberacao;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataEnvioGarantia;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataNecessidade;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataValidade;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataImpressao;
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataValidade;
 
     @Size(max = 255)
-    private String numeroDocumento;
-
-    @Size(max = 255)
-    private String complemento;
+    private String localFabricacao;
 
     @Size(max = 255)
     private String obs;
 
+    @NotNull
     private Integer material;
 
-    private Integer amostraTipo;
+    private String  materialName;
+
+    @NotNull
+    private Integer cliente;
+
+    private String clienteName;
 
     private Short version;
+
+    private List<Integer> arquivos;
+
 
 }

@@ -16,7 +16,7 @@ public class MaterialDTO {
     @Size(max = 255)
     private String fiscalizado;
 
-    private Integer item;
+    private Integer codigo;
 
     @Size(max = 255)
     private String material;

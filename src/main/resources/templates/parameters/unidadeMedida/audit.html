@@ -7,7 +7,7 @@
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
         <li class="breadcrumb-item"><a th:href="@{/unidadeMedidas}" th:text="#{unidadeMedida.unidadeMedida.label}"></a></li>
         <li class="breadcrumb-item active" th:text="#{unidadeMedida.list.headline}+ ' ' + Auditoria"></li>
     </ol>
@@ -18,11 +18,11 @@
 <span layout:fragment="auditBack">
     <a th:href="@{/unidadeMedidas}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
+<span layout:fragment="auditHeads">
     <th th:text="#{unidadeMedida.unidade.label}" scope="col" />
     <th th:text="#{unidadeMedida.escalaMedida.label}" scope="col" />
 </span>
-<span layout:fragment="auditTBody">
+<span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getUnidade()}"></td>
     <td th:text="${a.getEntidade().getEscalaMedida()}"></td>
 </span>

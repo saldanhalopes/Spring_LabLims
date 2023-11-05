@@ -2,10 +2,10 @@ package br.com.lablims.spring_lablims.controller.parametros;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
 import br.com.lablims.spring_lablims.domain.*;
-import br.com.lablims.spring_lablims.model.LoteStatusDTO;
+import br.com.lablims.spring_lablims.model.AmostraStatusDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.*;
-import br.com.lablims.spring_lablims.service.LoteStatusService;
+import br.com.lablims.spring_lablims.service.AmostraStatusService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
@@ -31,7 +31,7 @@ import java.util.List;
 @RequestMapping("/loteStatuss")
 public class LoteStatusController {
 
-    private final LoteStatusService loteStatusService;
+    private final AmostraStatusService amostraStatusService;
     private final LoteRepository loteRepository;
     private final PlanoAnaliseRepository planoAnaliseRepository;
     private final AnaliseStatusRepository analiseStatusRepository;
@@ -40,12 +40,12 @@ public class LoteStatusController {
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
-    public LoteStatusController(final LoteStatusService loteStatusService,
+    public LoteStatusController(final AmostraStatusService amostraStatusService,
                                 final LoteRepository loteRepository,
                                 final PlanoAnaliseRepository planoAnaliseRepository,
                                 final AnaliseStatusRepository analiseStatusRepository,
                                 final UsuarioRepository usuarioRepository) {
-        this.loteStatusService = loteStatusService;
+        this.amostraStatusService = amostraStatusService;
         this.loteRepository = loteRepository;
         this.planoAnaliseRepository = planoAnaliseRepository;
         this.analiseStatusRepository = analiseStatusRepository;
@@ -78,7 +78,7 @@ public class LoteStatusController {
     public String list(@RequestParam(required = false) final String filter,
                        @SortDefault(sort = "id") @PageableDefault(size = 20) final Pageable pageable,
                        final Model model) {
-        final SimplePage<LoteStatusDTO> loteStatuss = loteStatusService.findAll(filter, pageable);
+        final SimplePage<AmostraStatusDTO> loteStatuss = amostraStatusService.findAll(filter, pageable);
         model.addAttribute("loteStatuss", loteStatuss);
         model.addAttribute("filter", filter);
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(loteStatuss));
@@ -86,24 +86,24 @@ public class LoteStatusController {
     }
 
     @GetMapping("/add")
-    public String add(@ModelAttribute("loteStatus") final LoteStatusDTO loteStatusDTO) {
+    public String add(@ModelAttribute("loteStatus") final AmostraStatusDTO amostraStatusDTO) {
         return "parameters/loteStatus/add";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("loteStatus") @Valid final LoteStatusDTO loteStatusDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("loteStatus") @Valid final AmostraStatusDTO amostraStatusDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "parameters/loteStatus/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText("Novo Registro");
-                loteStatusService.create(loteStatusDTO);
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("loteStatus.create.success"));
+                amostraStatusService.create(amostraStatusDTO);
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("amostraStatus.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/loteStatus/add";
             }
         }
@@ -112,14 +112,14 @@ public class LoteStatusController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable final Integer id, final Model model) {
-        model.addAttribute("loteStatus", loteStatusService.get(id));
+        model.addAttribute("loteStatus", amostraStatusService.get(id));
         return "parameters/loteStatus/edit";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "')")
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable final Integer id,
-                       @ModelAttribute("loteStatus") @Valid final LoteStatusDTO loteStatusDTO,
+                       @ModelAttribute("loteStatus") @Valid final AmostraStatusDTO amostraStatusDTO,
                        final BindingResult bindingResult, final Model model,
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
@@ -128,10 +128,10 @@ public class LoteStatusController {
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText(motivo);
-                loteStatusService.update(id, loteStatusDTO);
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("loteStatus.update.success"));
+                amostraStatusService.update(id, amostraStatusDTO);
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("amostraStatus.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/loteStatus/edit";
             }
         }
@@ -147,10 +147,10 @@ public class LoteStatusController {
                          @ModelAttribute("password") String pass) {
         if (usuarioService.validarUser(principal.getName(), pass)) {
             CustomRevisionEntity.setMotivoText(motivo);
-            loteStatusService.delete(id);
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("loteStatus.delete.success"));
+            amostraStatusService.delete(id);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("amostraStatus.delete.success"));
         } else {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
         }
         return "redirect:/loteStatuss";
     }
@@ -158,7 +158,7 @@ public class LoteStatusController {
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit")
     public String getRevisions(Model model) {
-        List<EntityRevision<LoteStatus>> revisoes = genericRevisionRepository.listaRevisoes(LoteStatus.class);
+        List<EntityRevision<AmostraStatus>> revisoes = genericRevisionRepository.listaRevisoes(AmostraStatus.class);
         model.addAttribute("audits", revisoes);
         return "parameters/loteStatus/audit";
     }
@@ -166,8 +166,8 @@ public class LoteStatusController {
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit/{id}")
     public String getRevisions(Model model, @PathVariable final Integer id) {
-        LoteStatus loteStatus = loteStatusService.findById(id);
-        List<EntityRevision<LoteStatus>> revisoes = genericRevisionRepository.listaRevisoesById(loteStatus.getId(), LoteStatus.class);
+        AmostraStatus amostraStatus = amostraStatusService.findById(id);
+        List<EntityRevision<AmostraStatus>> revisoes = genericRevisionRepository.listaRevisoesById(amostraStatus.getId(), AmostraStatus.class);
         model.addAttribute("audits", revisoes);
         return "parameters/loteStatus/audit";
     }

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/details}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{equipamentoLog.details.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/logs}" th:text="#{logs.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs}" th:text="#{equipamentoLog.list.headline}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs/list/{id}(id=${equipamento.id})}"
+                                       th:text="'Tag: ' + ${equipamento.tag}"></a></li>
+        <li class="breadcrumb-item active" th:text="'Registro: ' + ${equipamentoLog.id}"></li>
+    </ol>
+</div>
+<span layout:fragment="detailsHeadline">
+    <h1 th:text="#{equipamentoLog.details.headline}" class="flex-grow-1"/>
+    <h4 th:text="'Tag: ' + ${equipamento.tag}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="detailsBack">
+    <a th:href="@{/equipamentoLogs/list/{id}(id=${equipamento.id})}" th:text="#{details.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="detailsAudit">
+    <a th:href="@{/equipamentoLogs/audit/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="detailsContent">
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='atividade', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='descricao', type='textarea', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='equipamentoLog', field='obs', readonly='readonly')}"></div>
+</div>
+</html>

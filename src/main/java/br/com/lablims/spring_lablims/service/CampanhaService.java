@@ -1,16 +1,12 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.Campanha;
-import br.com.lablims.spring_lablims.domain.Celula;
-import br.com.lablims.spring_lablims.domain.ColunaLog;
-import br.com.lablims.spring_lablims.domain.Lote;
-import br.com.lablims.spring_lablims.domain.Setor;
+import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.CampanhaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.CampanhaRepository;
 import br.com.lablims.spring_lablims.repos.CelulaRepository;
 import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
-import br.com.lablims.spring_lablims.repos.LoteRepository;
+import br.com.lablims.spring_lablims.repos.AmostraRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
@@ -30,7 +26,7 @@ public class CampanhaService {
     private final CampanhaRepository campanhaRepository;
     private final SetorRepository setorRepository;
     private final CelulaRepository celulaRepository;
-    private final LoteRepository loteRepository;
+    private final AmostraRepository amostraRepository;
     private final ColunaLogRepository colunaLogRepository;
 
     public Campanha findById(Integer id){
@@ -39,11 +35,11 @@ public class CampanhaService {
 
     public CampanhaService(final CampanhaRepository campanhaRepository,
             final SetorRepository setorRepository, final CelulaRepository celulaRepository,
-            final LoteRepository loteRepository, final ColunaLogRepository colunaLogRepository) {
+            final AmostraRepository amostraRepository, final ColunaLogRepository colunaLogRepository) {
         this.campanhaRepository = campanhaRepository;
         this.setorRepository = setorRepository;
         this.celulaRepository = celulaRepository;
-        this.loteRepository = loteRepository;
+        this.amostraRepository = amostraRepository;
         this.colunaLogRepository = colunaLogRepository;
     }
 
@@ -103,8 +99,8 @@ public class CampanhaService {
         campanhaDTO.setSetor(campanha.getSetor() == null ? null : campanha.getSetor().getId());
         campanhaDTO.setCelula(campanha.getCelula() == null ? null : campanha.getCelula().getId());
         campanhaDTO.setVersion(campanha.getVersion());
-        campanhaDTO.setLotes(campanha.getLotes().stream()
-                .map(lote -> lote.getId())
+        campanhaDTO.setAmostras(campanha.getAmostras().stream()
+                .map(amostra -> amostra.getId())
                 .toList());
         return campanhaDTO;
     }
@@ -124,12 +120,12 @@ public class CampanhaService {
         final Celula celula = campanhaDTO.getCelula() == null ? null : celulaRepository.findById(campanhaDTO.getCelula())
                 .orElseThrow(() -> new NotFoundException("celula not found"));
         campanha.setCelula(celula);
-        final List<Lote> lotes = loteRepository.findAllById(
-                campanhaDTO.getLotes() == null ? Collections.emptyList() : campanhaDTO.getLotes());
-        if (lotes.size() != (campanhaDTO.getLotes() == null ? 0 : campanhaDTO.getLotes().size())) {
-            throw new NotFoundException("one of lotes not found");
+        final List<Amostra> amostras = amostraRepository.findAllById(
+                campanhaDTO.getAmostras() == null ? Collections.emptyList() : campanhaDTO.getAmostras());
+        if (amostras.size() != (campanhaDTO.getAmostras() == null ? 0 : campanhaDTO.getAmostras().size())) {
+            throw new NotFoundException("one of amostras not found");
         }
-        campanha.setLotes(lotes.stream().collect(Collectors.toSet()));
+        campanha.setAmostras(amostras.stream().collect(Collectors.toSet()));
         return campanha;
     }
 

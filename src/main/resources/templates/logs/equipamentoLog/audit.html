@@ -4,29 +4,41 @@
 <head>
     <title th:text="#{equipamentoLog.list.headline} + ' ' + Auditoria"/>
 </head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/logs}" th:text="#{logs.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs}" th:text="#{equipamentoLog.list.headline}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs/list/{id}(id=${equipamento.id})}"
+                                       th:text="'Tag: ' + ${equipamento.tag}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{equipamentoLog.list.headline} + ' ' + Auditoria"></li>
+    </ol>
+</div>
 <span layout:fragment="auditHeadline">
     <h2 th:text="#{equipamentoLog.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
 </span>
 <span layout:fragment="auditBack">
-    <a th:href="@{/equipamentoLogs}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+    <a th:href="@{/equipamentoLogs/list/{id}(id=${equipamento.id})}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
-    <th th:text="#{equipamentoLog.descricao.label}" scope="col" />
-    <th th:text="#{equipamentoLog.dataInicio.label}" scope="col" />
-    <th th:text="#{equipamentoLog.dataFim.label}" scope="col" />
-    <th th:text="#{equipamentoLog.obs.label}" scope="col" />
-    <th th:text="#{equipamentoLog.atividade.label}" scope="col" />
-    <th th:text="#{equipamentoLog.equipamento.label}" scope="col" />
-    <th th:text="#{equipamentoLog.usuarioInicio.label}" scope="col" />
+<span layout:fragment="auditHeads">
+    <th th:text="#{equipamentoLog.equipamento.label} + ' Id'" scope="col"/>
+    <th th:text="#{equipamentoLog.atividade.label}  + ' Id'" scope="col"/>
+    <th th:text="#{equipamentoLog.descricao.label}" scope="col"/>
+    <th th:text="#{equipamentoLog.usuarioInicio.label}  + ' Id'" scope="col"/>
+    <th th:text="#{equipamentoLog.dataInicio.label}" scope="col"/>
+    <th th:text="#{equipamentoLog.usuarioFim.label}  + ' Id'" scope="col"/>
+    <th th:text="#{equipamentoLog.dataFim.label}" scope="col"/>
+    <th th:text="#{equipamentoLog.obs.label}" scope="col"/>
 </span>
-<span layout:fragment="auditTBody">
-    <td th:text="${a.getEntidade().getDescricao()}"></td>
-    <td th:text="${a.getEntidade().getDataInicio()}"></td>
-    <td th:text="${a.getEntidade().getDataFim()}"></td>
+<span layout:fragment="auditBody">
+    <td th:text="${a.getEntidade().getEquipamento()==null ? '': a.getEntidade().getEquipamento().getId()}"></td>
+    <td th:text="${a.getEntidade().getAtividade()==null ? '': a.getEntidade().getAtividade().getId()}"></td>
+    <td th:text="${a.getEntidade().getDescricao()}" style="min-width: 350px;"></td>
+    <td th:text="${a.getEntidade().getUsuarioInicio()==null ? '': a.getEntidade().getUsuarioInicio().getId()}"></td>
+    <td th:text="${#temporals.format(a.getEntidade().getDataInicio(), 'dd/MM/yyyy HH:mm:ss')}"></td>
+    <td th:text="${a.getEntidade().getUsuarioFim()==null ? '': a.getEntidade().getUsuarioFim().getId()}"></td>
+    <td th:text="${#temporals.format(a.getEntidade().getDataInicio(), 'dd/MM/yyyy HH:mm:ss')}"></td>
     <td th:text="${a.getEntidade().getObs()}"></td>
-    <td th:text="${a.getEntidade().getAtividade()}"></td>
-    <td th:text="${a.getEntidade().getEquipamento()}"></td>
-    <td th:text="${a.getEntidade().getUsuarioInicio()}"></td>
 </span>
 </html>
 

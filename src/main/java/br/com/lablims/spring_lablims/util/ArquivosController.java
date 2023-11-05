@@ -15,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -60,8 +65,8 @@ public class ArquivosController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("arquivos") @Valid final ArquivosDTO arquivosDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("arquivos") @Valid final ArquivosDTO arquivosDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "pages/arquivos/add";
@@ -71,7 +76,7 @@ public class ArquivosController {
                 arquivosService.create(arquivosDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("arquivos.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "pages/arquivos/add";
             }
         }
@@ -99,7 +104,7 @@ public class ArquivosController {
                 arquivosService.update(id, arquivosDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("arquivos.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "pages/arquivos/edit";
             }
         }
@@ -113,19 +118,26 @@ public class ArquivosController {
                          @ModelAttribute("motivo") String motivo,
                          Principal principal,
                          @ModelAttribute("password") String pass) {
-        final String referencedWarning = arquivosService.getReferencedWarning(id);
-        if (referencedWarning != null) {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, referencedWarning);
-        } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText(motivo);
                 arquivosService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("arquivos.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
-        }
         return "redirect:/arquivoss";
+    }
+
+    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
+    @GetMapping("/view/{id}")
+    @ResponseBody
+    public ResponseEntity<?> showArquivo(@PathVariable("id") Integer id) throws IOException {
+        ArquivosDTO arquivosDTO = arquivosService.get(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf(arquivosDTO.getTipo()))
+                .contentLength(arquivosDTO.getTamanho())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + arquivosDTO.getNome())
+                .body(arquivosDTO.getArquivo());
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")

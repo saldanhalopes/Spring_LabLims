@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{amostra.add.headline}"/>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div layout:fragment="breadcrumb"></div>
+        </div>
+    </section>
+    <div class="container-fluid">
+        <div class="card card-success card-outline">
+            <div class="card-header">
+                <h5 class="card-title d-flex">
+                    <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
+                    <h1 th:text="#{amostra.add.headline}" class="flex-grow-1"/>
+                </h5>
+            </div>
+            <form th:action="${T(br.com.lablims.spring_lablims.util.WebUtils).getRequest().requestURI}"
+                  method="post" enctype="multipart/form-data" autocomplete="off">
+                <div class="card-body">
+                    <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
+                         class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+                    <div th:replace="~{fragments/forms::globalErrors('amostras')}"></div>
+                    <div class="main-content container-fluid">
+                        <div th:replace="~{fragments/forms::inputRow(object='amostra', field='codigoAmostra', type='select', required='required')}"></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-success" data-toggle="modal"
+                            th:attr="data-target='#amostra'" th:text="#{add.btn}"
+                            sec:authorize="hasAnyAuthority('ADMIN','MASTERUSER')"></button>
+                    <span layout:fragment="amostraBackMenu"></span>
+                </div>
+                <div th:replace="~{fragments/modal :: modalAmostra}"></div>
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card card-info card-outline">
+            <div class="card-body table-responsive">
+                <div th:if="${MSG_INFO != null}" th:text="${MSG_INFO}" id="infoAlert"
+                     class="alert alert-info alert-dismissible fade show" role="alert"></div>
+                <div th:if="${MSG_SUCCESS != null}" th:text="${MSG_SUCCESS}" id="succesAlert"
+                     class="alert alert-success alert-dismissible fade show" role="alert"></div>
+                <p>
+                <div th:if="${amostras.empty}" th:text="#{amostra.list.empty}"></div>
+                </p>
+                <table class="table table-bordered table-striped" id="tableList">
+                    <thead>
+                    <tr>
+                        <th th:text="#{id.label}" scope="col"/>
+                        <th th:text="#{amostra.lote.label}" scope="col"/>
+                        <th th:text="#{amostra.codigoAmostra.label}" scope="col"/>
+                        <th th:text="#{amostra.amostraTipo.label}" scope="col"/>
+                        <th th:text="#{amostra.qtdAmostra.label}" scope="col"/>
+                        <th th:text="#{amostra.dataEntrada.label}" scope="col"/>
+                        <th><!-- --></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="amt : ${amostras}">
+                        <td th:text="${amt.id}"/>
+                        <td th:text="${amt.lote}"/>
+                        <td th:text="${amt.codigoAmostra}"/>
+                        <td th:text="${amt.amostraTipo}"/>
+                        <td th:text="${#numbers.formatDecimal(amt.qtdAmostra.doubleValue(),1,4)}"/>
+                        <td th:text="${#temporals.format(amt.dataEntrada, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        <td>
+                            <span layout:fragment="amostraLiksContent"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div th:replace="~{fragments/utils::pagination()}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<span layout:fragment="script">
+    <!-- DataTables  & Plugins -->
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#tableList').DataTable({
+                "dom": '<"top"f>rt<"bottom"B><"clear">',
+                "paging": false,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": false,
+                "responsive": false,
+                "autoWidth": true,
+                "buttons": [
+                    {
+                        extend: 'copy',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }, {
+                        extend: 'csv',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }, {
+                        extend: 'excel',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }, {
+                        extend: 'print',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }]
+            }).buttons().container().appendTo('#tableList_wrapper .col-md-6:eq(0)');
+            $('.dataTables_filter label').addClass('input-group input-group-sm');
+        });
+        $(document).ready(function () {
+            $('input').attr('autocomplete', 'new-password');
+        });
+        window.setTimeout(function () {
+            $('#infoAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+            $('#errorAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+            $('#succesAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+            $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+                event.preventDefault();
+                $(this).ekkoLightbox({
+                    alwaysShowClose: true
+                });
+            });
+        })
+    </script>
+</span>
+<div class="float-end text-nowrap" th:fragment="amostraLiks" th:id="liks">
+    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+            th:attr="data-target='#remover_'+${amt.id}" th:title="#{delete.btn}"
+            sec:authorize="hasAnyAuthority('ADMIN')"><i class="fas fa-trash"></i></button>
+    <div th:replace="~{fragments/modal :: modalDelete(field=${amt.id}, link=${link} + '/amostra')}"></div>
+</div>
+</html>
+
+
+

@@ -1,23 +1,20 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.AmostraTipo;
-import br.com.lablims.spring_lablims.domain.Campanha;
-import br.com.lablims.spring_lablims.domain.Lote;
-import br.com.lablims.spring_lablims.domain.LoteStatus;
-import br.com.lablims.spring_lablims.domain.Material;
+import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.model.ArquivosDTO;
 import br.com.lablims.spring_lablims.model.LoteDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.AmostraTipoRepository;
-import br.com.lablims.spring_lablims.repos.CampanhaRepository;
-import br.com.lablims.spring_lablims.repos.LoteRepository;
-import br.com.lablims.spring_lablims.repos.LoteStatusRepository;
-import br.com.lablims.spring_lablims.repos.MaterialRepository;
+import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,24 +23,27 @@ public class LoteService {
 
     private final LoteRepository loteRepository;
     private final MaterialRepository materialRepository;
-    private final AmostraTipoRepository amostraTipoRepository;
-    private final CampanhaRepository campanhaRepository;
-    private final LoteStatusRepository loteStatusRepository;
+    private final UnidadeMedidaRepository unidadeMedidaRepository;
+    private final ClienteRepository clienteRepository;
+    private final AmostraRepository amostraRepository;
+    private final ArquivosRepository arquivosRepository;
 
-    public Lote findById(Integer id){
+    public Lote findById(Integer id) {
         return loteRepository.findById(id).orElse(null);
     }
 
     public LoteService(final LoteRepository loteRepository,
-            final MaterialRepository materialRepository,
-            final AmostraTipoRepository amostraTipoRepository,
-            final CampanhaRepository campanhaRepository,
-            final LoteStatusRepository loteStatusRepository) {
+                       final MaterialRepository materialRepository,
+                       final UnidadeMedidaRepository unidadeMedidaRepository,
+                       final ClienteRepository clienteRepository,
+                       final AmostraRepository amostraRepository,
+                       final ArquivosRepository arquivosRepository) {
         this.loteRepository = loteRepository;
         this.materialRepository = materialRepository;
-        this.amostraTipoRepository = amostraTipoRepository;
-        this.campanhaRepository = campanhaRepository;
-        this.loteStatusRepository = loteStatusRepository;
+        this.unidadeMedidaRepository = unidadeMedidaRepository;
+        this.clienteRepository = clienteRepository;
+        this.amostraRepository = amostraRepository;
+        this.arquivosRepository = arquivosRepository;
     }
 
     public SimplePage<LoteDTO> findAll(final String filter, final Pageable pageable) {
@@ -62,6 +62,16 @@ public class LoteService {
         return new SimplePage<>(page.getContent()
                 .stream()
                 .map(lote -> mapToDTO(lote, new LoteDTO()))
+                .toList(),
+                page.getTotalElements(), pageable);
+    }
+
+    public SimplePage<LoteDTO> findAllOfLotes(final Pageable pageable) {
+        Page<Lote> page;
+        page = loteRepository.findAllOfLotes(pageable);
+        return new SimplePage<>(page.getContent()
+                .stream()
+                .map(lote -> mapToDTOByLotes(lote, new LoteDTO()))
                 .toList(),
                 page.getTotalElements(), pageable);
     }
@@ -85,71 +95,102 @@ public class LoteService {
         loteRepository.save(lote);
     }
 
+    public void updateArquivo(final Lote lote) {
+        loteRepository.save(lote);
+    }
+
     public void delete(final Integer id) {
         final Lote lote = loteRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         // remove many-to-many relations at owning side
-        campanhaRepository.findAllByLotes(lote)
-                .forEach(campanha -> campanha.getLotes().remove(lote));
+        loteRepository.findArquivosByLote(lote.getId()).getArquivos()
+                .forEach(arquivos -> lote.getArquivos().remove(arquivos));
         loteRepository.delete(lote);
     }
 
     private LoteDTO mapToDTO(final Lote lote, final LoteDTO loteDTO) {
         loteDTO.setId(lote.getId());
         loteDTO.setLote(lote.getLote());
-        loteDTO.setQtdEstoque(lote.getQtdEstoque());
-        loteDTO.setDataStatus(lote.getDataStatus());
-        loteDTO.setDataEntrada(lote.getDataEntrada());
-        loteDTO.setDataInicioAnalise(lote.getDataInicioAnalise());
-        loteDTO.setDataLiberacao(lote.getDataLiberacao());
-        loteDTO.setDataEnvioGarantia(lote.getDataEnvioGarantia());
-        loteDTO.setDataNecessidade(lote.getDataNecessidade());
+        loteDTO.setTamanhoLote(lote.getTamanhoLote());
+        loteDTO.setDataFabricacao(lote.getDataFabricacao());
         loteDTO.setDataValidade(lote.getDataValidade());
-        loteDTO.setDataImpressao(lote.getDataImpressao());
-        loteDTO.setNumeroDocumento(lote.getNumeroDocumento());
-        loteDTO.setComplemento(lote.getComplemento());
+        loteDTO.setLocalFabricacao(lote.getLocalFabricacao());
         loteDTO.setObs(lote.getObs());
+        loteDTO.setUnidade(lote.getUnidade() == null ? null : lote.getUnidade().getId());
         loteDTO.setMaterial(lote.getMaterial() == null ? null : lote.getMaterial().getId());
-        loteDTO.setAmostraTipo(lote.getAmostraTipo() == null ? null : lote.getAmostraTipo().getId());
+        loteDTO.setCliente(lote.getCliente() == null ? null : lote.getCliente().getId());
+        loteDTO.setVersion(lote.getVersion());
+        loteDTO.setArquivos(lote.getArquivos().stream()
+                .map(arquivos -> arquivos.getId())
+                .toList());
+        return loteDTO;
+    }
+
+    public List<Arquivos> findArquivosByLote(final Integer id) {
+        final Lote lote = loteRepository.findArquivosByLote(id);
+        return lote.getArquivos()
+                .stream()
+                .toList();
+    }
+
+    public Lote findLoteWithArquivos(final Integer id) {
+        return loteRepository.findArquivosByLote(id);
+    }
+
+
+    private LoteDTO mapToDTOByLotes(final Lote lote, final LoteDTO loteDTO) {
+        loteDTO.setId(lote.getId());
+        loteDTO.setLote(lote.getLote());
+        loteDTO.setTamanhoLote(lote.getTamanhoLote());
+        loteDTO.setDataFabricacao(lote.getDataFabricacao());
+        loteDTO.setDataValidade(lote.getDataValidade());
+        loteDTO.setLocalFabricacao(lote.getLocalFabricacao());
+        loteDTO.setObs(lote.getObs());
+        loteDTO.setUnidadeName(lote.getUnidade() == null ? null : lote.getUnidade().getUnidade());
+        loteDTO.setMaterial(lote.getMaterial() == null ? null : lote.getMaterial().getCodigo());
+        loteDTO.setMaterialName(lote.getMaterial() == null ? null : lote.getMaterial().getMaterial());
+        loteDTO.setClienteName(lote.getCliente() == null ? null : lote.getCliente().getCliente());
         loteDTO.setVersion(lote.getVersion());
         return loteDTO;
     }
 
     private Lote mapToEntity(final LoteDTO loteDTO, final Lote lote) {
         lote.setLote(loteDTO.getLote());
-        lote.setQtdEstoque(loteDTO.getQtdEstoque());
-        lote.setDataStatus(loteDTO.getDataStatus());
-        lote.setDataEntrada(loteDTO.getDataEntrada());
-        lote.setDataInicioAnalise(loteDTO.getDataInicioAnalise());
-        lote.setDataLiberacao(loteDTO.getDataLiberacao());
-        lote.setDataEnvioGarantia(loteDTO.getDataEnvioGarantia());
-        lote.setDataNecessidade(loteDTO.getDataNecessidade());
+        lote.setTamanhoLote(loteDTO.getTamanhoLote());
+        lote.setDataFabricacao(loteDTO.getDataFabricacao());
         lote.setDataValidade(loteDTO.getDataValidade());
-        lote.setDataImpressao(loteDTO.getDataImpressao());
-        lote.setNumeroDocumento(loteDTO.getNumeroDocumento());
-        lote.setComplemento(loteDTO.getComplemento());
+        lote.setLocalFabricacao(loteDTO.getLocalFabricacao());
         lote.setObs(loteDTO.getObs());
+        final UnidadeMedida unidadeMedida = loteDTO.getUnidade() == null ? null : unidadeMedidaRepository.findById(loteDTO.getUnidade())
+                .orElseThrow(() -> new NotFoundException("Amostra Tipo nao encontrada"));
+        lote.setUnidade(unidadeMedida);
         final Material material = loteDTO.getMaterial() == null ? null : materialRepository.findById(loteDTO.getMaterial())
-                .orElseThrow(() -> new NotFoundException("material not found"));
+                .orElseThrow(() -> new NotFoundException("Material nao encontrado"));
         lote.setMaterial(material);
-        final AmostraTipo amostraTipo = loteDTO.getAmostraTipo() == null ? null : amostraTipoRepository.findById(loteDTO.getAmostraTipo())
-                .orElseThrow(() -> new NotFoundException("amostraTipo not found"));
-        lote.setAmostraTipo(amostraTipo);
+        final Cliente cliente = loteDTO.getCliente() == null ? null : clienteRepository.findById(loteDTO.getCliente())
+                .orElseThrow(() -> new NotFoundException("Cliente nao encontrado"));
+        lote.setCliente(cliente);
+        final List<Arquivos> arquivos = arquivosRepository.findAllById(
+                loteDTO.getArquivos() == null ? Collections.emptyList() : loteDTO.getArquivos());
+        if (arquivos.size() != (loteDTO.getArquivos() == null ? 0 : loteDTO.getArquivos().size())) {
+            throw new NotFoundException("Arquivos nao encontrados");
+        }
+        lote.setArquivos(arquivos.stream().collect(Collectors.toSet()));
         return lote;
     }
 
+    public boolean loteExists(final String lote) {
+        return loteRepository.existsByLoteIgnoreCase(lote);
+    }
+
     public String getReferencedWarning(final Integer id) {
-        final Lote lote = loteRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
-        final LoteStatus loteLoteStatus = loteStatusRepository.findFirstByLote(lote);
-        if (loteLoteStatus != null) {
-            return WebUtils.getMessage("lote.loteStatus.lote.referenced", loteLoteStatus.getId());
-        }
-        final Campanha lotesCampanha = campanhaRepository.findFirstByLotes(lote);
-        if (lotesCampanha != null) {
-            return WebUtils.getMessage("lote.campanha.lotes.referenced", lotesCampanha.getId());
+        final Lote lote = loteRepository.findById(id).orElseThrow(NotFoundException::new);
+        final Amostra amostraLote = amostraRepository.findFirstByLote(lote);
+        if (amostraLote != null) {
+            return WebUtils.getMessage("lote.amostra.lote.referenced", amostraLote.getId());
         }
         return null;
     }
+
 
 }

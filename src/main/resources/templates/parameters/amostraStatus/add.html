@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{amostraStatus.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/amostraStatuss}" th:text="#{amostraStatus.amostraStatus.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{amostraStatus.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{amostraStatus.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/amostraStatuss}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('amostraStatus')}"></div>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataStatus', inputClass='js-datetimepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataPrevisao', inputClass='js-datetimepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataProgramado', inputClass='js-timepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataConferencia1', inputClass='js-datetimepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='dataConferencia2', inputClass='js-datetimepicker')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='obs')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='amostra', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='planoAnalise', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='analiseStatus', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='conferente1', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraStatus', field='conferente2', type='select')}" ></div>
+</div>
+</html>

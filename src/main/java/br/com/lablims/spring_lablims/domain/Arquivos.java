@@ -34,7 +34,7 @@ public class Arquivos {
     private String descricao;
 
     @Column
-    private Double tamanho;
+    private Long tamanho;
 
     @NotAudited
     @Lob

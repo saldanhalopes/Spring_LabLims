@@ -10,7 +10,7 @@
 <span layout:fragment="auditBack">
     <a th:href="@{/campanhas}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
+<span layout:fragment="auditHeads">
     <th th:text="#{campanha.previsaoInicio.label}" scope="col" />
     <th th:text="#{campanha.previsaoFim.label}" scope="col" />
     <th th:text="#{campanha.dataInicio.label}" scope="col" />
@@ -19,7 +19,7 @@
     <th th:text="#{campanha.obs.label}" scope="col" />
     <th th:text="#{campanha.ordem.label}" scope="col" />
 </span>
-<span layout:fragment="auditTBody">
+<span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getPrevisaoInicio()}"></td>
     <td th:text="${a.getEntidade().getPrevisaoFim()}"></td>
     <td th:text="${a.getEntidade().getDataInicio()}"></td>

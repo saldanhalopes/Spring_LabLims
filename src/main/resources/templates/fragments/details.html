@@ -38,9 +38,14 @@
 </body>
 <span layout:fragment="script">
     <script th:inline="javascript">
-        // $(document).ready(function () {
-        //     $("#detailsDiv :input").attr("disabled", true);
-        // });
+        $(document).ready(function () {
+            $('textarea').each(function () {
+                this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+            }).on("input", function () {
+                this.style.height = 0;
+                this.style.height = (this.scrollHeight) + "px";
+            });
+        });
         $(function () {
             $(document).on('click', '[data-toggle="lightbox"]', function(event) {
                 event.preventDefault();

@@ -7,7 +7,7 @@
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
         <li class="breadcrumb-item"><a th:href="@{/analiseTipos}" th:text="#{analiseTipo.analiseTipo.label}"></a></li>
         <li class="breadcrumb-item active" th:text="#{analiseTipo.add.headline}"></li>
     </ol>
@@ -16,7 +16,7 @@
     <h1 th:text="#{analise.add.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="addBack">
-    <a th:href="@{/analises}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+    <a th:href="@{/templates/laboratorio}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="addGlobalErrors">
     <div th:replace="~{fragments/forms::globalErrors('analise')}"/>

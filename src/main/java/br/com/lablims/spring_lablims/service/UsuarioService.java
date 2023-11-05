@@ -1,13 +1,7 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.AtaTurno;
-import br.com.lablims.spring_lablims.domain.Celula;
-import br.com.lablims.spring_lablims.domain.ColunaLog;
-import br.com.lablims.spring_lablims.domain.EquipamentoLog;
-import br.com.lablims.spring_lablims.domain.Grupo;
-import br.com.lablims.spring_lablims.domain.LoteStatus;
-import br.com.lablims.spring_lablims.domain.SolucaoRegistro;
-import br.com.lablims.spring_lablims.domain.Usuario;
+import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.domain.AmostraStatus;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.UsuarioDTO;
 import br.com.lablims.spring_lablims.repos.AtaTurnoRepository;
@@ -15,7 +9,7 @@ import br.com.lablims.spring_lablims.repos.CelulaRepository;
 import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoLogRepository;
 import br.com.lablims.spring_lablims.repos.GrupoRepository;
-import br.com.lablims.spring_lablims.repos.LoteStatusRepository;
+import br.com.lablims.spring_lablims.repos.AmostraStatusRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
 import br.com.lablims.spring_lablims.repos.UsuarioRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
@@ -24,7 +18,6 @@ import jakarta.transaction.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -44,7 +37,7 @@ public class UsuarioService {
     private final ColunaLogRepository colunaLogRepository;
     private final AtaTurnoRepository ataTurnoRepository;
     private final EquipamentoLogRepository equipamentoLogRepository;
-    private final LoteStatusRepository loteStatusRepository;
+    private final AmostraStatusRepository amostraStatusRepository;
     private final SolucaoRegistroRepository solucaoRegistroRepository;
 
     public Usuario findById(Integer id){
@@ -56,7 +49,7 @@ public class UsuarioService {
                           final CelulaRepository celulaRepository, final ColunaLogRepository colunaLogRepository,
                           final AtaTurnoRepository ataTurnoRepository,
                           final EquipamentoLogRepository equipamentoLogRepository,
-                          final LoteStatusRepository loteStatusRepository,
+                          final AmostraStatusRepository amostraStatusRepository,
                           final SolucaoRegistroRepository solucaoRegistroRepository) {
         this.usuarioRepository = usuarioRepository;
         this.grupoRepository = grupoRepository;
@@ -65,7 +58,7 @@ public class UsuarioService {
         this.colunaLogRepository = colunaLogRepository;
         this.ataTurnoRepository = ataTurnoRepository;
         this.equipamentoLogRepository = equipamentoLogRepository;
-        this.loteStatusRepository = loteStatusRepository;
+        this.amostraStatusRepository = amostraStatusRepository;
         this.solucaoRegistroRepository = solucaoRegistroRepository;
     }
 
@@ -219,13 +212,13 @@ public class UsuarioService {
         if (usuarioFimEquipamentoLog != null) {
             return WebUtils.getMessage("usuario.equipamentoLog.usuarioFim.referenced", usuarioFimEquipamentoLog.getId());
         }
-        final LoteStatus conferente1LoteStatus = loteStatusRepository.findFirstByConferente1(usuario);
-        if (conferente1LoteStatus != null) {
-            return WebUtils.getMessage("usuario.loteStatus.conferente1.referenced", conferente1LoteStatus.getId());
+        final AmostraStatus conferente1AmostraStatus = amostraStatusRepository.findFirstByConferente1(usuario);
+        if (conferente1AmostraStatus != null) {
+            return WebUtils.getMessage("usuario.amostraStatus.conferente1.referenced", conferente1AmostraStatus.getId());
         }
-        final LoteStatus conferente2LoteStatus = loteStatusRepository.findFirstByConferente2(usuario);
-        if (conferente2LoteStatus != null) {
-            return WebUtils.getMessage("usuario.loteStatus.conferente2.referenced", conferente2LoteStatus.getId());
+        final AmostraStatus conferente2AmostraStatus = amostraStatusRepository.findFirstByConferente2(usuario);
+        if (conferente2AmostraStatus != null) {
+            return WebUtils.getMessage("usuario.amostraStatus.conferente2.referenced", conferente2AmostraStatus.getId());
         }
         final SolucaoRegistro criadorSolucaoRegistro = solucaoRegistroRepository.findFirstByCriador(usuario);
         if (criadorSolucaoRegistro != null) {

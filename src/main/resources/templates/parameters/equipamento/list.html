@@ -7,7 +7,7 @@
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.back}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
         <li class="breadcrumb-item" th:text="#{equipamento.equipamento.label}"></li>
     </ol>
 </div>
@@ -19,15 +19,14 @@
        class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
 </span>
 <span layout:fragment="listBackMenu">
-    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary float-right"/>
+    <a th:href="@{/parameters}" th:text="#{back.menu}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="listErrors">
     <div th:if="${equipamentos.empty}" th:text="#{equipamento.list.empty}"></div>
-    <div th:if="${!equipamentos.empty}" class="table-responsive"></div>
 </div>
 <span layout:fragment="listHeader">
-    <th th:text="#{equipamento.descricao.label}" scope="col"/>
     <th th:text="#{equipamento.tag.label}" scope="col"/>
+    <th th:text="#{equipamento.descricao.label}" scope="col"/>
     <th th:text="#{equipamento.fabricante.label}" scope="col"/>
     <th th:text="#{equipamento.marca.label}" scope="col"/>
     <th th:text="#{equipamento.modelo.label}" scope="col"/>
@@ -39,13 +38,13 @@
     <tr th:each="equipamento : ${equipamentos}">
         <td th:text="${equipamento.id}"/>
         <td th:text="${equipamento.version}"/>
-        <td th:text="${equipamento.descricao}"/>
         <td th:text="${equipamento.tag}"/>
+        <td th:text="${equipamento.descricao}"/>
         <td th:text="${equipamento.fabricante}"/>
         <td th:text="${equipamento.marca}"/>
         <td th:text="${equipamento.modelo}"/>
-        <td th:text="${#temporals.format(equipamento.ultimaCalibracao, 'dd/MM/yyyy HH:mm:ss')}"></td>
-        <td th:text="${#temporals.format(equipamento.proximaCalibracao, 'dd/MM/yyyy HH:mm:ss')}"></td>
+        <td th:text="${#temporals.format(equipamento.ultimaCalibracao, 'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(equipamento.proximaCalibracao, 'dd/MM/yyyy')}"></td>
 <!--        <td><a th:href="@{'/equipamentos/image/display/' + ${equipamento.id}}" data-toggle="lightbox" data-gallery="equipamento"-->
 <!--               data-type="image" data-disable-external-check="true" class="col-md-4">-->
 <!--            <img class='img-circle widget-user-image' th:src="@{'/equipamentos/image/display/' + ${equipamento.id}}" width="50px" height="50px"/></a>-->
@@ -53,9 +52,12 @@
         <td>
             <div class="float-end text-nowrap">
                 <a th:href="@{/equipamentos/details/{id}(id=${equipamento.id})}"
-                   class="btn btn-sm btn-primary"
-                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')">
+                   class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Detalhes">
                     <i class="fas fa-eye"></i> </a>
+                <a th:href="@{/equipamentos/upload/{id}(id=${equipamento.id})}"
+                   class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Arquivos"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')">
+                    <i class="fas fa-paperclip"></i> </a>
                 <a th:href="@{/equipamentos/edit/{id}(id=${equipamento.id})}"
                    class="btn btn-sm btn-info"
                    sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')">

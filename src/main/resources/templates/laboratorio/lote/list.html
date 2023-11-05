@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{lote.list.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/laboratorio}" th:text="#{laboratorio.title}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{lote.list.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{lote.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/lotes/add}" th:text="#{lote.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/laboratorio}" th:text="#{back.menu}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${lotes.empty}" th:text="#{lote.list.empty}"></div>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{lote.lote.label}" scope="col"/>
+    <th th:text="#{material.codigo.label}" scope="col"/>
+    <th th:text="#{material.material.label}" scope="col"/>
+    <th th:text="#{lote.dataFabricacao.label}" scope="col"/>
+    <th th:text="#{lote.cliente.label}" scope="col"/>
+    <th th:text="#{lote.tamanhoLote.label}" scope="col"/>
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="lote : ${lotes}">
+        <td th:text="${lote.id}"/>
+        <td th:text="${lote.version}"/>
+        <td th:text="${lote.lote}"/>
+        <td th:text="${lote.material}"/>
+        <td th:text="${lote.materialName}"/>
+        <td th:text="${#temporals.format(lote.dataFabricacao, 'dd/MM/yyyy')}"></td>
+        <td th:text="${lote.clienteName}"/>
+        <td th:text="${lote.tamanhoLote} + ' ' + ${lote.unidadeName}"/>
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/lotes/details/{id}(id=${lote.id})}"
+                   class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Detalhes" >
+                    <i class="fas fa-eye"></i> </a>
+                <a th:href="@{/lotes/upload/{id}(id=${lote.id})}"
+                   class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Arquivos"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')">
+                    <i class="fas fa-paperclip"></i> </a>
+                <a th:href="@{/lotes/edit/{id}(id=${lote.id})}"
+                   th:text="#{lote.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        th:attr="data-target='#remover_'+${lote.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${lote.id}, link='lotes')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/lotes/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2"
+       sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

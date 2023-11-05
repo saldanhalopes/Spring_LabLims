@@ -10,13 +10,13 @@
 <span layout:fragment="auditBack">
     <a th:href="@{/ataTurnos}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
-<span layout:fragment="auditTHeads">
+<span layout:fragment="auditHeads">
     <th th:text="#{ataTurno.agrupador.label}" scope="col" />
     <th th:text="#{ataTurno.turno.label}" scope="col" />
     <th th:text="#{ataTurno.setor.label}" scope="col" />
     <th th:text="#{ataTurno.usuario.label}" scope="col" />
 </span>
-<span layout:fragment="auditTBody">
+<span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getAgrupador()}"></td>
     <td th:text="${a.getEntidade().getTurno()}"></td>
     <td th:text="${a.getEntidade().getSetor()}"></td>

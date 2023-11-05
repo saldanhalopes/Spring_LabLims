@@ -23,4 +23,8 @@ public class HomeController {
         return "logs/index";
     }
 
+    @GetMapping("/laboratorio")
+    public String laboratorio() {
+        return "laboratorio/index";
+    }
 }

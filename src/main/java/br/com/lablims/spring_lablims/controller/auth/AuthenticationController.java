@@ -29,7 +29,7 @@ public class AuthenticationController {
             model.addAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("authentication.login.required"));
         }
         if (loginError == Boolean.TRUE) {
-            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
         }
         if (logoutSuccess == Boolean.TRUE) {
             model.addAttribute(WebUtils.MSG_WARNING, WebUtils.getMessage("authentication.logout.success"));

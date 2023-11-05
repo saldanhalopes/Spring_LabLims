@@ -1,9 +1,7 @@
 package br.com.lablims.spring_lablims.repos;
 
-import br.com.lablims.spring_lablims.domain.Campanha;
-import br.com.lablims.spring_lablims.domain.Celula;
-import br.com.lablims.spring_lablims.domain.Lote;
-import br.com.lablims.spring_lablims.domain.Setor;
+import br.com.lablims.spring_lablims.domain.*;
+
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +16,8 @@ public interface CampanhaRepository extends JpaRepository<Campanha, Integer> {
 
     Campanha findFirstByCelula(Celula celula);
 
-    List<Campanha> findAllByLotes(Lote lote);
+    List<Campanha> findAllByAmostras(Amostra amostra);
 
-    Campanha findFirstByLotes(Lote lote);
+    Campanha findFirstByAmostras(Amostra amostra);
 
 }

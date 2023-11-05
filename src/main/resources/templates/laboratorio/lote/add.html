@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{lote.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/laboratorio}" th:text="#{laboratorio.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/lotes}" th:text="#{lote.list.headline}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{lote.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{lote.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/lotes}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('lote')}"></div>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='lote', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='material', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='cliente', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='tamanhoLote', type='number', step='0.000001')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='unidade', type='select')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='dataFabricacao', type='date', min='1977-01-01', max='2099-12-12', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='dataValidade', type='date', min='1977-01-01', max='2099-12-12',required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='localFabricacao')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='obs')}"></div>
+</div>
+</html>

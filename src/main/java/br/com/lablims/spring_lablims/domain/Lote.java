@@ -1,11 +1,12 @@
 package br.com.lablims.spring_lablims.domain;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
+
+import java.time.LocalDate;
+import java.util.Set;
 
 
 @Entity
@@ -22,41 +23,24 @@ public class Lote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(unique = true)
     private String lote;
 
     @Column
-    private Double qtdEstoque;
+    private Double tamanhoLote;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "unidade_id")
+    private UnidadeMedida unidade;
 
     @Column
-    private LocalDateTime dataStatus;
+    private LocalDate dataFabricacao;
 
     @Column
-    private LocalDateTime dataEntrada;
+    private LocalDate dataValidade;
 
     @Column
-    private LocalDateTime dataInicioAnalise;
-
-    @Column
-    private LocalDateTime dataLiberacao;
-
-    @Column
-    private LocalDateTime dataEnvioGarantia;
-
-    @Column
-    private LocalDateTime dataNecessidade;
-
-    @Column
-    private LocalDateTime dataValidade;
-
-    @Column
-    private LocalDateTime dataImpressao;
-
-    @Column
-    private String numeroDocumento;
-
-    @Column
-    private String complemento;
+    private String localFabricacao;
 
     @Column
     private String obs;
@@ -66,7 +50,15 @@ public class Lote {
     private Material material;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "amostra_tipo_id")
-    private AmostraTipo amostraTipo;
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    @ManyToMany
+    @JoinTable(
+            name = "lote_arquivo",
+            joinColumns = @JoinColumn(name = "lote_id"),
+            inverseJoinColumns = @JoinColumn(name = "arquivo_id")
+    )
+    private Set<Arquivos> arquivos;
 
 }

@@ -93,7 +93,7 @@ public class MaterialService {
         materialDTO.setId(material.getId());
         materialDTO.setControleEspecial(material.getControleEspecial());
         materialDTO.setFiscalizado(material.getFiscalizado());
-        materialDTO.setItem(material.getItem());
+        materialDTO.setCodigo(material.getCodigo());
         materialDTO.setMaterial(material.getMaterial());
         materialDTO.setTipoMaterial(material.getTipoMaterial() == null ? null : material.getTipoMaterial().getId());
         materialDTO.setVersion(material.getVersion());
@@ -103,7 +103,7 @@ public class MaterialService {
     private Material mapToEntity(final MaterialDTO materialDTO, final Material material) {
         material.setControleEspecial(materialDTO.getControleEspecial());
         material.setFiscalizado(materialDTO.getFiscalizado());
-        material.setItem(materialDTO.getItem());
+        material.setCodigo(materialDTO.getCodigo());
         material.setMaterial(materialDTO.getMaterial());
         final MaterialTipo tipoMaterial = materialDTO.getTipoMaterial() == null ? null : materialTipoRepository.findById(materialDTO.getTipoMaterial())
                 .orElseThrow(() -> new NotFoundException("tipoMaterial not found"));

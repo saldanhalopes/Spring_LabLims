@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{arquivos.add.headline}"/>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div layout:fragment="breadcrumb"></div>
+        </div>
+    </section>
+    <div class="container-fluid">
+        <div class="card card-success card-outline">
+            <div class="card-header">
+                <h5 class="card-title d-flex">
+                    <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
+                    <h1 th:text="#{arquivos.add.headline}" class="flex-grow-1"/>
+                </h5>
+            </div>
+            <form th:action="${T(br.com.lablims.spring_lablims.util.WebUtils).getRequest().requestURI}"
+                  method="post" enctype="multipart/form-data" autocomplete="off">
+                <div class="card-body">
+                    <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
+                         class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+                    <div th:replace="~{fragments/forms::globalErrors('arquivos')}"></div>
+                    <div class="main-content container-fluid">
+                        <div th:replace="~{fragments/forms::inputRow(object='arquivos', field='arquivo', type='file', required='required')}"></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-success" data-toggle="modal"
+                            th:attr="data-target='#upload'" th:text="#{add.btn}"
+                            sec:authorize="hasAnyAuthority('ADMIN','MASTERUSER')"></button>
+                    <span layout:fragment="uploadBackMenu"></span>
+                </div>
+                <div th:replace="~{fragments/modal :: modalUpload}"></div>
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card card-info card-outline">
+            <div class="card-body table-responsive">
+                <div th:if="${MSG_INFO != null}" th:text="${MSG_INFO}" id="infoAlert"
+                     class="alert alert-info alert-dismissible fade show" role="alert"></div>
+                <div th:if="${MSG_SUCCESS != null}" th:text="${MSG_SUCCESS}" id="succesAlert"
+                     class="alert alert-success alert-dismissible fade show" role="alert"></div>
+                <p>
+                <div th:if="${arquivoss.empty}" th:text="#{arquivos.list.empty}"></div>
+                </p>
+                <table class="table table-bordered table-striped" id="tableList">
+                    <thead>
+                    <tr>
+                        <th th:text="#{id.label}" scope="col"/>
+                        <th th:text="#{arquivos.nome.label}" scope="col"/>
+                        <th th:text="#{arquivos.tipo.label}" scope="col"/>
+                        <th th:text="#{arquivos.descricao.label}" scope="col"/>
+                        <th th:text="#{arquivos.tamanho.label}" scope="col"/>
+                        <th th:text="#{arquivos.dataCriacao.label}" scope="col"/>
+                        <th><!-- --></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="arq : ${arquivoss}">
+                        <td th:text="${arq.id}"/>
+                        <td th:text="${arq.nome}"/>
+                        <td th:text="${arq.tipo}"/>
+                        <td th:text="${arq.descricao}"/>
+                        <td th:text="${#numbers.formatDecimal(arq.tamanho.doubleValue()/1024/1024,1,4)} + ' ~MB'"/>
+                        <td th:text="${#temporals.format(arq.dataCriacao, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        <td>
+                            <span layout:fragment="uploadLiksContent"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div th:replace="~{fragments/utils::pagination()}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<span layout:fragment="script">
+    <!-- DataTables  & Plugins -->
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#tableList').DataTable({
+                "dom": '<"top"f>rt<"bottom"B><"clear">',
+                "paging": false,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": false,
+                "responsive": false,
+                "autoWidth": true,
+                "buttons": [
+                    {
+                        extend: 'copy',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }, {
+                        extend: 'csv',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }, {
+                        extend: 'excel',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }, {
+                        extend: 'print',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }]
+            }).buttons().container().appendTo('#tableList_wrapper .col-md-6:eq(0)');
+            $('.dataTables_filter label').addClass('input-group input-group-sm');
+        });
+        $(document).ready(function () {
+            $('input').attr('autocomplete', 'new-password');
+        });
+        window.setTimeout(function () {
+            $('#infoAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+            $('#errorAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+            $('#succesAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
+        $(function () {
+            $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+                event.preventDefault();
+                $(this).ekkoLightbox({
+                    alwaysShowClose: true
+                });
+            });
+        })
+    </script>
+</span>
+<div class="float-end text-nowrap" th:fragment="uploadLiks" th:id="liks">
+    <a th:href="'/arquivoss/view/' + ${arq.id}"
+       class="btn btn-sm btn-info" title="Download"> <i class="fas fa-download"></i> </a>
+    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+            th:attr="data-target='#remover_'+${arq.id}" th:title="#{delete.btn}"
+            sec:authorize="hasAnyAuthority('ADMIN')"><i class="fas fa-trash"></i></button>
+    <div th:replace="~{fragments/modal :: modalDelete(field=${arq.id}, link=${link} + '/arquivo')}"></div>
+</div>
+</html>
+
+
+

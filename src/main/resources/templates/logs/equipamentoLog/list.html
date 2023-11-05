@@ -4,54 +4,84 @@
 <head>
     <title th:text="#{equipamentoLog.list.headline}"/>
 </head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/logs}" th:text="#{logs.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs}" th:text="#{equipamentoLog.list.headline}"></a></li>
+        <li class="breadcrumb-item active" th:text="'Tag: ' + ${equipamento.tag}"></li>
+    </ol>
+</div>
 <span layout:fragment="listHeadline">
     <h2 th:text="#{equipamentoLog.list.headline}" class="flex-grow-1"/>
+    <h4 class="widget-user-username" th:text="'Tag: ' + ${equipamento.tag}"/>
 </span>
 <span layout:fragment="createNew">
-    <a th:href="@{/equipamentoLogs/add}" th:text="#{equipamentoLog.list.createNew}"
+    <a th:href="@{/equipamentoLogs/add/{id}(id=${equipamento.id})}" th:text="#{equipamentoLog.list.createNew}"
        class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
 </span>
 <span layout:fragment="listBackMenu">
-    <a th:href="@{/parameters}" th:text="#{parameters.back}" class="btn btn-secondary float-right"/>
+    <a th:href="@{/equipamentoLogs}" th:text="#{back.menu}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="listErrors">
-    <div th:if="${equipamentoLogs.empty}" th:text="#{equipamentoLog.list.empty}"/>
-    <div th:if="${!equipamentoLogs.empty}" class="table-responsive"/>
+    <p>
+    <h6>
+        <div th:if="${equipamentoLogs.empty}" th:text="#{equipamentoLog.list.empty}"></div>
+    </h6>
+    </p>
 </div>
 <span layout:fragment="listHeader">
-    <th th:text="#{equipamentoLog.descricao.label}" scope="col" />
-    <th th:text="#{equipamentoLog.dataInicio.label}" scope="col" />
-    <th th:text="#{equipamentoLog.dataFim.label}" scope="col" />
-    <th th:text="#{equipamentoLog.obs.label}" scope="col" />
-    <th th:text="#{equipamentoLog.atividade.label}" scope="col" />
-    <th th:text="#{equipamentoLog.equipamento.label}" scope="col" />
-    <th th:text="#{equipamentoLog.usuarioInicio.label}" scope="col" />
+    <th th:text="#{equipamentoLog.atividade.label}" scope="col"/>
+    <th th:text="#{equipamentoLog.descricao.label}" scope="col"/>
+    <th th:text="#{Inicio.label}" scope="col"/>
+    <th th:text="#{Fim.label}" scope="col"/>
+    <th th:text="#{equipamentoLog.obs.label}" scope="col"/>
 </span>
 <span layout:fragment="listContent">
     <tr th:each="equipamentoLog : ${equipamentoLogs}">
-        <td th:text="${equipamentoLog.id}" />
-        <td th:text="${equipamentoLog.version}" />
-        <td th:text="${equipamentoLog.descricao}" />
-        <td th:text="${equipamentoLog.dataInicio}" />
-        <td th:text="${equipamentoLog.dataFim}" />
-        <td th:text="${equipamentoLog.obs}" />
-        <td th:text="${equipamentoLog.atividade}" />
-        <td th:text="${equipamentoLog.equipamento}" />
-        <td th:text="${equipamentoLog.usuarioInicio}" />
+        <td th:text="${equipamentoLog.id}"/>
+        <td th:text="${equipamentoLog.version}"/>
+        <td th:text="${equipamentoLog.atividadeName}"/>
+        <td th:text="${equipamentoLog.descricao}" class="text-truncate" style="max-width: 150px;"/>
+        <td th:text="${equipamentoLog.usuarioInicioName} + ' - ' + ${#temporals.format(equipamentoLog.dataInicio, 'dd/MM/yyyy HH:mm')}"/>
+        <td th:if="${equipamentoLog.dataFim != null}"
+            th:text="${equipamentoLog.usuarioFimName} + ' - ' + ${#temporals.format(equipamentoLog.dataFim, 'dd/MM/yyyy HH:mm')}"/>
+        <td th:if="${equipamentoLog.dataFim == null}">
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal"
+                    th:attr="data-target='#finaliza_'+${equipamentoLog.id}" th:text="#{finaliza.btn}"
+                    sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+        </td>
+        <td th:text="${equipamentoLog.obs}" class="text-truncate" style="max-width: 150px;"/>
         <td>
-            <div class="float-end text-nowrap">
-                <a th:href="@{/equipamentoLogs/edit/{id}(id=${equipamentoLog.id})}"
-                   th:text="#{equipamentoLog.list.edit}" class="btn btn-sm btn-info"
-                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+            <div class="float-end">
+                <a th:href="@{/equipamentoLogs/details/{id}(id=${equipamentoLog.id})}"
+                   th:title="#{details.label}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> </a>
+                <a th:href="@{/equipamentoLogs/amostra/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
+                   th:title="#{equipamentoLog.amostras.label}" class="btn btn-sm btn btn-outline-info">
+                    <i class="fas fa-pills"></i> </a>
+                <a th:href="@{/equipamentoLogs/upload/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
+                   class="btn btn-sm btn-warning" th:title="#{arquivos.arquivo.label}"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')">
+                    <i class="fas fa-paperclip"></i> </a>
+                <a th:href="@{/equipamentoLogs/edit/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
+                   th:title="#{equipamentoLog.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')">
+                    <i class="fas fa-pen"></i> </a>
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                        th:attr="data-target='#remover_'+${equipamentoLog.id}" th:text="#{delete.btn}"
-                        sec:authorize="hasAnyAuthority('ADMIN')"/>
-                <div th:replace="~{fragments/modal :: modalDelete(field=${equipamentoLog.id}, link='equipamentoLogs')}"></div>
+                        th:attr="data-target='#remover_'+${equipamentoLog.id}" th:title="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"><i class="fas fa-trash"></i></button>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${equipamentoLog.id}, link='equipamentoLogs/' + ${equip_id})}"></div>
+                <div th:replace="~{fragments/modal :: modalFinalizaRegistro(field=${equipamentoLog.id}, link='equipamentoLogs/' + ${equipamento.id},
+                min=${#temporals.format(equipamentoLog.dataInicio, 'yyyy-MM-dd HH:mm')},
+                max=${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')})}"></div>
             </div>
         </td>
     </tr>
 </span>
 <span layout:fragment="listAudit">
-    <a th:href="@{/equipamentoLogs/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+    <a th:href="@{/equipamentoLogs/audit/{id}(id=${equipamento.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2"
+       sec:authorize="hasAnyAuthority('ADMIN')"/>
 </span>
 </html>

@@ -29,7 +29,7 @@ public class Material {
     private String fiscalizado;
 
     @Column
-    private Integer item;
+    private Integer codigo;
 
     @Column
     private String material;

@@ -61,8 +61,8 @@ public class AnaliseProdutividadeController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("analiseProdutividade") @Valid final AnaliseProdutividadeDTO analiseProdutividadeDTO, final Model model,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes,
+    public String add(@ModelAttribute("analiseProdutividade") @Valid final AnaliseProdutividadeDTO analiseProdutividadeDTO,  final BindingResult bindingResult,
+                      final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
             return "parameters/analiseProdutividade/add";
@@ -72,7 +72,7 @@ public class AnaliseProdutividadeController {
                 analiseProdutividadeService.create(analiseProdutividadeDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("analiseProdutividade.create.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/analiseProdutividade/add";
             }
         }
@@ -100,7 +100,7 @@ public class AnaliseProdutividadeController {
                 analiseProdutividadeService.update(id, analiseProdutividadeDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("analiseProdutividade.update.success"));
             } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
                 return "parameters/analiseProdutividade/edit";
             }
         }
@@ -123,7 +123,7 @@ public class AnaliseProdutividadeController {
                 analiseProdutividadeService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("analiseProdutividade.delete.success"));
             } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.login.error"));
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             }
         }
         return "redirect:/analiseProdutividades";

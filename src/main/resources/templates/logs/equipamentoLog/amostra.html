@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/amostra}">
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/logs}" th:text="#{logs.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs}" th:text="#{equipamentoLog.list.headline}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/equipamentoLogs/list/{id}(id=${equipamento.id})}"
+                                       th:text="'Tag: ' + ${equipamento.tag}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{amostra.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="amostraBackMenu">
+    <a th:href="@{/equipamentoLogs/list/{equip_id}(equip_id=${equipamento.id})}"
+       th:text="#{update.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="amostraLiksContent">
+    <div th:replace="~{fragments/amostra :: amostraLiks(field=${equipamentoLog.id}, link='equipamentoLogs/' + ${equipamento.id} + '/' + ${equipamentoLog.id})}"></div>
+</span>
+</html>

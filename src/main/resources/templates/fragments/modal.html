@@ -2,7 +2,8 @@
      aria-modal="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
-            <form th:action="'/'  +  ${link} +  '/delete/' + ${field}" method="post" class="d-inline" autocomplete="off">
+            <form th:action="'/'  +  ${link} +  '/delete/' + ${field}" method="post" class="d-inline"
+                  autocomplete="off">
                 <div class="modal-header bg-danger">
                     <h5 class="modal-title white"><span th:text="#{delete.header}"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -13,11 +14,12 @@
                     <p><span th:text="#{delete.confirm}"></span></p>
                     <div class="form-group mb-3">
                         <label for="motivoDelete" class="form-label">Motivo</label>
-                        <textarea class="form-control" id="motivoDelete" name="motivo" rows="2"></textarea>
+                        <textarea class="form-control" id="motivoDelete" name="motivo" rows="1" maxlength="255" required></textarea>
                     </div>
                     <div class="form-group mb-3">
                         <label for="passwordDelete" class="form-label">Password</label>
-                        <input id="passwordDelete" name="password" type="password" class="form-control"/>
+                        <input id="passwordDelete" name="password" type="password" class="form-control" maxlength="255"
+                               autocomplete="new-password" required/>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -32,7 +34,7 @@
     </div>
 </div>
 
-<div th:fragment="modalAdd" th:id="add"  class="modal fade text-left show" tabindex="-1"
+<div th:fragment="modalAdd" th:id="add" class="modal fade text-left show" tabindex="-1"
      aria-modal="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -46,7 +48,8 @@
                 <p><span th:text="#{add.confirm}"></span></p>
                 <div class="form-group mb-3">
                     <label for="passwordAdd" class="form-label">Password</label>
-                    <input id="passwordAdd" name="password" type="password" class="form-control" autocomplete="off"/>
+                    <input id="passwordAdd" name="password" type="password" class="form-control" maxlength="255"
+                           autocomplete="new-password" required autofocus/>
                 </div>
             </div>
             <div class="modal-footer">
@@ -60,7 +63,7 @@
     </div>
 </div>
 
-<div th:fragment="modalEdit" th:id="edit"  class="modal fade text-left show" tabindex="-1"
+<div th:fragment="modalEdit" th:id="edit" class="modal fade text-left show" tabindex="-1"
      aria-modal="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -74,11 +77,12 @@
                 <p><span th:text="#{edit.confirm}"></span></p>
                 <div class="form-group mb-3">
                     <label for="motivoEdit" class="form-label">Motivo</label>
-                    <textarea class="form-control" id="motivoEdit" name="motivo" rows="2"></textarea>
+                    <textarea class="form-control" id="motivoEdit" name="motivo" rows="1" maxlength="255" required></textarea>
                 </div>
                 <div class="form-group mb-3">
                     <label for="passwordEdit" class="form-label">Password</label>
-                    <input id="passwordEdit" name="password" type="password" class="form-control" autocomplete="off"/>
+                    <input id="passwordEdit" name="password" type="password" class="form-control" maxlength="255"
+                           autocomplete="new-password" required/>
                 </div>
             </div>
             <div class="modal-footer">
@@ -87,6 +91,109 @@
                     <span class="d-none d-sm-block">Close</span>
                 </button>
                 <button th:text="#{edit.btn}" type="submit" class="btn btn-primary ml-1"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="modalUpload" th:id="upload" class="modal fade text-left show" tabindex="-1"
+     aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-orange">
+                <h5 class="modal-title white"><span th:text="#{upload.header}"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><span th:text="#{upload.confirm}"></span></p>
+                <div class="form-group mb-3">
+                    <label for="motivoEdit" class="form-label">Descricao</label>
+                    <textarea class="form-control" id="motivoUpload" name="motivo" rows="1" maxlength="255" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="passwordUpload" class="form-label">Password</label>
+                    <input id="passwordUpload" name="password" type="password" class="form-control" maxlength="255"
+                           autocomplete="new-password" required/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button th:text="#{upload.btn}" type="submit" class="btn btn-success ml-1"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="modalFinalizaRegistro" th:id="finaliza_+${field}" class="modal fade text-left show" tabindex="-1"
+     aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <form th:action="'/'  +  ${link} +  '/finalizar/' + ${field}" method="post" class="d-inline"
+                  autocomplete="off">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title white"><span th:text="#{finaliza.header}"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><span th:text="#{finaliza.confirm}"></span></p>
+                    <div class="form-group mb-3">
+                        <label for="dataFim" class="form-label">Data/Hora Final</label>
+                        <input type='datetime-local' id="dataFim" name="dataFim"  th:min="${min}" th:max="${max}"
+                               required="required" class="form-control"/>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="passwordFinaliza" class="form-label">Password</label>
+                        <input id="passwordFinaliza" name="password" type="password" class="form-control" maxlength="255"
+                               autocomplete="new-password" required/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button th:text="#{salvar.btn}" type="submit" class="btn btn-success ml-1"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="modalAmostra" th:id="amostra" class="modal fade text-left show" tabindex="-1"
+     aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-orange">
+                <h5 class="modal-title white"><span th:text="#{amostra.amostra.label}"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><span th:text="#{amostra.confirm}"></span></p>
+                <div class="form-group mb-3">
+                    <label for="motivoEdit" class="form-label">Motivo</label>
+                    <textarea class="form-control" id="motivoAmostra" name="motivo" rows="1" maxlength="255" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="passwordAmostra" class="form-label">Password</label>
+                    <input id="passwordAmostra" name="password" type="password" class="form-control" maxlength="255"
+                           autocomplete="new-password" required/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button th:text="#{amostra.btn}" type="submit" class="btn btn-success ml-1"/>
             </div>
         </div>
     </div>
