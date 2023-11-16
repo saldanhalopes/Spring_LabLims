@@ -4,7 +4,7 @@ import br.com.lablims.spring_lablims.domain.Analise;
 import br.com.lablims.spring_lablims.domain.Arquivos;
 import br.com.lablims.spring_lablims.domain.Coluna;
 import br.com.lablims.spring_lablims.domain.ColunaUtil;
-import br.com.lablims.spring_lablims.domain.ColunaVaga;
+import br.com.lablims.spring_lablims.domain.StorageEndereco;
 import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.domain.Setor;
 import java.util.List;
@@ -29,7 +29,7 @@ public interface ColunaUtilRepository extends JpaRepository<ColunaUtil, Integer>
 
     ColunaUtil findFirstByAnalise(Analise analise);
 
-    ColunaUtil findFirstByColunaVaga(ColunaVaga colunaVaga);
+    ColunaUtil findFirstByStorageEndereco(StorageEndereco storageEndereco);
 
     ColunaUtil findFirstByColuna(Coluna coluna);
 

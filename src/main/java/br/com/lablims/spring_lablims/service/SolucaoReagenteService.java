@@ -11,12 +11,14 @@ import br.com.lablims.spring_lablims.repos.SolucaoReagenteRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
 import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class SolucaoReagenteService {
 
     private final SolucaoReagenteRepository solucaoReagenteRepository;
@@ -26,16 +28,6 @@ public class SolucaoReagenteService {
 
     public SolucaoReagente findById(Integer id){
         return solucaoReagenteRepository.findById(id).orElse(null);
-    }
-
-    public SolucaoReagenteService(final SolucaoReagenteRepository solucaoReagenteRepository,
-            final SolucaoRegistroRepository solucaoRegistroRepository,
-            final ReagenteRepository reagenteRepository,
-            final UnidadeMedidaRepository unidadeMedidaRepository) {
-        this.solucaoReagenteRepository = solucaoReagenteRepository;
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
-        this.reagenteRepository = reagenteRepository;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
     }
 
     public SimplePage<SolucaoReagenteDTO> findAll(final String filter, final Pageable pageable) {

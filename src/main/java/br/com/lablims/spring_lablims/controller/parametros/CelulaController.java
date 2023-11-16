@@ -6,7 +6,7 @@ import br.com.lablims.spring_lablims.model.CelulaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.CelulaTipoRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.UsuarioRepository;
 import br.com.lablims.spring_lablims.service.CelulaService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
@@ -14,6 +14,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/celulas")
 public class CelulaController {
 
@@ -41,16 +43,6 @@ public class CelulaController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public CelulaController(final CelulaService celulaService,
-            final EquipamentoRepository equipamentoRepository,
-            final UsuarioRepository usuarioRepository,
-            final CelulaTipoRepository celulaTipoRepository) {
-        this.celulaService = celulaService;
-        this.equipamentoRepository = equipamentoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.celulaTipoRepository = celulaTipoRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

@@ -5,12 +5,13 @@ import br.com.lablims.spring_lablims.domain.AmostraTipo;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.AmostraTipoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.AmostraTipoService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -32,16 +33,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/amostraTipos")
+@RequiredArgsConstructor
 public class AmostraTipoController {
 
     private final AmostraTipoService amostraTipoService;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public AmostraTipoController(final AmostraTipoService amostraTipoService) {
-        this.amostraTipoService = amostraTipoService;
-    }
 
     @Autowired
     private UsuarioService usuarioService;

@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.MetodologiaStatusRepository;
 import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class MetodologiaStatusService {
 
     private final MetodologiaStatusRepository metodologiaStatusRepository;
@@ -21,12 +23,6 @@ public class MetodologiaStatusService {
 
     public MetodologiaStatus findById(Integer id){
         return metodologiaStatusRepository.findById(id).orElse(null);
-    }
-
-    public MetodologiaStatusService(final MetodologiaStatusRepository metodologiaStatusRepository,
-            final MetodologiaVersaoRepository metodologiaVersaoRepository) {
-        this.metodologiaStatusRepository = metodologiaStatusRepository;
-        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
     }
 
     public SimplePage<MetodologiaStatusDTO> findAll(final String filter, final Pageable pageable) {

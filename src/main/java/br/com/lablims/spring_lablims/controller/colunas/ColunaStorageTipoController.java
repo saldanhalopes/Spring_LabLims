@@ -1,16 +1,17 @@
 package br.com.lablims.spring_lablims.controller.colunas;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
-import br.com.lablims.spring_lablims.domain.ColunaStorageTipo;
+import br.com.lablims.spring_lablims.domain.StorageTipo;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.ColunaStorageTipoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.ColunaStorageTipoService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,14 +28,11 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/colunaStorageTipos")
 public class ColunaStorageTipoController {
 
     private final ColunaStorageTipoService colunaStorageTipoService;
-
-    public ColunaStorageTipoController(final ColunaStorageTipoService colunaStorageTipoService) {
-        this.colunaStorageTipoService = colunaStorageTipoService;
-    }
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
@@ -131,7 +129,7 @@ public class ColunaStorageTipoController {
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit")
     public String getRevisions(Model model) {
-        List<EntityRevision<ColunaStorageTipo>> revisoes = genericRevisionRepository.listaRevisoes(ColunaStorageTipo.class);
+        List<EntityRevision<StorageTipo>> revisoes = genericRevisionRepository.listaRevisoes(StorageTipo.class);
         model.addAttribute("audits", revisoes);
         return "pages/colunaStorageTipo/audit";
     }
@@ -139,9 +137,9 @@ public class ColunaStorageTipoController {
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit/{id}")
     public String getRevisions(Model model, @PathVariable final Integer id) {
-        ColunaStorageTipo colunaStorageTipo = colunaStorageTipoService.findById(id);
-        List<EntityRevision<ColunaStorageTipo>> revisoes = genericRevisionRepository.listaRevisoesById(colunaStorageTipo.getId(), ColunaStorageTipo.class);
+        StorageTipo storageTipo = colunaStorageTipoService.findById(id);
+        List<EntityRevision<StorageTipo>> revisoes = genericRevisionRepository.listaRevisoesById(storageTipo.getId(), StorageTipo.class);
         model.addAttribute("audits", revisoes);
-        return "pages/colunaStorageTipo/audit";
+        return "pages/storageTipo/audit";
     }
 }

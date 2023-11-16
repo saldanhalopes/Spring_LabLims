@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.controller.laboratorio;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.PlanoAnaliseDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -11,6 +12,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +30,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/planoAnalises")
 public class PlanoAnaliseController {
 
@@ -39,18 +42,6 @@ public class PlanoAnaliseController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public PlanoAnaliseController(final PlanoAnaliseService planoAnaliseService,
-            final MetodologiaVersaoRepository metodologiaVersaoRepository,
-            final AnaliseRepository analiseRepository,
-            final AnaliseTipoRepository analiseTipoRepository,
-            final SetorRepository setorRepository) {
-        this.planoAnaliseService = planoAnaliseService;
-        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
-        this.analiseRepository = analiseRepository;
-        this.analiseTipoRepository = analiseTipoRepository;
-        this.setorRepository = setorRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

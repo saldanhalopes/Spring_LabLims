@@ -10,7 +10,7 @@
     </parent>
     <groupId>br.com.lablims</groupId>
     <artifactId>Spring_Lablims</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.2</version>
     <name>Spring_Lablims</name>
     <description>Spring_Lablims</description>
     <properties>
@@ -90,13 +90,46 @@
             <artifactId>bootstrap</artifactId>
             <version>5.3.1</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-docker-compose</artifactId>-->
-<!--        </dependency>-->
-
+        <dependency>
+            <groupId>com.amdelamar</groupId>
+            <artifactId>jotp</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
-
     <build>
         <finalName>Spring_LabLims</finalName>
         <plugins>
@@ -151,5 +184,4 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
-
 </project>

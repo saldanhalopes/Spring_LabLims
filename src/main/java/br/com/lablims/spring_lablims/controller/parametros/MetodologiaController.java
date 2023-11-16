@@ -7,13 +7,14 @@ import br.com.lablims.spring_lablims.domain.Metodologia;
 import br.com.lablims.spring_lablims.model.MetodologiaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.CategoriaMetodologiaRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.MetodologiaService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/metodologias")
 public class MetodologiaController {
 
@@ -39,13 +41,6 @@ public class MetodologiaController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-
-    public MetodologiaController(final MetodologiaService metodologiaService,
-                                 final CategoriaMetodologiaRepository categoriaMetodologiaRepository) {
-        this.metodologiaService = metodologiaService;
-        this.categoriaMetodologiaRepository = categoriaMetodologiaRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

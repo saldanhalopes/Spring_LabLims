@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.EquipamentoAtividadeRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoLogRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class EquipamentoAtividadeService {
 
     private final EquipamentoAtividadeRepository equipamentoAtividadeRepository;
@@ -21,13 +23,6 @@ public class EquipamentoAtividadeService {
 
     public EquipamentoAtividade findById(Integer id){
         return equipamentoAtividadeRepository.findById(id).orElse(null);
-    }
-
-    public EquipamentoAtividadeService(
-            final EquipamentoAtividadeRepository equipamentoAtividadeRepository,
-            final EquipamentoLogRepository equipamentoLogRepository) {
-        this.equipamentoAtividadeRepository = equipamentoAtividadeRepository;
-        this.equipamentoLogRepository = equipamentoLogRepository;
     }
 
     public SimplePage<EquipamentoAtividadeDTO> findAll(final String filter,

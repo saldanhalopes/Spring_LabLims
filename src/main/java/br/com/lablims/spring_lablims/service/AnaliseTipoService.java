@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.AnaliseTipoRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class AnaliseTipoService {
 
     private final AnaliseTipoRepository analiseTipoRepository;
@@ -21,12 +23,6 @@ public class AnaliseTipoService {
 
     public AnaliseTipo findById(Integer id){
         return analiseTipoRepository.findById(id).orElse(null);
-    }
-
-    public AnaliseTipoService(final AnaliseTipoRepository analiseTipoRepository,
-            final PlanoAnaliseRepository planoAnaliseRepository) {
-        this.analiseTipoRepository = analiseTipoRepository;
-        this.planoAnaliseRepository = planoAnaliseRepository;
     }
 
     public SimplePage<AnaliseTipoDTO> findAll(final String filter, final Pageable pageable) {

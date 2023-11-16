@@ -56,9 +56,9 @@ public class EquipamentoDTO {
 
     private String setorName;
 
-    private Integer escala;
+    private Integer grandeza;
 
-    private String escalaName;
+    private String grandezaName;
 
     private Short version;
 

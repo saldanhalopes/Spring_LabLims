@@ -4,7 +4,7 @@ import br.com.lablims.spring_lablims.config.EntityRevision;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.SolucaoRegistroDTO;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoTipoRepository;
 import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
 import br.com.lablims.spring_lablims.repos.UsuarioRepository;
@@ -14,6 +14,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/solucaoRegistros")
 public class SolucaoRegistroController {
 
@@ -41,17 +43,6 @@ public class SolucaoRegistroController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-
-    public SolucaoRegistroController(final SolucaoRegistroService solucaoRegistroService,
-            final SolucaoTipoRepository solucaoTipoRepository,
-            final UsuarioRepository usuarioRepository,
-            final UnidadeMedidaRepository unidadeMedidaRepository) {
-        this.solucaoRegistroService = solucaoRegistroService;
-        this.solucaoTipoRepository = solucaoTipoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

@@ -46,8 +46,8 @@ public class Lote {
     private String obs;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "material_id")
-    private Material material;
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")

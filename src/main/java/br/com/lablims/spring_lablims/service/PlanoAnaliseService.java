@@ -13,12 +13,14 @@ import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class PlanoAnaliseService {
 
     private final PlanoAnaliseRepository planoAnaliseRepository;
@@ -31,22 +33,6 @@ public class PlanoAnaliseService {
 
     public PlanoAnalise findById(Integer id){
         return planoAnaliseRepository.findById(id).orElse(null);
-    }
-
-    public PlanoAnaliseService(final PlanoAnaliseRepository planoAnaliseRepository,
-            final MetodologiaVersaoRepository metodologiaVersaoRepository,
-            final AnaliseRepository analiseRepository,
-            final AnaliseTipoRepository analiseTipoRepository,
-            final SetorRepository setorRepository,
-            final PlanoAnaliseColunaRepository planoAnaliseColunaRepository,
-            final AmostraStatusRepository amostraStatusRepository) {
-        this.planoAnaliseRepository = planoAnaliseRepository;
-        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
-        this.analiseRepository = analiseRepository;
-        this.analiseTipoRepository = analiseTipoRepository;
-        this.setorRepository = setorRepository;
-        this.planoAnaliseColunaRepository = planoAnaliseColunaRepository;
-        this.amostraStatusRepository = amostraStatusRepository;
     }
 
     public SimplePage<PlanoAnaliseDTO> findAll(final String filter, final Pageable pageable) {

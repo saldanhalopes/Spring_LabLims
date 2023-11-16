@@ -27,7 +27,7 @@
 <span layout:fragment="listHeader">
     <th th:text="#{amostra.codigoAmostra.label}" scope="col" />
     <th th:text="#{amostra.lote.label}" scope="col" />
-    <th th:text="#{material.material.label}" scope="col" />
+    <th th:text="#{produto.produto.label}" scope="col" />
     <th th:text="#{amostra.dataEntrada.label}" scope="col" />
     <th th:text="#{amostra.complemento.label}" scope="col" />
     <th th:text="#{amostra.amostraTipo.label}" scope="col" />
@@ -38,7 +38,7 @@
         <td th:text="${amostra.version}"/>
         <td th:text="${amostra.codigoAmostra}" />
         <td th:text="${amostra.loteNumero}" />
-        <td th:text="${amostra.materialCodigo} + ' - ' + ${amostra.materialName}" />
+        <td th:text="${amostra.produtoCodigo} + ' - ' + ${amostra.produtoName}" />
         <td th:text="${#temporals.format(amostra.dataEntrada, 'dd/MM/yyyy HH:mm')}" />
         <td th:text="${amostra.complemento}" />
         <td th:text="${amostra.amostraTipoNome}" />

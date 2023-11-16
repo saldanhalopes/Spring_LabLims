@@ -1,19 +1,20 @@
 package br.com.lablims.spring_lablims.controller.colunas;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
-import br.com.lablims.spring_lablims.domain.ColunaStorage;
-import br.com.lablims.spring_lablims.domain.ColunaVaga;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
-import br.com.lablims.spring_lablims.model.ColunaVagaDTO;
+import br.com.lablims.spring_lablims.domain.Storage;
+import br.com.lablims.spring_lablims.domain.StorageEndereco;
 import br.com.lablims.spring_lablims.model.SimplePage;
+import br.com.lablims.spring_lablims.model.StorageEnderecoDTO;
 import br.com.lablims.spring_lablims.repos.ColunaStorageRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
-import br.com.lablims.spring_lablims.service.ColunaVagaService;
+import br.com.lablims.spring_lablims.service.StorageEnderecoService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,26 +32,21 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/colunaVagas")
 public class ColunaVagaController {
 
-    private final ColunaVagaService colunaVagaService;
+    private final StorageEnderecoService storageEnderecoService;
     private final ColunaStorageRepository colunaStorageRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
-    public ColunaVagaController(final ColunaVagaService colunaVagaService,
-            final ColunaStorageRepository colunaStorageRepository) {
-        this.colunaVagaService = colunaVagaService;
-        this.colunaStorageRepository = colunaStorageRepository;
-    }
-
     @ModelAttribute
     public void prepareContext(final Model model) {
         model.addAttribute("colunaStorageValues", colunaStorageRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaStorage::getId, ColunaStorage::getCodigo)));
+                .collect(CustomCollectors.toSortedMap(Storage::getId, Storage::getCodigo)));
     }
 
     @Autowired
@@ -60,7 +56,7 @@ public class ColunaVagaController {
     public String list(@RequestParam(required = false) final String filter,
                        @SortDefault(sort = "id") @PageableDefault(size = 20) final Pageable pageable,
                        final Model model) {
-        final SimplePage<ColunaVagaDTO> colunaVagas = colunaVagaService.findAll(filter, pageable);
+        final SimplePage<StorageEnderecoDTO> colunaVagas = storageEnderecoService.findAll(filter, pageable);
         model.addAttribute("colunaVagas", colunaVagas);
         model.addAttribute("filter", filter);
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(colunaVagas));
@@ -68,13 +64,13 @@ public class ColunaVagaController {
     }
 
     @GetMapping("/add")
-    public String add(@ModelAttribute("colunaVaga") final ColunaVagaDTO colunaVagaDTO) {
+    public String add(@ModelAttribute("colunaVaga") final StorageEnderecoDTO storageEnderecoDTO) {
         return "pages/colunaVaga/add";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("colunaVaga") @Valid final ColunaVagaDTO colunaVagaDTO,  final BindingResult bindingResult,
+    public String add(@ModelAttribute("colunaVaga") @Valid final StorageEnderecoDTO storageEnderecoDTO, final BindingResult bindingResult,
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
@@ -82,7 +78,7 @@ public class ColunaVagaController {
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText("Novo Registro");
-                colunaVagaService.create(colunaVagaDTO);
+                storageEnderecoService.create(storageEnderecoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("colunaVaga.create.success"));
             } else {
                 model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
@@ -94,14 +90,14 @@ public class ColunaVagaController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable final Integer id, final Model model) {
-        model.addAttribute("colunaVaga", colunaVagaService.get(id));
+        model.addAttribute("colunaVaga", storageEnderecoService.get(id));
         return "pages/colunaVaga/edit";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "')")
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable final Integer id,
-                       @ModelAttribute("colunaVaga") @Valid final ColunaVagaDTO colunaVagaDTO,
+                       @ModelAttribute("colunaVaga") @Valid final StorageEnderecoDTO storageEnderecoDTO,
                        final BindingResult bindingResult, final Model model,
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
@@ -110,7 +106,7 @@ public class ColunaVagaController {
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText(motivo);
-                colunaVagaService.update(id, colunaVagaDTO);
+                storageEnderecoService.update(id, storageEnderecoDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("colunaVaga.update.success"));
             } else {
                 model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
@@ -127,13 +123,13 @@ public class ColunaVagaController {
                          @ModelAttribute("motivo") String motivo,
                          Principal principal,
                          @ModelAttribute("password") String pass) {
-        final String referencedWarning = colunaVagaService.getReferencedWarning(id);
+        final String referencedWarning = storageEnderecoService.getReferencedWarning(id);
         if (referencedWarning != null) {
             redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, referencedWarning);
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText(motivo);
-                colunaVagaService.delete(id);
+                storageEnderecoService.delete(id);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("colunaVaga.delete.success"));
             } else {
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
@@ -145,7 +141,7 @@ public class ColunaVagaController {
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit")
     public String getRevisions(Model model) {
-        List<EntityRevision<ColunaVaga>> revisoes = genericRevisionRepository.listaRevisoes(ColunaVaga.class);
+        List<EntityRevision<StorageEndereco>> revisoes = genericRevisionRepository.listaRevisoes(StorageEndereco.class);
         model.addAttribute("audits", revisoes);
         return "pages/colunaVaga/audit";
     }
@@ -153,10 +149,10 @@ public class ColunaVagaController {
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit/{id}")
     public String getRevisions(Model model, @PathVariable final Integer id) {
-        ColunaVaga colunaVaga = colunaVagaService.findById(id);
-        List<EntityRevision<ColunaVaga>> revisoes = genericRevisionRepository.listaRevisoesById(colunaVaga.getId(), ColunaVaga.class);
+        StorageEndereco storageEndereco = storageEnderecoService.findById(id);
+        List<EntityRevision<StorageEndereco>> revisoes = genericRevisionRepository.listaRevisoesById(storageEndereco.getId(), StorageEndereco.class);
         model.addAttribute("audits", revisoes);
-        return "pages/colunaVaga/audit";
+        return "pages/storageEndereco/audit";
     }
 
 }

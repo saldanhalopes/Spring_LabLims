@@ -6,7 +6,7 @@ import br.com.lablims.spring_lablims.domain.PlanoAnaliseReagente;
 import br.com.lablims.spring_lablims.domain.Reagente;
 import br.com.lablims.spring_lablims.model.PlanoAnaliseReagenteDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.ReagenteRepository;
 import br.com.lablims.spring_lablims.service.PlanoAnaliseReagenteService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
@@ -14,6 +14,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/planoAnaliseReagentes")
 public class PlanoAnaliseReagenteController {
 
@@ -39,13 +41,6 @@ public class PlanoAnaliseReagenteController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public PlanoAnaliseReagenteController(
-            final PlanoAnaliseReagenteService planoAnaliseReagenteService,
-            final ReagenteRepository reagenteRepository) {
-        this.planoAnaliseReagenteService = planoAnaliseReagenteService;
-        this.reagenteRepository = reagenteRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

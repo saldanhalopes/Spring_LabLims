@@ -2,6 +2,10 @@ package br.com.lablims.spring_lablims.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -10,7 +14,8 @@ import java.util.Set;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @Audited(withModifiedFlag = true)
 public class Amostra {
 
@@ -70,6 +75,7 @@ public class Amostra {
     private LocalDateTime dataImpressao;
 
     @ManyToMany
+    @Cascade(CascadeType.REMOVE)
     @JoinTable(
             name = "amostra_arquivo",
             joinColumns = @JoinColumn(name = "amostra_id"),

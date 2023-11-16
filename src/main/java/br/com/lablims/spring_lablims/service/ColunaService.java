@@ -12,12 +12,14 @@ import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseColunaRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class ColunaService {
 
     private final ColunaRepository colunaRepository;
@@ -27,16 +29,6 @@ public class ColunaService {
 
     public Coluna findById(Integer id){
         return colunaRepository.findById(id).orElse(null);
-    }
-
-    public ColunaService(final ColunaRepository colunaRepository,
-            final ColunaConfigRepository colunaConfigRepository,
-            final ColunaUtilRepository colunaUtilRepository,
-            final PlanoAnaliseColunaRepository planoAnaliseColunaRepository) {
-        this.colunaRepository = colunaRepository;
-        this.colunaConfigRepository = colunaConfigRepository;
-        this.colunaUtilRepository = colunaUtilRepository;
-        this.planoAnaliseColunaRepository = planoAnaliseColunaRepository;
     }
 
     public SimplePage<ColunaDTO> findAll(final String filter, final Pageable pageable) {

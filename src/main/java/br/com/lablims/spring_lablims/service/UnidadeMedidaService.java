@@ -1,6 +1,6 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.EscalaMedida;
+import br.com.lablims.spring_lablims.domain.Grandeza;
 import br.com.lablims.spring_lablims.domain.PlanoAnaliseColuna;
 import br.com.lablims.spring_lablims.domain.Reagente;
 import br.com.lablims.spring_lablims.domain.SolucaoReagente;
@@ -8,7 +8,7 @@ import br.com.lablims.spring_lablims.domain.SolucaoRegistro;
 import br.com.lablims.spring_lablims.domain.UnidadeMedida;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.UnidadeMedidaDTO;
-import br.com.lablims.spring_lablims.repos.EscalaMedidaRepository;
+import br.com.lablims.spring_lablims.repos.GrandezaRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseColunaRepository;
 import br.com.lablims.spring_lablims.repos.ReagenteRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoReagenteRepository;
@@ -16,16 +16,18 @@ import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
 import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class UnidadeMedidaService {
 
     private final UnidadeMedidaRepository unidadeMedidaRepository;
-    private final EscalaMedidaRepository escalaMedidaRepository;
+    private final GrandezaRepository grandezaRepository;
     private final PlanoAnaliseColunaRepository planoAnaliseColunaRepository;
     private final ReagenteRepository reagenteRepository;
     private final SolucaoRegistroRepository solucaoRegistroRepository;
@@ -33,20 +35,6 @@ public class UnidadeMedidaService {
 
     public UnidadeMedida findById(Integer id){
         return unidadeMedidaRepository.findById(id).orElse(null);
-    }
-
-    public UnidadeMedidaService(final UnidadeMedidaRepository unidadeMedidaRepository,
-            final EscalaMedidaRepository escalaMedidaRepository,
-            final PlanoAnaliseColunaRepository planoAnaliseColunaRepository,
-            final ReagenteRepository reagenteRepository,
-            final SolucaoRegistroRepository solucaoRegistroRepository,
-            final SolucaoReagenteRepository solucaoReagenteRepository) {
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-        this.escalaMedidaRepository = escalaMedidaRepository;
-        this.planoAnaliseColunaRepository = planoAnaliseColunaRepository;
-        this.reagenteRepository = reagenteRepository;
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
-        this.solucaoReagenteRepository = solucaoReagenteRepository;
     }
 
     public SimplePage<UnidadeMedidaDTO> findAll(final String filter, final Pageable pageable) {
@@ -96,7 +84,7 @@ public class UnidadeMedidaService {
             final UnidadeMedidaDTO unidadeMedidaDTO) {
         unidadeMedidaDTO.setId(unidadeMedida.getId());
         unidadeMedidaDTO.setUnidade(unidadeMedida.getUnidade());
-        unidadeMedidaDTO.setEscalaMedida(unidadeMedida.getEscalaMedida() == null ? null : unidadeMedida.getEscalaMedida().getId());
+        unidadeMedidaDTO.setGrandeza(unidadeMedida.getGrandeza() == null ? null : unidadeMedida.getGrandeza().getId());
         unidadeMedidaDTO.setVersion(unidadeMedida.getVersion());
         return unidadeMedidaDTO;
     }
@@ -104,9 +92,9 @@ public class UnidadeMedidaService {
     private UnidadeMedida mapToEntity(final UnidadeMedidaDTO unidadeMedidaDTO,
             final UnidadeMedida unidadeMedida) {
         unidadeMedida.setUnidade(unidadeMedidaDTO.getUnidade());
-        final EscalaMedida escalaMedida = unidadeMedidaDTO.getEscalaMedida() == null ? null : escalaMedidaRepository.findById(unidadeMedidaDTO.getEscalaMedida())
-                .orElseThrow(() -> new NotFoundException("escalaMedida not found"));
-        unidadeMedida.setEscalaMedida(escalaMedida);
+        final Grandeza grandeza = unidadeMedidaDTO.getGrandeza() == null ? null : grandezaRepository.findById(unidadeMedidaDTO.getGrandeza())
+                .orElseThrow(() -> new NotFoundException("grandeza not found"));
+        unidadeMedida.setGrandeza(grandeza);
         return unidadeMedida;
     }
 

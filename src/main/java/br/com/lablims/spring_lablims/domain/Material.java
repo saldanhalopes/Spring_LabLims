@@ -1,12 +1,11 @@
 package br.com.lablims.spring_lablims.domain;
 
 import jakarta.persistence.*;
-
-import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
 
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -14,31 +13,94 @@ import org.hibernate.envers.Audited;
 @Audited(withModifiedFlag = true)
 public class Material {
 
-    @Version
-    private Short version;
+	@Version
+	private Short version;
 
-    @Id
-    @Column(nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@Column(nullable = false, updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column
-    private Boolean controleEspecial;
+	@Column(nullable = false, unique = true)
+	private String codigo;
 
-    @Column
-    private String fiscalizado;
+	@Column
+	private String material;
 
-    @Column
-    private Integer codigo;
+	@Column(columnDefinition = "TEXT")
+	private String descricao;
 
-    @Column
-    private String material;
+	@ManyToOne
+	@JoinColumn(name="produto_tipo_id")
+	private MaterialTipo materialTipo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipo_material_id")
-    private MaterialTipo tipoMaterial;
+	@Column
+	private String partNumber;
 
-    @ManyToMany(mappedBy = "material")
-    private Set<MetodologiaVersao> metodologiaVersao;
+	@Column
+	private String casNumber;
+
+	@Column
+	private String serialNumber;
+
+	@Column
+	private String numeroIdentificacao;
+
+	@Column
+	private String fabricante;
+
+	@Column
+	private String marca;
+
+	@Column
+	private String modelo;
+
+	@ManyToOne
+	@JoinColumn(name="fornecedor_id")
+	private Fornecedor fornecedor;
+
+	@Column
+	private boolean compraUnica;
+
+	@Column
+	private BigDecimal estoqueMin;
+
+	@Column
+	private BigDecimal estoqueMax;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "unidade_id")
+	private UnidadeMedida unidade;
+
+	@Column
+	private String grau;
+
+	@Column
+	private String pureza;
+
+	@Column
+	private String classe;
+
+	@Column
+	private String controlado;
+
+	@Column
+	private Integer saude;
+
+	@Column
+	private Integer inflamabilidade;
+
+	@Column
+	private Integer reatividade;
+
+	@Column
+	private String especifico;
+
+	@Column
+	private boolean ativo;
+
+	@Column
+	private String obs;
+
 
 }

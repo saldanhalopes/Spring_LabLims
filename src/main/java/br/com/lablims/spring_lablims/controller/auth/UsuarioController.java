@@ -6,13 +6,14 @@ import br.com.lablims.spring_lablims.domain.Grupo;
 import br.com.lablims.spring_lablims.domain.Usuario;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.UsuarioDTO;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.GrupoRepository;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,21 +31,17 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/usuarios")
 @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "')")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+
     private final GrupoRepository grupoRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public UsuarioController(final UsuarioService usuarioService,
-                             final GrupoRepository grupoRepository) {
-        this.usuarioService = usuarioService;
-        this.grupoRepository = grupoRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {
@@ -61,7 +58,7 @@ public class UsuarioController {
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("filter", filter);
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(usuarios));
-        return "pages/usuario/list";
+        return "usuario/list";
     }
 
     @GetMapping("/add")
@@ -81,7 +78,7 @@ public class UsuarioController {
             bindingResult.rejectValue("username", "Exists.usuario.username");
         }
         if (bindingResult.hasErrors()) {
-            return "pages/usuario/add";
+            return "usuario/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
                 CustomRevisionEntity.setMotivoText("Novo Registro");
@@ -89,7 +86,7 @@ public class UsuarioController {
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("usuario.create.success"));
             } else {
                 model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
-                return "pages/usuario/add";
+                return "usuario/add";
             }
         }
         return "redirect:/usuarios";
@@ -98,7 +95,7 @@ public class UsuarioController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable final Integer id, final Model model) {
         model.addAttribute("usuario", usuarioService.get(id));
-        return "pages/usuario/edit";
+        return "usuario/edit";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "')")
@@ -127,7 +124,7 @@ public class UsuarioController {
             redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("usuario.update.success"));
         } else {
             model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
-            return "pages/usuario/edit";
+            return "usuario/edit";
         }
         return "redirect:/usuarios";
     }
@@ -159,7 +156,7 @@ public class UsuarioController {
     public String getRevisions(Model model) {
         List<EntityRevision<Usuario>> revisoes = genericRevisionRepository.listaRevisoes(Usuario.class);
         model.addAttribute("audits", revisoes);
-        return "pages/usuario/audit";
+        return "usuario/audit";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
@@ -168,7 +165,7 @@ public class UsuarioController {
         Usuario usuario = usuarioService.findById(id);
         List<EntityRevision<Usuario>> revisoes = genericRevisionRepository.listaRevisoesById(usuario.getId(), Usuario.class);
         model.addAttribute("audits", revisoes);
-        return "pages/usuario/audit";
+        return "usuario/audit";
     }
 
 

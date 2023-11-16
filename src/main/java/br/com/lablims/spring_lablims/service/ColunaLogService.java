@@ -17,12 +17,14 @@ import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
 import br.com.lablims.spring_lablims.repos.UsuarioRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class ColunaLogService {
 
     private final ColunaLogRepository colunaLogRepository;
@@ -35,21 +37,6 @@ public class ColunaLogService {
 
     public ColunaLog findById(Integer id){
         return colunaLogRepository.findById(id).orElse(null);
-    }
-
-    public ColunaLogService(final ColunaLogRepository colunaLogRepository,
-            final ColunaUtilRepository colunaUtilRepository,
-            final UsuarioRepository usuarioRepository, final CampanhaRepository campanhaRepository,
-            final AnaliseRepository analiseRepository,
-            final EquipamentoRepository equipamentoRepository,
-            final ArquivosRepository arquivosRepository) {
-        this.colunaLogRepository = colunaLogRepository;
-        this.colunaUtilRepository = colunaUtilRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.campanhaRepository = campanhaRepository;
-        this.analiseRepository = analiseRepository;
-        this.equipamentoRepository = equipamentoRepository;
-        this.arquivosRepository = arquivosRepository;
     }
 
     public SimplePage<ColunaLogDTO> findAll(final String filter, final Pageable pageable) {

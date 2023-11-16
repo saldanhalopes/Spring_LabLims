@@ -10,12 +10,13 @@ import br.com.lablims.spring_lablims.repos.AnaliseStatusRepository;
 import br.com.lablims.spring_lablims.repos.AmostraStatusRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
 @Service
+@RequiredArgsConstructor
 public class AnaliseStatusService {
 
     private final AnaliseStatusRepository analiseStatusRepository;
@@ -24,14 +25,6 @@ public class AnaliseStatusService {
 
     public AnaliseStatus findById(Integer id){
         return analiseStatusRepository.findById(id).orElse(null);
-    }
-
-    public AnaliseStatusService(final AnaliseStatusRepository analiseStatusRepository,
-            final AnaliseProdutividadeRepository analiseProdutividadeRepository,
-            final AmostraStatusRepository amostraStatusRepository) {
-        this.analiseStatusRepository = analiseStatusRepository;
-        this.analiseProdutividadeRepository = analiseProdutividadeRepository;
-        this.amostraStatusRepository = amostraStatusRepository;
     }
 
     public SimplePage<AnaliseStatusDTO> findAll(final String filter, final Pageable pageable) {

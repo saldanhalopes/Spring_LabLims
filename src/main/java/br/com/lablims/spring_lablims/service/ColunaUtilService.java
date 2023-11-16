@@ -9,7 +9,7 @@ import br.com.lablims.spring_lablims.repos.ArquivosRepository;
 import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
 import br.com.lablims.spring_lablims.repos.ColunaRepository;
 import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
-import br.com.lablims.spring_lablims.repos.ColunaVagaRepository;
+import br.com.lablims.spring_lablims.repos.StorageEnderecoRepository;
 import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
@@ -18,13 +18,15 @@ import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class ColunaUtilService {
 
     private final ColunaUtilRepository colunaUtilRepository;
@@ -32,29 +34,12 @@ public class ColunaUtilService {
     private final SetorRepository setorRepository;
     private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final AnaliseRepository analiseRepository;
-    private final ColunaVagaRepository colunaVagaRepository;
+    private final StorageEnderecoRepository storageEnderecoRepository;
     private final ArquivosRepository arquivosRepository;
     private final ColunaLogRepository colunaLogRepository;
 
     public ColunaUtil findById(Integer id){
         return colunaUtilRepository.findById(id).orElse(null);
-    }
-
-    public ColunaUtilService(final ColunaUtilRepository colunaUtilRepository,
-            final ColunaRepository colunaRepository, final SetorRepository setorRepository,
-            final MetodologiaVersaoRepository metodologiaVersaoRepository,
-            final AnaliseRepository analiseRepository,
-            final ColunaVagaRepository colunaVagaRepository,
-            final ArquivosRepository arquivosRepository,
-            final ColunaLogRepository colunaLogRepository) {
-        this.colunaUtilRepository = colunaUtilRepository;
-        this.colunaRepository = colunaRepository;
-        this.setorRepository = setorRepository;
-        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
-        this.analiseRepository = analiseRepository;
-        this.colunaVagaRepository = colunaVagaRepository;
-        this.arquivosRepository = arquivosRepository;
-        this.colunaLogRepository = colunaLogRepository;
     }
 
     public SimplePage<ColunaUtilDTO> findAll(final String filter, final Pageable pageable) {
@@ -113,7 +98,7 @@ public class ColunaUtilService {
         colunaUtilDTO.setSetor(colunaUtil.getSetor() == null ? null : colunaUtil.getSetor().getId());
         colunaUtilDTO.setMetodologiaVersao(colunaUtil.getMetodologiaVersao() == null ? null : colunaUtil.getMetodologiaVersao().getId());
         colunaUtilDTO.setAnalise(colunaUtil.getAnalise() == null ? null : colunaUtil.getAnalise().getId());
-        colunaUtilDTO.setColunaVaga(colunaUtil.getColunaVaga() == null ? null : colunaUtil.getColunaVaga().getId());
+        colunaUtilDTO.setColunaVaga(colunaUtil.getStorageEndereco() == null ? null : colunaUtil.getStorageEndereco().getId());
         colunaUtilDTO.setCertificado(colunaUtil.getCertificado() == null ? null : colunaUtil.getCertificado().getId());
         colunaUtilDTO.setVersion(colunaUtil.getVersion());
         colunaUtilDTO.setAnexos(colunaUtil.getAnexos().stream()
@@ -142,9 +127,9 @@ public class ColunaUtilService {
         final Analise analise = colunaUtilDTO.getAnalise() == null ? null : analiseRepository.findById(colunaUtilDTO.getAnalise())
                 .orElseThrow(() -> new NotFoundException("analise not found"));
         colunaUtil.setAnalise(analise);
-        final ColunaVaga colunaVaga = colunaUtilDTO.getColunaVaga() == null ? null : colunaVagaRepository.findById(colunaUtilDTO.getColunaVaga())
-                .orElseThrow(() -> new NotFoundException("colunaVaga not found"));
-        colunaUtil.setColunaVaga(colunaVaga);
+        final StorageEndereco storageEndereco = colunaUtilDTO.getColunaVaga() == null ? null : storageEnderecoRepository.findById(colunaUtilDTO.getColunaVaga())
+                .orElseThrow(() -> new NotFoundException("storageEndereco not found"));
+        colunaUtil.setStorageEndereco(storageEndereco);
         final Arquivos certificado = colunaUtilDTO.getCertificado() == null ? null : arquivosRepository.findById(colunaUtilDTO.getCertificado())
                 .orElseThrow(() -> new NotFoundException("certificado not found"));
         colunaUtil.setCertificado(certificado);

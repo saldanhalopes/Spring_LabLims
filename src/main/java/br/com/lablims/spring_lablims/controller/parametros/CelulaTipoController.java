@@ -5,12 +5,13 @@ import br.com.lablims.spring_lablims.domain.CelulaTipo;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.CelulaTipoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.CelulaTipoService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,6 +28,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/celulaTipos")
 public class CelulaTipoController {
 
@@ -34,10 +36,6 @@ public class CelulaTipoController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public CelulaTipoController(final CelulaTipoService celulaTipoService) {
-        this.celulaTipoService = celulaTipoService;
-    }
 
     @Autowired
     private UsuarioService usuarioService;

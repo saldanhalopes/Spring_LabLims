@@ -5,7 +5,7 @@ import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.CampanhaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.CelulaRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.AmostraRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.service.CampanhaService;
@@ -14,6 +14,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,6 +31,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/campanhas")
 public class CampanhaController {
 
@@ -40,15 +42,6 @@ public class CampanhaController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public CampanhaController(final CampanhaService campanhaService,
-            final SetorRepository setorRepository, final CelulaRepository celulaRepository,
-            final AmostraRepository amostraRepository) {
-        this.campanhaService = campanhaService;
-        this.setorRepository = setorRepository;
-        this.celulaRepository = celulaRepository;
-        this.amostraRepository = amostraRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

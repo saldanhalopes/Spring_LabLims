@@ -20,11 +20,11 @@
 </span>
 <span layout:fragment="auditHeads">
     <th th:text="#{unidadeMedida.unidade.label}" scope="col" />
-    <th th:text="#{unidadeMedida.escalaMedida.label}" scope="col" />
+    <th th:text="#{unidadeMedida.grandeza.label}" scope="col" />
 </span>
 <span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getUnidade()}"></td>
-    <td th:text="${a.getEntidade().getEscalaMedida()}"></td>
+    <td th:text="${a.getEntidade().getGrandeza()}"></td>
 </span>
 </html>
 

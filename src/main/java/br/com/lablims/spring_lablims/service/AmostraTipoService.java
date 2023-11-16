@@ -9,6 +9,7 @@ import br.com.lablims.spring_lablims.repos.AmostraTipoRepository;
 import br.com.lablims.spring_lablims.repos.AmostraRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 
 @Service
+@RequiredArgsConstructor
 public class AmostraTipoService {
 
     private final AmostraTipoRepository amostraTipoRepository;
@@ -25,12 +27,6 @@ public class AmostraTipoService {
 
     public AmostraTipo findById(Integer id) {
         return amostraTipoRepository.findById(id).orElse(null);
-    }
-
-    public AmostraTipoService(final AmostraTipoRepository amostraTipoRepository,
-                              final AmostraRepository amostraRepository) {
-        this.amostraTipoRepository = amostraTipoRepository;
-        this.amostraRepository = amostraRepository;
     }
 
     public SimplePage<AmostraTipoDTO> findAll(final String filter, final Pageable pageable) {

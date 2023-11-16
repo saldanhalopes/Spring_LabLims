@@ -14,13 +14,15 @@ import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class CampanhaService {
 
     private final CampanhaRepository campanhaRepository;
@@ -31,16 +33,6 @@ public class CampanhaService {
 
     public Campanha findById(Integer id){
         return campanhaRepository.findById(id).orElse(null);
-    }
-
-    public CampanhaService(final CampanhaRepository campanhaRepository,
-            final SetorRepository setorRepository, final CelulaRepository celulaRepository,
-            final AmostraRepository amostraRepository, final ColunaLogRepository colunaLogRepository) {
-        this.campanhaRepository = campanhaRepository;
-        this.setorRepository = setorRepository;
-        this.celulaRepository = celulaRepository;
-        this.amostraRepository = amostraRepository;
-        this.colunaLogRepository = colunaLogRepository;
     }
 
     public SimplePage<CampanhaDTO> findAll(final String filter, final Pageable pageable) {

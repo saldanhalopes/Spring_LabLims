@@ -1,6 +1,8 @@
 package br.com.lablims.spring_lablims.model;
 
 import java.util.List;
+
+import br.com.lablims.spring_lablims.util.FieldError;
 import lombok.Getter;
 import lombok.Setter;
 

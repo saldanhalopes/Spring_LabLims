@@ -5,17 +5,24 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Set;
+
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
 @Getter
 @Setter
 @Audited(withModifiedFlag = true)
+@NamedEntityGraph(name = "usuario.grupo",
+        attributeNodes = @NamedAttributeNode("grupo")
+)
 public class Usuario {
 
     @Version
@@ -33,15 +40,23 @@ public class Usuario {
     private String password;
 
     @Column(nullable = false, unique = true)
+    @Email
     private String email;
 
-    @ManyToMany
-    @JoinTable(
-            name = "usuario_grupo",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "grupo_id")
-    )
-    private Set<Grupo> grupos;
+    @Column
+    @ColumnDefault("false")
+    private boolean token;
+
+    @Column
+    @ColumnDefault("false")
+    private boolean ativo;
+
+    @Column
+    private String secret;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grupo_id")
+    private Grupo grupo;
 
     @Column
     private String nome;

@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{produto.list.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
+        <li class="breadcrumb-item" th:text="#{produto.produto.label}"></li>
+    </ol>
+</div>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{produto.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/produtos/add}" th:text="#{produto.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{back.menu}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${produtos.empty}" th:text="#{produto.list.empty}"></div>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{produto.controleEspecial.label}" scope="col" />
+    <th th:text="#{produto.fiscalizado.label}" scope="col" />
+    <th th:text="#{produto.codigo.label}" scope="col" />
+    <th th:text="#{produto.produto.label}" scope="col" />
+    <th th:text="#{produto.tipoProduto.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="produto : ${produtos}">
+        <td th:text="${produto.id}"/>
+        <td th:text="${produto.version}"/>
+        <td th:text="${produto.controleEspecial}" />
+        <td th:text="${produto.fiscalizado}" />
+        <td th:text="${produto.codigo}" />
+        <td th:text="${produto.produto}" />
+        <td th:text="${produto.tipoProduto}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/produtos/edit/{id}(id=${produto.id})}"
+                   th:text="#{produto.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        th:attr="data-target='#remover_'+${produto.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${produto.id}, link='produtos')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/produtos/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

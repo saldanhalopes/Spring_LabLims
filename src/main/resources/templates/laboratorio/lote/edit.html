@@ -23,7 +23,7 @@
 </div>
 <div layout:fragment="editContent">
     <div th:replace="~{fragments/forms::inputRow(object='lote', field='lote', required='required')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='lote', field='material', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='lote', field='produto', type='select', required='required')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='lote', field='cliente', type='select', required='required')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='lote', field='tamanhoLote', type='number', step='0.000001')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='lote', field='unidade', type='select')}"></div>

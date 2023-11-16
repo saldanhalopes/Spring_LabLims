@@ -5,7 +5,7 @@ import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.PlanoAnaliseColunaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ColunaRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
 import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
 import br.com.lablims.spring_lablims.service.PlanoAnaliseColunaService;
@@ -14,6 +14,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/planoAnaliseColunas")
 public class PlanoAnaliseColunaController {
 
@@ -41,16 +43,6 @@ public class PlanoAnaliseColunaController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public PlanoAnaliseColunaController(final PlanoAnaliseColunaService planoAnaliseColunaService,
-                                        final PlanoAnaliseRepository planoAnaliseRepository,
-                                        final ColunaRepository colunaRepository,
-                                        final UnidadeMedidaRepository unidadeMedidaRepository) {
-        this.planoAnaliseColunaService = planoAnaliseColunaService;
-        this.planoAnaliseRepository = planoAnaliseRepository;
-        this.colunaRepository = colunaRepository;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

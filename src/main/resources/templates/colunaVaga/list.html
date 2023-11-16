@@ -2,43 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title th:text="#{colunaVaga.list.headline}"/>
+    <title th:text="#{storageEndereco.list.headline}"/>
 </head>
 <span layout:fragment="listHeadline">
-    <h2 th:text="#{colunaVaga.list.headline}" class="flex-grow-1"/>
+    <h2 th:text="#{storageEndereco.list.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="createNew">
-    <a th:href="@{/colunaVagas/add}" th:text="#{colunaVaga.list.createNew}"
+    <a th:href="@{/colunaVagas/add}" th:text="#{storageEndereco.list.createNew}"
        class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
 </span>
 <span layout:fragment="listBackMenu">
     <a th:href="@{/parameters}" th:text="#{back.menu}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="listErrors">
-    <div th:if="${colunaVagas.empty}" th:text="#{colunaVaga.list.empty}"/>
+    <div th:if="${colunaVagas.empty}" th:text="#{storageEndereco.list.empty}"/>
     <div th:if="${!colunaVagas.empty}" class="table-responsive"/>
 </div>
 <span layout:fragment="listHeader">
-    <th th:text="#{colunaVaga.vaga.label}" scope="col" />
-    <th th:text="#{colunaVaga.obs.label}" scope="col" />
-    <th th:text="#{colunaVaga.colunaStorage.label}" scope="col" />
+    <th th:text="#{storageEndereco.vaga.label}" scope="col" />
+    <th th:text="#{storageEndereco.obs.label}" scope="col" />
+    <th th:text="#{storageEndereco.storage.label}" scope="col" />
 </span>
 <span layout:fragment="listContent">
-    <tr th:each="colunaVaga : ${colunaVagas}">
-        <td th:text="${colunaVaga.id}" />
-        <td th:text="${colunaVaga.version}" />
-        <td th:text="${colunaVaga.vaga}" />
-        <td th:text="${colunaVaga.obs}" />
-        <td th:text="${colunaVaga.colunaStorage}" />
+    <tr th:each="storageEndereco : ${colunaVagas}">
+        <td th:text="${storageEndereco.id}" />
+        <td th:text="${storageEndereco.version}" />
+        <td th:text="${storageEndereco.vaga}" />
+        <td th:text="${storageEndereco.obs}" />
+        <td th:text="${storageEndereco.storage}" />
         <td>
             <div class="float-end text-nowrap">
-                <a th:href="@{/colunaVagas/edit/{id}(id=${colunaVaga.id})}"
-                   th:text="#{colunaVaga.list.edit}" class="btn btn-sm btn-info"
+                <a th:href="@{/colunaVagas/edit/{id}(id=${storageEndereco.id})}"
+                   th:text="#{storageEndereco.list.edit}" class="btn btn-sm btn-info"
                    sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                        th:attr="data-target='#remover_'+${colunaVaga.id}" th:text="#{delete.btn}"
+                        th:attr="data-target='#remover_'+${storageEndereco.id}" th:text="#{delete.btn}"
                         sec:authorize="hasAnyAuthority('ADMIN')"/>
-                <div th:replace="~{fragments/modal :: modalDelete(field=${colunaVaga.id}, link='colunaVagas')}"></div>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${storageEndereco.id}, link='colunaVagas')}"></div>
             </div>
         </td>
     </tr>

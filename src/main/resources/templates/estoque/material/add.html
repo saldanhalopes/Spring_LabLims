@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{material.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/materials}" th:text="#{material.material.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{material.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{material.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/materials}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('material')}"></div>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='ativo', type='checkbox')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='materialTipo', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='material', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='descricao', type='textarea', maxlength='2555')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='codigo', type='number')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='numeroIdentificacao', type='number')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='fornecedor', type='select')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='controlado', maxlength='255')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='partNumber', maxlength='255')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='casNumber', maxlength='255')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='fabricante', maxlength='255')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='marca', maxlength='255')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='modelo', maxlength='255')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='estoqueMin', type='number', step='0.000001')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='estoqueMax', type='number', step='0.000001')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='compraUnica', type='checkbox')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='unidade', type='select')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='obs', type='textarea', maxlength='255')}"></div>
+</div>
+</html>

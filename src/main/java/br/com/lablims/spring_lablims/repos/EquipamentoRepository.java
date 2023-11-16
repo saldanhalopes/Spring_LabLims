@@ -14,7 +14,7 @@ public interface EquipamentoRepository extends JpaRepository<Equipamento, Intege
 
     Page<Equipamento> findAllById(Integer id, Pageable pageable);
 
-    @Query("Select eq FROM Equipamento eq LEFT JOIN eq.tipo tp LEFT JOIN eq.setor st LEFT JOIN eq.escala esc")
+    @Query("Select eq FROM Equipamento eq LEFT JOIN eq.tipo tp LEFT JOIN eq.setor st LEFT JOIN eq.grandeza esc")
     Page<Equipamento> findAllOfEquipamentos(Pageable pageable);
 
     @Query("Select eq FROM Equipamento eq INNER JOIN eq.tipo tp INNER JOIN eq.setor st WHERE tp.tipo = :tipoEq AND st.id = :setorID ORDER BY tp.tipo ASC")
@@ -25,7 +25,7 @@ public interface EquipamentoRepository extends JpaRepository<Equipamento, Intege
 
     Equipamento findFirstBySetor(Setor setor);
 
-    Equipamento findFirstByEscala(EscalaMedida escalaMedida);
+    Equipamento findFirstByGrandeza(Grandeza grandeza);
 
     Equipamento findFirstByTipo(EquipamentoTipo equipamentoTipo);
 

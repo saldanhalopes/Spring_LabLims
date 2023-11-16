@@ -6,7 +6,7 @@ import br.com.lablims.spring_lablims.domain.SolucaoParemetro;
 import br.com.lablims.spring_lablims.domain.SolucaoRegistro;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.SolucaoParemetroDTO;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
 import br.com.lablims.spring_lablims.service.SolucaoParemetroService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
@@ -14,6 +14,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/solucaoParemetros")
 public class SolucaoParemetroController {
 
@@ -39,12 +41,6 @@ public class SolucaoParemetroController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public SolucaoParemetroController(final SolucaoParemetroService solucaoParemetroService,
-                                      final SolucaoRegistroRepository solucaoRegistroRepository) {
-        this.solucaoParemetroService = solucaoParemetroService;
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

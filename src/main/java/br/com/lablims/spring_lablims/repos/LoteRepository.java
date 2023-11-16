@@ -14,10 +14,10 @@ public interface LoteRepository extends JpaRepository<Lote, Integer> {
 
     Page<Lote> findAllById(Integer id, Pageable pageable);
 
-    @Query("Select lot FROM Lote lot LEFT JOIN lot.unidade unt LEFT JOIN lot.material mat LEFT JOIN lot.cliente cli")
+    @Query("Select lot FROM Lote lot LEFT JOIN lot.unidade unt LEFT JOIN lot.produto mat LEFT JOIN lot.cliente cli")
     Page<Lote> findAllOfLotes(Pageable pageable);
     Lote findFirstByUnidade(UnidadeMedida unidade);
-    Lote findFirstByMaterial(Material material);
+    Lote findFirstByProduto(Produto produto);
     Lote findFirstByCliente(Cliente cliente);
     @Query("Select lote FROM Lote lote LEFT JOIN FETCH lote.arquivos arq WHERE lote.id = :loteId")
     Lote findArquivosByLote(@Param("loteId") Integer loteId);

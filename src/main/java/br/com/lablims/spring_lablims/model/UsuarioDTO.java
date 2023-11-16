@@ -1,5 +1,6 @@
 package br.com.lablims.spring_lablims.model;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -72,8 +73,17 @@ public class UsuarioDTO {
     @Size(max = 255)
     private String username;
 
-    private List<Integer> grupos;
+    private Integer grupo;
+
+    private String  regra;
 
     private Short version;
+
+    private boolean token;
+
+    private boolean ativo;
+
+    @Size(max = 255)
+    private String secret;
 
 }

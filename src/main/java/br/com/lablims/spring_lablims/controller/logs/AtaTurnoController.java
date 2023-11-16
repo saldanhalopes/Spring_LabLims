@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.controller.logs;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.AtaTurnoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -11,6 +12,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +30,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/ataTurnos")
 public class AtaTurnoController {
 
@@ -39,17 +42,6 @@ public class AtaTurnoController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public AtaTurnoController(final AtaTurnoService ataTurnoService,
-                              final TurnoRepository turnoRepository, final SetorRepository setorRepository,
-                              final UsuarioRepository usuarioRepository,
-                              final EquipamentoRepository equipamentoRepository) {
-        this.ataTurnoService = ataTurnoService;
-        this.turnoRepository = turnoRepository;
-        this.setorRepository = setorRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.equipamentoRepository = equipamentoRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

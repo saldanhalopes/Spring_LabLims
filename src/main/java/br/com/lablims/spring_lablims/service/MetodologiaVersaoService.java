@@ -6,7 +6,7 @@ import br.com.lablims.spring_lablims.model.MetodologiaVersaoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ArquivosRepository;
 import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
-import br.com.lablims.spring_lablims.repos.MaterialRepository;
+import br.com.lablims.spring_lablims.repos.ProdutoRepository;
 import br.com.lablims.spring_lablims.repos.MetodologiaRepository;
 import br.com.lablims.spring_lablims.repos.MetodologiaStatusRepository;
 import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
@@ -17,41 +17,27 @@ import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class MetodologiaVersaoService {
 
     private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final MetodologiaRepository metodologiaRepository;
     private final ArquivosRepository arquivosRepository;
-    private final MaterialRepository materialRepository;
+    private final ProdutoRepository produtoRepository;
     private final MetodologiaStatusRepository metodologiaStatusRepository;
     private final ColunaUtilRepository colunaUtilRepository;
     private final PlanoAnaliseRepository planoAnaliseRepository;
 
     public MetodologiaVersao findById(Integer id){
         return metodologiaVersaoRepository.findById(id).orElse(null);
-    }
-
-    public MetodologiaVersaoService(final MetodologiaVersaoRepository metodologiaVersaoRepository,
-                                    final MetodologiaRepository metodologiaRepository,
-                                    final ArquivosRepository arquivosRepository,
-                                    final MaterialRepository materialRepository,
-                                    final MetodologiaStatusRepository metodologiaStatusRepository,
-                                    final ColunaUtilRepository colunaUtilRepository,
-                                    final PlanoAnaliseRepository planoAnaliseRepository) {
-        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
-        this.metodologiaRepository = metodologiaRepository;
-        this.arquivosRepository = arquivosRepository;
-        this.materialRepository = materialRepository;
-        this.metodologiaStatusRepository = metodologiaStatusRepository;
-        this.colunaUtilRepository = colunaUtilRepository;
-        this.planoAnaliseRepository = planoAnaliseRepository;
     }
 
     public SimplePage<MetodologiaVersaoDTO> findAll(final String filter, final Pageable pageable) {
@@ -106,8 +92,8 @@ public class MetodologiaVersaoService {
         metodologiaVersaoDTO.setMetodologia(metodologiaVersao.getMetodologia() == null ? null : metodologiaVersao.getMetodologia().getId());
         metodologiaVersaoDTO.setAnexo(metodologiaVersao.getAnexo() == null ? null : metodologiaVersao.getAnexo().getId());
         metodologiaVersaoDTO.setVersion(metodologiaVersao.getVersion());
-        metodologiaVersaoDTO.setMaterial(metodologiaVersao.getMaterial().stream()
-                .map(material -> material.getId())
+        metodologiaVersaoDTO.setProduto(metodologiaVersao.getProduto().stream()
+                .map(produto -> produto.getId())
                 .toList());
         metodologiaVersaoDTO.setStatus(metodologiaVersao.getStatus() == null ? null : metodologiaVersao.getStatus().getId());
         return metodologiaVersaoDTO;
@@ -124,12 +110,12 @@ public class MetodologiaVersaoService {
         final Arquivos anexo = metodologiaVersaoDTO.getAnexo() == null ? null : arquivosRepository.findById(metodologiaVersaoDTO.getAnexo())
                 .orElseThrow(() -> new NotFoundException("anexo not found"));
         metodologiaVersao.setAnexo(anexo);
-        final List<Material> material = materialRepository.findAllById(
-                metodologiaVersaoDTO.getMaterial() == null ? Collections.emptyList() : metodologiaVersaoDTO.getMaterial());
-        if (material.size() != (metodologiaVersaoDTO.getMaterial() == null ? 0 : metodologiaVersaoDTO.getMaterial().size())) {
-            throw new NotFoundException("one of material not found");
+        final List<Produto> produto = produtoRepository.findAllById(
+                metodologiaVersaoDTO.getProduto() == null ? Collections.emptyList() : metodologiaVersaoDTO.getProduto());
+        if (produto.size() != (metodologiaVersaoDTO.getProduto() == null ? 0 : metodologiaVersaoDTO.getProduto().size())) {
+            throw new NotFoundException("one of produto not found");
         }
-        metodologiaVersao.setMaterial(material.stream().collect(Collectors.toSet()));
+        metodologiaVersao.setProduto(produto.stream().collect(Collectors.toSet()));
         final MetodologiaStatus status = metodologiaVersaoDTO.getStatus() == null ? null : metodologiaStatusRepository.findById(metodologiaVersaoDTO.getStatus())
                 .orElseThrow(() -> new NotFoundException("status not found"));
         metodologiaVersao.setStatus(status);

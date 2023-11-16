@@ -40,9 +40,9 @@ public class LoteDTO {
     private String obs;
 
     @NotNull
-    private Integer material;
+    private Integer produto;
 
-    private String  materialName;
+    private String  produtoName;
 
     @NotNull
     private Integer cliente;

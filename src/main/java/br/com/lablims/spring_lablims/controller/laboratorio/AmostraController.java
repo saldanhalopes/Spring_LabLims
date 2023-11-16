@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.controller.laboratorio;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.AmostraDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -11,6 +12,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/amostras")
 public class AmostraController {
 
@@ -41,18 +44,6 @@ public class AmostraController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public AmostraController(final AmostraService amostraService,
-                             final UnidadeMedidaRepository unidadeMedidaRepository,
-                             final UsuarioRepository usuarioRepository,
-                             final LoteRepository loteRepository,
-                             final AmostraTipoRepository amostraTipoRepository) {
-        this.amostraService = amostraService;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.loteRepository = loteRepository;
-        this.amostraTipoRepository = amostraTipoRepository;
-    }
 
     @InitBinder
     protected void initBinder(ServletRequestDataBinder binder) {

@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.controller.parametros;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.MetodologiaVersaoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -11,6 +12,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,29 +30,19 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/metodologiaVersaos")
 public class MetodologiaVersaoController {
 
     private final MetodologiaVersaoService metodologiaVersaoService;
     private final MetodologiaRepository metodologiaRepository;
     private final ArquivosRepository arquivosRepository;
-    private final MaterialRepository materialRepository;
+    private final ProdutoRepository produtoRepository;
     private final MetodologiaStatusRepository metodologiaStatusRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
-    public MetodologiaVersaoController(final MetodologiaVersaoService metodologiaVersaoService,
-                                       final MetodologiaRepository metodologiaRepository,
-                                       final ArquivosRepository arquivosRepository,
-                                       final MaterialRepository materialRepository,
-                                       final MetodologiaStatusRepository metodologiaStatusRepository) {
-        this.metodologiaVersaoService = metodologiaVersaoService;
-        this.metodologiaRepository = metodologiaRepository;
-        this.arquivosRepository = arquivosRepository;
-        this.materialRepository = materialRepository;
-        this.metodologiaStatusRepository = metodologiaStatusRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {
@@ -60,9 +52,9 @@ public class MetodologiaVersaoController {
         model.addAttribute("anexoValues", arquivosRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Arquivos::getId, Arquivos::getNome)));
-        model.addAttribute("materialValues", materialRepository.findAll(Sort.by("id"))
+        model.addAttribute("produtoValues", produtoRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(Material::getId, Material::getFiscalizado)));
+                .collect(CustomCollectors.toSortedMap(Produto::getId, Produto::getFiscalizado)));
         model.addAttribute("statusValues", metodologiaStatusRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(MetodologiaStatus::getId, MetodologiaStatus::getStatus)));

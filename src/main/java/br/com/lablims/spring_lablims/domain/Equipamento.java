@@ -81,7 +81,7 @@ public class Equipamento {
     private Set<Arquivos> arquivos;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "escala_id")
-    private EscalaMedida escala;
+    @JoinColumn(name = "grandeza_id")
+    private Grandeza grandeza;
 
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/details}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{material.material.label}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/materials}" th:text="#{material.material.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{material.details.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="detailsHeadline">
+    <h1 th:text="#{material.details.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="detailsBack">
+    <a th:href="@{/materials}" th:text="#{details.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="detailsAudit">
+    <a th:href="@{/materials/audit/{id}(id=${material.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="detailsContent">
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='ativo', type='checkbox', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='materialTipo', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='material', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='descricao', type='textarea', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='codigo', type='number', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='numeroIdentificacao', type='number', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='fornecedor', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='controlado', type='checkbox', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='partNumber', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='casNumber', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='fabricante', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='marca', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='modelo', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='estoqueMin', type='number', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='estoqueMax', type='number', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='compraUnica', type='checkbox', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='unidade', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='obs', type='textarea', readonly='readonly')}"></div>
+</div>
+</html>

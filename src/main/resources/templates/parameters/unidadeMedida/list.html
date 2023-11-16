@@ -26,14 +26,14 @@
 </div>
 <span layout:fragment="listHeader">
     <th th:text="#{unidadeMedida.unidade.label}" scope="col" />
-    <th th:text="#{unidadeMedida.escalaMedida.label}" scope="col" />
+    <th th:text="#{unidadeMedida.grandeza.label}" scope="col" />
 </span>
 <span layout:fragment="listContent">
     <tr th:each="unidadeMedida : ${unidadeMedidas}">
         <td th:text="${unidadeMedida.id}"/>
         <td th:text="${unidadeMedida.version}"/>
         <td th:text="${unidadeMedida.unidade}" />
-        <td th:text="${unidadeMedida.escalaMedida}" />
+        <td th:text="${unidadeMedida.grandeza}" />
         <td>
             <div class="float-end text-nowrap">
                 <a th:href="@{/unidadeMedidas/edit/{id}(id=${unidadeMedida.id})}"

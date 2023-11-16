@@ -18,12 +18,14 @@ import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
 import br.com.lablims.spring_lablims.repos.UsuarioRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class SolucaoRegistroService {
 
     private final SolucaoRegistroRepository solucaoRegistroRepository;
@@ -36,22 +38,6 @@ public class SolucaoRegistroService {
 
     public SolucaoRegistro findById(Integer id){
         return solucaoRegistroRepository.findById(id).orElse(null);
-    }
-
-    public SolucaoRegistroService(final SolucaoRegistroRepository solucaoRegistroRepository,
-            final SolucaoTipoRepository solucaoTipoRepository,
-            final UsuarioRepository usuarioRepository,
-            final UnidadeMedidaRepository unidadeMedidaRepository,
-            final SolucaoParemetroRepository solucaoParemetroRepository,
-            final SolucaoEquipamentoRepository solucaoEquipamentoRepository,
-            final SolucaoReagenteRepository solucaoReagenteRepository) {
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
-        this.solucaoTipoRepository = solucaoTipoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-        this.solucaoParemetroRepository = solucaoParemetroRepository;
-        this.solucaoEquipamentoRepository = solucaoEquipamentoRepository;
-        this.solucaoReagenteRepository = solucaoReagenteRepository;
     }
 
     public SimplePage<SolucaoRegistroDTO> findAll(final String filter, final Pageable pageable) {

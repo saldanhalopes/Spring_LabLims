@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.ColunaConfigRepository;
 import br.com.lablims.spring_lablims.repos.ColunaRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class ColunaConfigService {
 
     private final ColunaConfigRepository colunaConfigRepository;
@@ -21,12 +23,6 @@ public class ColunaConfigService {
 
     public ColunaConfig findById(Integer id){
         return colunaConfigRepository.findById(id).orElse(null);
-    }
-
-    public ColunaConfigService(final ColunaConfigRepository colunaConfigRepository,
-            final ColunaRepository colunaRepository) {
-        this.colunaConfigRepository = colunaConfigRepository;
-        this.colunaRepository = colunaRepository;
     }
 
     public SimplePage<ColunaConfigDTO> findAll(final String filter, final Pageable pageable) {

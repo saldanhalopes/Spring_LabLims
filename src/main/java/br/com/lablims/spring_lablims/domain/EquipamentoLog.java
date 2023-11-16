@@ -6,13 +6,16 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @Audited(withModifiedFlag = true)
 public class EquipamentoLog {
 
@@ -62,12 +65,18 @@ public class EquipamentoLog {
     private Set<Arquivos> arquivos;
 
     @ManyToMany
-    @Cascade(CascadeType.REMOVE)
     @JoinTable(
             name = "equipamentoLog_amostras",
             joinColumns = @JoinColumn(name = "equipamentoLog_Id"),
             inverseJoinColumns = @JoinColumn(name = "amostra_Id")
     )
     private Set<Amostra> amostra;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_confencia_id")
+    private Usuario usuarioConfencia;
+
+    @Column
+    private LocalDateTime dataConfencia;
 
 }

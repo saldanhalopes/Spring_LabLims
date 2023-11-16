@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.CelulaRepository;
 import br.com.lablims.spring_lablims.repos.CelulaTipoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class CelulaTipoService {
 
     private final CelulaTipoRepository celulaTipoRepository;
@@ -21,12 +23,6 @@ public class CelulaTipoService {
 
     public CelulaTipo findById(Integer id){
         return celulaTipoRepository.findById(id).orElse(null);
-    }
-
-    public CelulaTipoService(final CelulaTipoRepository celulaTipoRepository,
-            final CelulaRepository celulaRepository) {
-        this.celulaTipoRepository = celulaTipoRepository;
-        this.celulaRepository = celulaRepository;
     }
 
     public SimplePage<CelulaTipoDTO> findAll(final String filter, final Pageable pageable) {

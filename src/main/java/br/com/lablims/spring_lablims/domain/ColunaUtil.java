@@ -62,7 +62,7 @@ public class ColunaUtil {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coluna_vaga_id")
-    private ColunaVaga colunaVaga;
+    private StorageEndereco storageEndereco;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "certificado_id")

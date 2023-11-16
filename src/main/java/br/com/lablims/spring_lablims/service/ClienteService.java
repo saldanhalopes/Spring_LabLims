@@ -6,25 +6,19 @@ import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ClienteRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
-    private final SetorRepository setorRepository;
-
     public Cliente findById(Integer id){
         return clienteRepository.findById(id).orElse(null);
-    }
-
-    public ClienteService(final ClienteRepository clienteRepository,
-                          final SetorRepository setorRepository) {
-        this.clienteRepository = clienteRepository;
-        this.setorRepository = setorRepository;
     }
 
     public SimplePage<ClienteDTO> findAll(final String filter, final Pageable pageable) {

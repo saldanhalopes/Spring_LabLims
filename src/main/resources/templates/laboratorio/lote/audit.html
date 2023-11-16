@@ -20,7 +20,7 @@
 </span>
 <span layout:fragment="auditHeads">
     <th th:text="#{lote.lote.label}" scope="col"/>
-    <th th:text="#{lote.material.label}" scope="col"/>
+    <th th:text="#{lote.produto.label}" scope="col"/>
     <th th:text="#{lote.cliente.label}" scope="col"/>
     <th th:text="#{lote.tamanhoLote.label}" scope="col"/>
     <th th:text="#{lote.unidade.label}" scope="col"/>
@@ -32,7 +32,7 @@
 </span>
 <span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getLote()}"></td>
-    <td th:text="${a.getEntidade().getMaterial().getId()}"></td>
+    <td th:text="${a.getEntidade().getProduto().getId()}"></td>
     <td th:text="${a.getEntidade().getCliente().getId()}"></td>
     <td th:text="${a.getEntidade().getTamanhoLote()}"></td>
     <td th:text="${a.getEntidade().getUnidade().getId()}"></td>

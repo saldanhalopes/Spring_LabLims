@@ -12,9 +12,9 @@ public interface MetodologiaVersaoRepository extends JpaRepository<MetodologiaVe
 
     Page<MetodologiaVersao> findAllById(Integer id, Pageable pageable);
 
-    List<MetodologiaVersao> findAllByMaterial(Material material);
+    List<MetodologiaVersao> findAllByProduto(Produto produto);
 
-    MetodologiaVersao findFirstByMaterial(Material material);
+    MetodologiaVersao findFirstByProduto(Produto produto);
 
     MetodologiaVersao findFirstByMetodologia(Metodologia metodologia);
 

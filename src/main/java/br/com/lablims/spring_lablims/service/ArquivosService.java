@@ -1,56 +1,29 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.*;
-import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
+import br.com.lablims.spring_lablims.domain.Arquivos;
 import br.com.lablims.spring_lablims.model.ArquivosDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
-import br.com.lablims.spring_lablims.util.WebUtils;
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 
 @Service
-@Transactional
+@RequiredArgsConstructor
+//@Transactional
 public class ArquivosService {
 
     private final ArquivosRepository arquivosRepository;
-    private final ColunaUtilRepository colunaUtilRepository;
-    private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final EquipamentoRepository equipamentoRepository;
-    private final ColunaLogRepository colunaLogRepository;
-    private final ReagenteRepository reagenteRepository;
     private final EquipamentoLogRepository equipamentoLogRepository;
     private final LoteRepository loteRepository;
     private final AmostraRepository amostraRepository;
 
     public Arquivos findById(Integer id) {
         return arquivosRepository.findById(id).orElse(null);
-    }
-
-    public ArquivosService(final ArquivosRepository arquivosRepository,
-                           final ColunaUtilRepository colunaUtilRepository,
-                           final MetodologiaVersaoRepository metodologiaVersaoRepository,
-                           final EquipamentoRepository equipamentoRepository,
-                           final ColunaLogRepository colunaLogRepository,
-                           final ReagenteRepository reagenteRepository,
-                           final EquipamentoLogRepository equipamentoLogRepository,
-                           final LoteRepository loteRepository,
-                           final AmostraRepository amostraRepository) {
-        this.arquivosRepository = arquivosRepository;
-        this.colunaUtilRepository = colunaUtilRepository;
-        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
-        this.equipamentoRepository = equipamentoRepository;
-        this.colunaLogRepository = colunaLogRepository;
-        this.reagenteRepository = reagenteRepository;
-        this.equipamentoLogRepository = equipamentoLogRepository;
-        this.loteRepository = loteRepository;
-        this.amostraRepository = amostraRepository;
     }
 
     public SimplePage<ArquivosDTO> findAll(final String filter, final Pageable pageable) {

@@ -9,13 +9,14 @@ import br.com.lablims.spring_lablims.repos.UsuarioRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class GrupoService {
 
     private final GrupoRepository grupoRepository;
@@ -23,12 +24,6 @@ public class GrupoService {
 
     public Grupo findById(Integer id){
         return grupoRepository.findById(id).orElse(null);
-    }
-
-    public GrupoService(final GrupoRepository grupoRepository,
-            final UsuarioRepository usuarioRepository) {
-        this.grupoRepository = grupoRepository;
-        this.usuarioRepository = usuarioRepository;
     }
 
     public SimplePage<GrupoDTO> findAll(final String filter, final Pageable pageable) {
@@ -73,9 +68,6 @@ public class GrupoService {
     public void delete(final Integer id) {
         final Grupo grupo = grupoRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        // remove many-to-many relations at owning side
-        usuarioRepository.findAllByGrupos(grupo)
-                .forEach(usuario -> usuario.getGrupos().remove(grupo));
         grupoRepository.delete(grupo);
     }
 
@@ -98,7 +90,7 @@ public class GrupoService {
     public String getReferencedWarning(final Integer id) {
         final Grupo grupo = grupoRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final Usuario gruposUsuario = usuarioRepository.findFirstByGrupos(grupo);
+        final Usuario gruposUsuario = usuarioRepository.findFirstByGrupo(grupo);
         if (gruposUsuario != null) {
             return WebUtils.getMessage("grupo.usuario.grupos.referenced", gruposUsuario.getId());
         }

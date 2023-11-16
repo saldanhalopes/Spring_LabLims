@@ -2,18 +2,19 @@ package br.com.lablims.spring_lablims.controller.parametros;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
-import br.com.lablims.spring_lablims.domain.EscalaMedida;
+import br.com.lablims.spring_lablims.domain.Grandeza;
 import br.com.lablims.spring_lablims.domain.UnidadeMedida;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.UnidadeMedidaDTO;
-import br.com.lablims.spring_lablims.repos.EscalaMedidaRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.repos.GrandezaRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.UnidadeMedidaService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,26 +32,21 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/unidadeMedidas")
 public class UnidadeMedidaController {
 
     private final UnidadeMedidaService unidadeMedidaService;
-    private final EscalaMedidaRepository escalaMedidaRepository;
+    private final GrandezaRepository grandezaRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
-    public UnidadeMedidaController(final UnidadeMedidaService unidadeMedidaService,
-            final EscalaMedidaRepository escalaMedidaRepository) {
-        this.unidadeMedidaService = unidadeMedidaService;
-        this.escalaMedidaRepository = escalaMedidaRepository;
-    }
-
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("escalaMedidaValues", escalaMedidaRepository.findAll(Sort.by("id"))
+        model.addAttribute("grandezaValues", grandezaRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(EscalaMedida::getId, EscalaMedida::getEscala)));
+                .collect(CustomCollectors.toSortedMap(Grandeza::getId, Grandeza::getGrandeza)));
     }
 
 

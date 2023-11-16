@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <ol class="breadcrumb float-sm-left">
+                    <li class="breadcrumb-item"><a href="/index">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/templates/laboratorio}" th:text="#{laboratorio.title}"></a></li>
+                    <li class="breadcrumb-item active" th:text="#{lote.list.headline}"></li>
+                </ol>
+            </div>
+        </div>
+    </section>
+    <div class="container-fluid">
+        <div class="card card-info card-outline">
+            <div class="card-header">
+                <h5 class="card-title d-flex">
+                    <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
+                    <span th:text="#{registration.register.headline}"></span>
+                </h5>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item">
+                            <a th:href="@{/regiter}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <h1 th:text="#{registration.register.headline}" class="mb-4" />
+                <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
+                     class="alert alert-danger alert-dismissible fade show" role="alert"></div>
+                <div th:if="${MSG_INFO != null}" th:text="${MSG_INFO}" id="infoAlert"
+                     class="alert alert-info alert-dismissible fade show" role="alert"></div>
+                <div th:if="${MSG_SUCCESS != null}" th:text="${MSG_SUCCESS}" id="succesAlert"
+                     class="alert alert-success alert-dismissible fade show" role="alert"></div>
+                <div th:replace="~{fragments/forms::globalErrors('usuario')}" ></div>
+                <div>
+                    <p>
+                        <img class="img-fluid mb-3 col-md-2"th:src="${'data:image/png;base64,' + twoFaQrUrl}" alt="" height="250" width="250" />
+                        <p th:text="${otpUrl}"></p>
+                    </p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/regiter}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<span layout:fragment="script">
+    <script th:inline="javascript">
+        window.setTimeout(function () {
+            $('#infoAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+            $('#errorAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+            $('#succesAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
+    </script>
+</span>
+</html>
+
+
+

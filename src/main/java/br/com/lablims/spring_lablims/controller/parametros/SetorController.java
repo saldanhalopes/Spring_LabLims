@@ -7,13 +7,14 @@ import br.com.lablims.spring_lablims.domain.Setor;
 import br.com.lablims.spring_lablims.model.SetorDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.DepartamentoRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.SetorService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/setors")
 public class SetorController {
 
@@ -39,11 +41,6 @@ public class SetorController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-    public SetorController(final SetorService setorService,
-            final DepartamentoRepository departamentoRepository) {
-        this.setorService = setorService;
-        this.departamentoRepository = departamentoRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {
@@ -51,7 +48,6 @@ public class SetorController {
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Departamento::getId, Departamento::getDepartamento)));
     }
-
 
     @Autowired
     private UsuarioService usuarioService;

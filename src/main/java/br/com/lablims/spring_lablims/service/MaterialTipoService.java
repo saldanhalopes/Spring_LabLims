@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.MaterialRepository;
 import br.com.lablims.spring_lablims.repos.MaterialTipoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class MaterialTipoService {
 
     private final MaterialTipoRepository materialTipoRepository;
@@ -21,12 +23,6 @@ public class MaterialTipoService {
 
     public MaterialTipo findById(Integer id){
         return materialTipoRepository.findById(id).orElse(null);
-    }
-
-    public MaterialTipoService(final MaterialTipoRepository materialTipoRepository,
-            final MaterialRepository materialRepository) {
-        this.materialTipoRepository = materialTipoRepository;
-        this.materialRepository = materialRepository;
     }
 
     public SimplePage<MaterialTipoDTO> findAll(final String filter, final Pageable pageable) {
@@ -73,17 +69,17 @@ public class MaterialTipoService {
     }
 
     private MaterialTipoDTO mapToDTO(final MaterialTipo materialTipo,
-            final MaterialTipoDTO materialTipoDTO) {
+                                    final MaterialTipoDTO materialTipoDTO) {
         materialTipoDTO.setId(materialTipo.getId());
-        materialTipoDTO.setSigla(materialTipo.getSigla());
+        materialTipoDTO.setDescricao(materialTipo.getDescricao());
         materialTipoDTO.setTipo(materialTipo.getTipo());
         materialTipoDTO.setVersion(materialTipo.getVersion());
         return materialTipoDTO;
     }
 
     private MaterialTipo mapToEntity(final MaterialTipoDTO materialTipoDTO,
-            final MaterialTipo materialTipo) {
-        materialTipo.setSigla(materialTipoDTO.getSigla());
+                                    final MaterialTipo materialTipo) {
+        materialTipo.setDescricao(materialTipoDTO.getDescricao());
         materialTipo.setTipo(materialTipoDTO.getTipo());
         return materialTipo;
     }
@@ -91,9 +87,9 @@ public class MaterialTipoService {
     public String getReferencedWarning(final Integer id) {
         final MaterialTipo materialTipo = materialTipoRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final Material tipoMaterialMaterial = materialRepository.findFirstByTipoMaterial(materialTipo);
-        if (tipoMaterialMaterial != null) {
-            return WebUtils.getMessage("materialTipo.material.tipoMaterial.referenced", tipoMaterialMaterial.getId());
+        final Material materialTipoMaterial = materialRepository.findFirstByMaterialTipo(materialTipo);
+        if (materialTipoMaterial != null) {
+            return WebUtils.getMessage("materialTipo.material.tipoProduto.referenced", materialTipoMaterial.getId());
         }
         return null;
     }

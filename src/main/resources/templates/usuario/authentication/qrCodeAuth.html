@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Lablims</title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.2.0/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.2.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.2.0/dist/css/adminlte.min.css">
+    <link rel="shortcut icon" th:href="@{/img/favicon.png}" type="image/x-icon"/>
+</head>
+<body class="hold-transition login-page" style="background-image: url(../img/auth.webp)">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-success">
+            <div class="card-header text-center">
+                <div class="text-center mb-5">
+                    <img src="/img/logo.webp" height="84" />
+                </div>
+                <p class="login-box-msg">Ativar autenticação de dois fatores (2FA)</p>
+                <div th:if="${MSG_INFO != null}" th:text="${MSG_INFO}" class="alert alert-info" role="alert"/>
+                <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" class="alert alert-danger" role="alert"/>
+                <div th:if="${MSG_WARNING != null}" th:text="${MSG_WARNING}" class="alert alert-warning" role="alert"/>
+            </div>
+                <div class="card-body">
+                    <div class="input-group mb-3 justify-content-center">
+                        <p>
+                            <img class="img-fluid"th:src="${'data:image/png;base64,' + twoFaQrUrl}" alt="" height="250" width="250" />
+                            <p th:text="${otpUrl}"></p>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-auto float-right">
+                    <a type="submit" class="btn btn-success float-end" href="/login">Login</a>
+                </div>
+            <div class="card-footer mt-3">
+                <p class="mb-1 float-md-right">
+                    <span th:text="'Versão do sistema: ' + ${@applicationProperties.getAppVersion()}"></span>
+                </p>
+            </div>
+        </div>
+        <!-- /.card -->
+    </div>
+<!-- jQuery -->
+<script src="/webjars/AdminLTE/3.2.0/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/webjars/AdminLTE/3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/webjars/AdminLTE/3.2.0/dist/js/adminlte.min.js"></script>
+</body>
+</html>

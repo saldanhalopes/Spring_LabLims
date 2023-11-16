@@ -1,36 +1,32 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.ColunaStorage;
-import br.com.lablims.spring_lablims.domain.ColunaStorageTipo;
+import br.com.lablims.spring_lablims.domain.Storage;
+import br.com.lablims.spring_lablims.domain.StorageTipo;
 import br.com.lablims.spring_lablims.model.ColunaStorageTipoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ColunaStorageRepository;
 import br.com.lablims.spring_lablims.repos.ColunaStorageTipoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class ColunaStorageTipoService {
 
     private final ColunaStorageTipoRepository colunaStorageTipoRepository;
     private final ColunaStorageRepository colunaStorageRepository;
 
-    public ColunaStorageTipo findById(Integer id){
+    public StorageTipo findById(Integer id){
         return colunaStorageTipoRepository.findById(id).orElse(null);
     }
 
-    public ColunaStorageTipoService(final ColunaStorageTipoRepository colunaStorageTipoRepository,
-            final ColunaStorageRepository colunaStorageRepository) {
-        this.colunaStorageTipoRepository = colunaStorageTipoRepository;
-        this.colunaStorageRepository = colunaStorageRepository;
-    }
-
     public SimplePage<ColunaStorageTipoDTO> findAll(final String filter, final Pageable pageable) {
-        Page<ColunaStorageTipo> page;
+        Page<StorageTipo> page;
         if (filter != null) {
             Integer integerFilter = null;
             try {
@@ -56,42 +52,42 @@ public class ColunaStorageTipoService {
     }
 
     public Integer create(final ColunaStorageTipoDTO colunaStorageTipoDTO) {
-        final ColunaStorageTipo colunaStorageTipo = new ColunaStorageTipo();
-        mapToEntity(colunaStorageTipoDTO, colunaStorageTipo);
-        return colunaStorageTipoRepository.save(colunaStorageTipo).getId();
+        final StorageTipo storageTipo = new StorageTipo();
+        mapToEntity(colunaStorageTipoDTO, storageTipo);
+        return colunaStorageTipoRepository.save(storageTipo).getId();
     }
 
     public void update(final Integer id, final ColunaStorageTipoDTO colunaStorageTipoDTO) {
-        final ColunaStorageTipo colunaStorageTipo = colunaStorageTipoRepository.findById(id)
+        final StorageTipo storageTipo = colunaStorageTipoRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        mapToEntity(colunaStorageTipoDTO, colunaStorageTipo);
-        colunaStorageTipoRepository.save(colunaStorageTipo);
+        mapToEntity(colunaStorageTipoDTO, storageTipo);
+        colunaStorageTipoRepository.save(storageTipo);
     }
 
     public void delete(final Integer id) {
         colunaStorageTipoRepository.deleteById(id);
     }
 
-    private ColunaStorageTipoDTO mapToDTO(final ColunaStorageTipo colunaStorageTipo,
+    private ColunaStorageTipoDTO mapToDTO(final StorageTipo storageTipo,
             final ColunaStorageTipoDTO colunaStorageTipoDTO) {
-        colunaStorageTipoDTO.setId(colunaStorageTipo.getId());
-        colunaStorageTipoDTO.setTipo(colunaStorageTipo.getTipo());
-        colunaStorageTipoDTO.setVersion(colunaStorageTipo.getVersion());
+        colunaStorageTipoDTO.setId(storageTipo.getId());
+        colunaStorageTipoDTO.setTipo(storageTipo.getTipo());
+        colunaStorageTipoDTO.setVersion(storageTipo.getVersion());
         return colunaStorageTipoDTO;
     }
 
-    private ColunaStorageTipo mapToEntity(final ColunaStorageTipoDTO colunaStorageTipoDTO,
-            final ColunaStorageTipo colunaStorageTipo) {
-        colunaStorageTipo.setTipo(colunaStorageTipoDTO.getTipo());
-        return colunaStorageTipo;
+    private StorageTipo mapToEntity(final ColunaStorageTipoDTO colunaStorageTipoDTO,
+                                    final StorageTipo storageTipo) {
+        storageTipo.setTipo(colunaStorageTipoDTO.getTipo());
+        return storageTipo;
     }
 
     public String getReferencedWarning(final Integer id) {
-        final ColunaStorageTipo colunaStorageTipo = colunaStorageTipoRepository.findById(id)
+        final StorageTipo storageTipo = colunaStorageTipoRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final ColunaStorage tipoColunaStorage = colunaStorageRepository.findFirstByTipo(colunaStorageTipo);
-        if (tipoColunaStorage != null) {
-            return WebUtils.getMessage("colunaStorageTipo.colunaStorage.tipo.referenced", tipoColunaStorage.getId());
+        final Storage tipoStorage = colunaStorageRepository.findFirstByTipo(storageTipo);
+        if (tipoStorage != null) {
+            return WebUtils.getMessage("colunaStorageTipo.colunaStorage.tipo.referenced", tipoStorage.getId());
         }
         return null;
     }

@@ -7,12 +7,14 @@ import br.com.lablims.spring_lablims.model.SolucaoEquipamentoDTO;
 import br.com.lablims.spring_lablims.repos.SolucaoEquipamentoRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class SolucaoEquipamentoService {
 
     private final SolucaoEquipamentoRepository solucaoEquipamentoRepository;
@@ -20,13 +22,6 @@ public class SolucaoEquipamentoService {
 
     public SolucaoEquipamento findById(Integer id){
         return solucaoEquipamentoRepository.findById(id).orElse(null);
-    }
-
-    public SolucaoEquipamentoService(
-            final SolucaoEquipamentoRepository solucaoEquipamentoRepository,
-            final SolucaoRegistroRepository solucaoRegistroRepository) {
-        this.solucaoEquipamentoRepository = solucaoEquipamentoRepository;
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
     }
 
     public SimplePage<SolucaoEquipamentoDTO> findAll(final String filter, final Pageable pageable) {

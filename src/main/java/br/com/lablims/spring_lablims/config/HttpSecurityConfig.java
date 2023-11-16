@@ -1,17 +1,25 @@
 package br.com.lablims.spring_lablims.config;
 
+import br.com.lablims.spring_lablims.controller.auth.custom.CustomAuthenticationDetailsSource;
+import br.com.lablims.spring_lablims.controller.auth.custom.CustomAuthenticationProvider;
+import br.com.lablims.spring_lablims.util.CustomAccessDeniedHandler;
+import br.com.lablims.spring_lablims.util.CustomAuthenticationFailureHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 
@@ -21,14 +29,16 @@ public class HttpSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // please note: existing hashes must contain {bcrypt} prefix
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    @Autowired
+    private CustomAuthenticationDetailsSource customAuthenticationDetailsSource;
+
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public DaoAuthenticationProvider authenticationProvider(@Autowired UserDetailsService userDetailsService,
+                                                            @Autowired PasswordEncoder passwordEncoder) {
+        return new CustomAuthenticationProvider(userDetailsService, passwordEncoder);
     }
 
     @Bean
@@ -36,11 +46,15 @@ public class HttpSecurityConfig {
         return http
                 .csrf((csrf -> csrf.disable()))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/resources/**", "/css/**", "/img/**", "/js/**", "/webjars/**").permitAll()
+                        .requestMatchers("/login", "/qrCodeAuth/**", "/alterarSenha/**",
+                                "/resources/**", "/css/**", "/img/**", "/js/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
+//                        .anyRequest()
+//                                .permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .sessionFixation().newSession()
                         .invalidSessionUrl("/login?invalidSession=true")
                 )
                 .formLogin(form -> form
@@ -48,6 +62,7 @@ public class HttpSecurityConfig {
                         .failureUrl("/login?loginError=true")
                         .usernameParameter("username").passwordParameter("password")
                         .defaultSuccessUrl("/index")
+                        .authenticationDetailsSource(customAuthenticationDetailsSource)
                         .permitAll())
                 .logout(logout -> logout
                         .invalidateHttpSession(true)
@@ -60,9 +75,19 @@ public class HttpSecurityConfig {
     }
 
     @Bean
-    public SessionRegistry sessionRegistry(){
+    public SessionRegistry sessionRegistry() {
         SessionRegistry sessionRegistry = new SessionRegistryImpl();
         return sessionRegistry;
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 
 }

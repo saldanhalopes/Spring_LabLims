@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoTipoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class SolucaoTipoService {
 
     private final SolucaoTipoRepository solucaoTipoRepository;
@@ -21,12 +23,6 @@ public class SolucaoTipoService {
 
     public SolucaoTipo findById(Integer id){
         return solucaoTipoRepository.findById(id).orElse(null);
-    }
-
-    public SolucaoTipoService(final SolucaoTipoRepository solucaoTipoRepository,
-            final SolucaoRegistroRepository solucaoRegistroRepository) {
-        this.solucaoTipoRepository = solucaoTipoRepository;
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
     }
 
     public SimplePage<SolucaoTipoDTO> findAll(final String filter, final Pageable pageable) {

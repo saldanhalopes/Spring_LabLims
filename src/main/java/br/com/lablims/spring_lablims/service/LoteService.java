@@ -1,13 +1,13 @@
 package br.com.lablims.spring_lablims.service;
 
 import br.com.lablims.spring_lablims.domain.*;
-import br.com.lablims.spring_lablims.model.ArquivosDTO;
 import br.com.lablims.spring_lablims.model.LoteDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class LoteService {
 
     private final LoteRepository loteRepository;
-    private final MaterialRepository materialRepository;
+    private final ProdutoRepository produtoRepository;
     private final UnidadeMedidaRepository unidadeMedidaRepository;
     private final ClienteRepository clienteRepository;
     private final AmostraRepository amostraRepository;
@@ -30,20 +30,6 @@ public class LoteService {
 
     public Lote findById(Integer id) {
         return loteRepository.findById(id).orElse(null);
-    }
-
-    public LoteService(final LoteRepository loteRepository,
-                       final MaterialRepository materialRepository,
-                       final UnidadeMedidaRepository unidadeMedidaRepository,
-                       final ClienteRepository clienteRepository,
-                       final AmostraRepository amostraRepository,
-                       final ArquivosRepository arquivosRepository) {
-        this.loteRepository = loteRepository;
-        this.materialRepository = materialRepository;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-        this.clienteRepository = clienteRepository;
-        this.amostraRepository = amostraRepository;
-        this.arquivosRepository = arquivosRepository;
     }
 
     public SimplePage<LoteDTO> findAll(final String filter, final Pageable pageable) {
@@ -117,7 +103,7 @@ public class LoteService {
         loteDTO.setLocalFabricacao(lote.getLocalFabricacao());
         loteDTO.setObs(lote.getObs());
         loteDTO.setUnidade(lote.getUnidade() == null ? null : lote.getUnidade().getId());
-        loteDTO.setMaterial(lote.getMaterial() == null ? null : lote.getMaterial().getId());
+        loteDTO.setProduto(lote.getProduto() == null ? null : lote.getProduto().getId());
         loteDTO.setCliente(lote.getCliente() == null ? null : lote.getCliente().getId());
         loteDTO.setVersion(lote.getVersion());
         loteDTO.setArquivos(lote.getArquivos().stream()
@@ -147,8 +133,8 @@ public class LoteService {
         loteDTO.setLocalFabricacao(lote.getLocalFabricacao());
         loteDTO.setObs(lote.getObs());
         loteDTO.setUnidadeName(lote.getUnidade() == null ? null : lote.getUnidade().getUnidade());
-        loteDTO.setMaterial(lote.getMaterial() == null ? null : lote.getMaterial().getCodigo());
-        loteDTO.setMaterialName(lote.getMaterial() == null ? null : lote.getMaterial().getMaterial());
+        loteDTO.setProduto(lote.getProduto() == null ? null : lote.getProduto().getCodigo());
+        loteDTO.setProdutoName(lote.getProduto() == null ? null : lote.getProduto().getProduto());
         loteDTO.setClienteName(lote.getCliente() == null ? null : lote.getCliente().getCliente());
         loteDTO.setVersion(lote.getVersion());
         return loteDTO;
@@ -164,9 +150,9 @@ public class LoteService {
         final UnidadeMedida unidadeMedida = loteDTO.getUnidade() == null ? null : unidadeMedidaRepository.findById(loteDTO.getUnidade())
                 .orElseThrow(() -> new NotFoundException("Amostra Tipo nao encontrada"));
         lote.setUnidade(unidadeMedida);
-        final Material material = loteDTO.getMaterial() == null ? null : materialRepository.findById(loteDTO.getMaterial())
-                .orElseThrow(() -> new NotFoundException("Material nao encontrado"));
-        lote.setMaterial(material);
+        final Produto produto = loteDTO.getProduto() == null ? null : produtoRepository.findById(loteDTO.getProduto())
+                .orElseThrow(() -> new NotFoundException("Produto nao encontrado"));
+        lote.setProduto(produto);
         final Cliente cliente = loteDTO.getCliente() == null ? null : clienteRepository.findById(loteDTO.getCliente())
                 .orElseThrow(() -> new NotFoundException("Cliente nao encontrado"));
         lote.setCliente(cliente);

@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.CategoriaMetodologiaRepository;
 import br.com.lablims.spring_lablims.repos.MetodologiaRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class CategoriaMetodologiaService {
 
     private final CategoriaMetodologiaRepository categoriaMetodologiaRepository;
@@ -21,13 +23,6 @@ public class CategoriaMetodologiaService {
 
     public CategoriaMetodologia findById(Integer id){
         return categoriaMetodologiaRepository.findById(id).orElse(null);
-    }
-
-    public CategoriaMetodologiaService(
-            final CategoriaMetodologiaRepository categoriaMetodologiaRepository,
-            final MetodologiaRepository metodologiaRepository) {
-        this.categoriaMetodologiaRepository = categoriaMetodologiaRepository;
-        this.metodologiaRepository = metodologiaRepository;
     }
 
     public SimplePage<CategoriaMetodologiaDTO> findAll(final String filter,

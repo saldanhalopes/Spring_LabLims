@@ -1,37 +1,25 @@
 package br.com.lablims.spring_lablims.service;
 
+import br.com.lablims.spring_lablims.controller.auth.custom.UserPrincipal;
 import br.com.lablims.spring_lablims.domain.*;
-import br.com.lablims.spring_lablims.domain.AmostraStatus;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.UsuarioDTO;
-import br.com.lablims.spring_lablims.repos.AtaTurnoRepository;
-import br.com.lablims.spring_lablims.repos.CelulaRepository;
-import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
-import br.com.lablims.spring_lablims.repos.EquipamentoLogRepository;
-import br.com.lablims.spring_lablims.repos.GrupoRepository;
-import br.com.lablims.spring_lablims.repos.AmostraStatusRepository;
-import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
-import br.com.lablims.spring_lablims.repos.UsuarioRepository;
+import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
-import jakarta.transaction.Transactional;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-
 @Service
-@Transactional
-public class UsuarioService {
+@RequiredArgsConstructor
+public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
-    private final GrupoRepository grupoRepository;
     private final PasswordEncoder passwordEncoder;
     private final CelulaRepository celulaRepository;
     private final ColunaLogRepository colunaLogRepository;
@@ -39,27 +27,14 @@ public class UsuarioService {
     private final EquipamentoLogRepository equipamentoLogRepository;
     private final AmostraStatusRepository amostraStatusRepository;
     private final SolucaoRegistroRepository solucaoRegistroRepository;
-
-    public Usuario findById(Integer id){
-        return usuarioRepository.findById(id).orElse(null);
-    }
-
-    public UsuarioService(final UsuarioRepository usuarioRepository,
-                          final GrupoRepository grupoRepository, final PasswordEncoder passwordEncoder,
-                          final CelulaRepository celulaRepository, final ColunaLogRepository colunaLogRepository,
-                          final AtaTurnoRepository ataTurnoRepository,
-                          final EquipamentoLogRepository equipamentoLogRepository,
-                          final AmostraStatusRepository amostraStatusRepository,
-                          final SolucaoRegistroRepository solucaoRegistroRepository) {
-        this.usuarioRepository = usuarioRepository;
-        this.grupoRepository = grupoRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.celulaRepository = celulaRepository;
-        this.colunaLogRepository = colunaLogRepository;
-        this.ataTurnoRepository = ataTurnoRepository;
-        this.equipamentoLogRepository = equipamentoLogRepository;
-        this.amostraStatusRepository = amostraStatusRepository;
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
+    private final SegurancaRepository segurancaRepository;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
+        if (usuario == null) {
+            throw new UsernameNotFoundException("user " + username + " not found");
+        }
+        return new UserPrincipal(usuario, usuarioRepository, segurancaRepository);
     }
 
     public SimplePage<UsuarioDTO> findAll(final String filter, final Pageable pageable) {
@@ -88,17 +63,32 @@ public class UsuarioService {
                 .orElseThrow(NotFoundException::new);
     }
 
+    public Usuario findById(Integer id) {
+        return usuarioRepository.findById(id).orElse(null);
+    }
+
+    public Usuario findBySecret(String secret) {
+        return usuarioRepository.findBySecret(secret).orElse(null);
+    }
+
     public Usuario findByUsername(String username) {
         return usuarioRepository.findByUsernameIgnoreCase(username);
     }
 
     public boolean validarUser(String usuario, String password) {
         try {
-            final Usuario user = usuarioRepository.findByUsername(usuario).orElse(null);
+            final Usuario user = usuarioRepository.findByUsernameWithGrupo(usuario);
             return passwordEncoder.matches(password, user.getPassword());
         } catch (final NotFoundException notFoundException) {
             return false;
         }
+    }
+
+    public void alterarSenha(String usuario, String password) {
+        Usuario user = usuarioRepository.findByUsername(usuario).orElse(null);
+        user.setChangePass(false);
+        user.setPassword(passwordEncoder.encode(password));
+        usuarioRepository.save(user);
     }
 
     public Integer create(final UsuarioDTO usuarioDTO) {
@@ -126,54 +116,34 @@ public class UsuarioService {
     private UsuarioDTO mapToDTO(final Usuario usuario, final UsuarioDTO usuarioDTO) {
         usuarioDTO.setId(usuario.getId());
         usuarioDTO.setCep(usuario.getCep());
-        usuarioDTO.setChangePass(usuario.getChangePass());
         usuarioDTO.setCidade(usuario.getCidade());
         usuarioDTO.setCpf(usuario.getCpf());
         usuarioDTO.setDetalhes(usuario.getDetalhes());
-        usuarioDTO.setEmail(usuario.getEmail());
         usuarioDTO.setEndereco(usuario.getEndereco());
         usuarioDTO.setEstado(usuario.getEstado());
-        usuarioDTO.setFailedAccessCount(usuario.getFailedAccessCount());
-        usuarioDTO.setLastChangePass(usuario.getLastChangePass());
-        usuarioDTO.setLastLogin(usuario.getLastLogin());
-        usuarioDTO.setLastLogout(usuario.getLastLogout());
         usuarioDTO.setNome(usuario.getNome());
         usuarioDTO.setPais(usuario.getPais());
         usuarioDTO.setSobrenome(usuario.getSobrenome());
         usuarioDTO.setTelefone(usuario.getTelefone());
-        usuarioDTO.setUsername(usuario.getUsername());
         usuarioDTO.setVersion(usuario.getVersion());
-        usuarioDTO.setGrupos(usuario.getGrupos().stream()
-                .map(grupo -> grupo.getId())
-                .toList());
+        usuarioDTO.setSecret(usuario.getSecret());
+        usuarioDTO.setAtivo(usuario.isAtivo());
         return usuarioDTO;
     }
 
     private Usuario mapToEntity(final UsuarioDTO usuarioDTO, final Usuario usuario) {
         usuario.setCep(usuarioDTO.getCep());
-        usuario.setChangePass(usuarioDTO.getChangePass());
         usuario.setCidade(usuarioDTO.getCidade());
         usuario.setCpf(usuarioDTO.getCpf());
         usuario.setDetalhes(usuarioDTO.getDetalhes());
-        usuario.setEmail(usuarioDTO.getEmail());
         usuario.setEndereco(usuarioDTO.getEndereco());
         usuario.setEstado(usuarioDTO.getEstado());
-        usuario.setFailedAccessCount(usuarioDTO.getFailedAccessCount());
-        usuario.setLastChangePass(usuarioDTO.getLastChangePass());
-        usuario.setLastLogin(usuarioDTO.getLastLogin());
-        usuario.setLastLogout(usuarioDTO.getLastLogout());
         usuario.setNome(usuarioDTO.getNome());
         usuario.setPais(usuarioDTO.getPais());
-        usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
         usuario.setSobrenome(usuarioDTO.getSobrenome());
         usuario.setTelefone(usuarioDTO.getTelefone());
-        usuario.setUsername(usuarioDTO.getUsername());
-        final List<Grupo> grupos = grupoRepository.findAllById(
-                usuarioDTO.getGrupos() == null ? Collections.emptyList() : usuarioDTO.getGrupos());
-        if (grupos.size() != (usuarioDTO.getGrupos() == null ? 0 : usuarioDTO.getGrupos().size())) {
-            throw new NotFoundException("one of grupos not found");
-        }
-        usuario.setGrupos(grupos.stream().collect(Collectors.toSet()));
+        usuario.setSecret(usuarioDTO.getSecret());
+        usuario.setAtivo(usuarioDTO.isAtivo());
         return usuario;
     }
 
@@ -230,5 +200,6 @@ public class UsuarioService {
         }
         return null;
     }
+
 
 }

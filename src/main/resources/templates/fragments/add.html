@@ -26,7 +26,7 @@
                     <div class="main-content container-fluid" layout:fragment="addContent"></div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-success" data-toggle="modal"
+                    <button type="button" class="btn btn-success" data-toggle="modal"
                             th:attr="data-target='#add'" th:text="#{add.btn}"
                             sec:authorize="hasAnyAuthority('ADMIN','MASTERUSER','POWERUSER')"/>
                     <span layout:fragment="addBack"></span>

@@ -81,9 +81,9 @@ public class AmostraDTO {
 
     private String amostraTipoNome;
 
-    private String materialName;
+    private String produtoName;
 
-    private Integer materialCodigo;
+    private Integer produtoCodigo;
 
 }
 

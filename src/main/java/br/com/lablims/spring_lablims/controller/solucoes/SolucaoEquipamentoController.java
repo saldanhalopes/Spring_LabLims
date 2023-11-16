@@ -6,7 +6,7 @@ import br.com.lablims.spring_lablims.domain.SolucaoEquipamento;
 import br.com.lablims.spring_lablims.domain.SolucaoRegistro;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.SolucaoEquipamentoDTO;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
 import br.com.lablims.spring_lablims.service.SolucaoEquipamentoService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
@@ -14,6 +14,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/solucaoEquipamentos")
 public class SolucaoEquipamentoController {
 
@@ -39,12 +41,6 @@ public class SolucaoEquipamentoController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public SolucaoEquipamentoController(final SolucaoEquipamentoService solucaoEquipamentoService,
-                                        final SolucaoRegistroRepository solucaoRegistroRepository) {
-        this.solucaoEquipamentoService = solucaoEquipamentoService;
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

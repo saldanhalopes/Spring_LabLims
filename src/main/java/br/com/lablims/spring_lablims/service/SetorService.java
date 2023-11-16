@@ -1,13 +1,7 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.AtaTurno;
-import br.com.lablims.spring_lablims.domain.Campanha;
-import br.com.lablims.spring_lablims.domain.ColunaStorage;
-import br.com.lablims.spring_lablims.domain.ColunaUtil;
-import br.com.lablims.spring_lablims.domain.Departamento;
-import br.com.lablims.spring_lablims.domain.Equipamento;
-import br.com.lablims.spring_lablims.domain.PlanoAnalise;
-import br.com.lablims.spring_lablims.domain.Setor;
+import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.domain.Storage;
 import br.com.lablims.spring_lablims.model.SetorDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AtaTurnoRepository;
@@ -20,12 +14,14 @@ import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class SetorService {
 
     private final SetorRepository setorRepository;
@@ -39,24 +35,6 @@ public class SetorService {
 
     public Setor findById(Integer id){
         return setorRepository.findById(id).orElse(null);
-    }
-
-    public SetorService(final SetorRepository setorRepository,
-            final DepartamentoRepository departamentoRepository,
-            final ColunaStorageRepository colunaStorageRepository,
-            final ColunaUtilRepository colunaUtilRepository,
-            final EquipamentoRepository equipamentoRepository,
-            final CampanhaRepository campanhaRepository,
-            final AtaTurnoRepository ataTurnoRepository,
-            final PlanoAnaliseRepository planoAnaliseRepository) {
-        this.setorRepository = setorRepository;
-        this.departamentoRepository = departamentoRepository;
-        this.colunaStorageRepository = colunaStorageRepository;
-        this.colunaUtilRepository = colunaUtilRepository;
-        this.equipamentoRepository = equipamentoRepository;
-        this.campanhaRepository = campanhaRepository;
-        this.ataTurnoRepository = ataTurnoRepository;
-        this.planoAnaliseRepository = planoAnaliseRepository;
     }
 
     public SimplePage<SetorDTO> findAll(final String filter, final Pageable pageable) {
@@ -127,9 +105,9 @@ public class SetorService {
     public String getReferencedWarning(final Integer id) {
         final Setor setor = setorRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final ColunaStorage setorColunaStorage = colunaStorageRepository.findFirstBySetor(setor);
-        if (setorColunaStorage != null) {
-            return WebUtils.getMessage("setor.colunaStorage.setor.referenced", setorColunaStorage.getId());
+        final Storage setorStorage = colunaStorageRepository.findFirstBySetor(setor);
+        if (setorStorage != null) {
+            return WebUtils.getMessage("setor.colunaStorage.setor.referenced", setorStorage.getId());
         }
         final ColunaUtil setorColunaUtil = colunaUtilRepository.findFirstBySetor(setor);
         if (setorColunaUtil != null) {

@@ -14,7 +14,7 @@ public class UnidadeMedidaDTO {
     @Size(max = 255)
     private String unidade;
 
-    private Integer escalaMedida;
+    private Integer grandeza;
 
     private Short version;
 

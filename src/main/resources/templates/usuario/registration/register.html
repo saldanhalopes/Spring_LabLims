@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{usuario.add.headline}"/>
+</head>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{usuario.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/regiter}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('usuario')}"></div>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='usuario', field='nome', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='usuario', field='sobrenome', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='usuario', field='username', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='usuario', field='email', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='usuario', field='grupo', type='select', required='required')}" ></div>
+</div>
+</html>
+

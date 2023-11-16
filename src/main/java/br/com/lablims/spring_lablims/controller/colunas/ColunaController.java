@@ -7,13 +7,14 @@ import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.ColunaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ColunaConfigRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.ColunaService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/colunas")
 public class ColunaController {
 
@@ -39,12 +41,6 @@ public class ColunaController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public ColunaController(final ColunaService colunaService,
-            final ColunaConfigRepository colunaConfigRepository) {
-        this.colunaService = colunaService;
-        this.colunaConfigRepository = colunaConfigRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

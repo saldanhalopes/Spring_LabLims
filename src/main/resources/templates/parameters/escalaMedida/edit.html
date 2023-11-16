@@ -2,30 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title th:text="#{escalaMedida.edit.headline}"/>
+    <title th:text="#{grandeza.edit.headline}"/>
 </head>
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
         <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
-        <li class="breadcrumb-item"><a th:href="@{/escalaMedidas}" th:text="#{escalaMedida.escalaMedida.label}"></a></li>
-        <li class="breadcrumb-item active" th:text="#{escalaMedida.edit.headline}"></li>
+        <li class="breadcrumb-item"><a th:href="@{/grandezas}" th:text="#{grandeza.grandeza.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{grandeza.edit.headline}"></li>
     </ol>
 </div>
 <span layout:fragment="editHeadline">
-    <h1 th:text="#{escalaMedida.edit.headline}" class="flex-grow-1"/>
+    <h1 th:text="#{grandeza.edit.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="editBack">
-    <a th:href="@{/escalaMedidas}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+    <a th:href="@{/grandezas}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
 <span layout:fragment="editAudit">
-    <a th:href="@{/escalaMedidas/audit/{id}(id=${escalaMedida.id})}" th:text="#{audit.list}"
+    <a th:href="@{/grandezas/audit/{id}(id=${grandeza.id})}" th:text="#{audit.list}"
        class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
 </span>
 <div layout:fragment="editGlobalErrors">
-    <div th:replace="~{fragments/forms::globalErrors('escalaMedida')}"/>
+    <div th:replace="~{fragments/forms::globalErrors('grandeza')}"/>
 </div>
 <div layout:fragment="editContent">
-    <div th:replace="~{fragments/forms::inputRow(object='escalaMedida', field='escala')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='grandeza', field='grandeza')}" />
 </div>
 </html>

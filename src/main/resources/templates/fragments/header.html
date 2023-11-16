@@ -138,7 +138,10 @@
                             <a href="#">Sales</a>
                         </div>
                         <div class="col-4 text-center">
-                            <a href="#">Friends</a>
+                            <button type="button" data-toggle="modal" th:attr="data-target='#alterarSenha'">Alterar Senha</button>
+                            <form th:action="@{/changePass}" method="post" autocomplete="off">
+                                <div th:replace="~{fragments/modal :: modalAlterarSenha}"></div>
+                            </form>
                         </div>
                     </div>
                     <!-- /.row -->

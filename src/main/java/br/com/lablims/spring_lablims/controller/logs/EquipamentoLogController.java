@@ -1,25 +1,26 @@
 package br.com.lablims.spring_lablims.controller.logs;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.model.AmostraDTO;
 import br.com.lablims.spring_lablims.model.EquipamentoDTO;
 import br.com.lablims.spring_lablims.model.EquipamentoLogDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.*;
-import br.com.lablims.spring_lablims.service.ArquivosService;
-import br.com.lablims.spring_lablims.service.EquipamentoLogService;
-import br.com.lablims.spring_lablims.service.EquipamentoService;
-import br.com.lablims.spring_lablims.service.UsuarioService;
+import br.com.lablims.spring_lablims.service.*;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,45 +35,28 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/equipamentoLogs")
 public class EquipamentoLogController {
 
     private final EquipamentoLogService equipamentoLogService;
     private final EquipamentoService equipamentoService;
     private final EquipamentoAtividadeRepository equipamentoAtividadeRepository;
-    private final EquipamentoRepository equipamentoRepository;
-    private final UsuarioRepository usuarioRepository;
     private final ArquivosRepository arquivosRepository;
-
     private final ArquivosService arquivosService;
     private final AmostraRepository amostraRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
-    public EquipamentoLogController(final EquipamentoLogService equipamentoLogService,
-                                    EquipamentoService equipamentoService,
-                                    final EquipamentoAtividadeRepository equipamentoAtividadeRepository,
-                                    final EquipamentoRepository equipamentoRepository,
-                                    final UsuarioRepository usuarioRepository,
-                                    final ArquivosService arquivosService,
-                                    final ArquivosRepository arquivosRepository,
-                                    final AmostraRepository amostraRepository) {
-        this.equipamentoLogService = equipamentoLogService;
-        this.equipamentoService = equipamentoService;
-        this.equipamentoAtividadeRepository = equipamentoAtividadeRepository;
-        this.equipamentoRepository = equipamentoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.arquivosRepository = arquivosRepository;
-        this.amostraRepository = amostraRepository;
-        this.arquivosService = arquivosService;
-    }
-
     @ModelAttribute
     public void prepareContext(final Model model) {
         model.addAttribute("atividadeValues", equipamentoAtividadeRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(EquipamentoAtividade::getId, EquipamentoAtividade::getAtividade)));
+        model.addAttribute("codigoAmostraValues", amostraRepository.findAll(Sort.by("id"))
+                .stream()
+                .collect(CustomCollectors.toSortedMap(Amostra::getId, Amostra::getCodigoAmostra)));
     }
 
     @Autowired
@@ -261,6 +245,40 @@ public class EquipamentoLogController {
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
+    @PostMapping("/lock/{equip_id}/{id}")
+    public String lock(@PathVariable final Integer id,
+                         final RedirectAttributes redirectAttributes,
+                         @ModelAttribute("motivo") String motivo,
+                         Principal principal,
+                         @ModelAttribute("password") String pass) {
+        if (usuarioService.validarUser(principal.getName(), pass)) {
+            CustomRevisionEntity.setMotivoText(motivo);
+            equipamentoLogService.lock(id);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("equipamentoLog.delete.success"));
+        } else {
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
+        }
+        return "redirect:/equipamentoLogs/list/{equip_id}";
+    }
+
+    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
+    @PostMapping("/unlock/{equip_id}/{id}")
+    public String unlock(@PathVariable final Integer id,
+                       final RedirectAttributes redirectAttributes,
+                       @ModelAttribute("motivo") String motivo,
+                       Principal principal,
+                       @ModelAttribute("password") String pass) {
+        if (usuarioService.validarUser(principal.getName(), pass)) {
+            CustomRevisionEntity.setMotivoText(motivo);
+            equipamentoLogService.unlock(id);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("equipamentoLog.delete.success"));
+        } else {
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
+        }
+        return "redirect:/equipamentoLogs/list/{equip_id}";
+    }
+
+    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit/{equip_id}")
     public String getRevisions(Model model, @PathVariable final Integer equip_id) {
         List<EntityRevision<EquipamentoLog>> revisoes = genericRevisionRepository.listaRevisoes(EquipamentoLog.class);
@@ -296,18 +314,19 @@ public class EquipamentoLogController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/amostra/{equip_id}/{id}")
-    public String amostras(@PathVariable final Integer id,
-                         @RequestParam("amostra_id") Integer amostra_id, final Model model,
+    public String addAmostras(@ModelAttribute("amostra") final Amostra amostra,
+                              @PathVariable final Integer id, final Model model,
                          final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                          Principal principal, @ModelAttribute("password") String pass) throws IOException {
         if (usuarioService.validarUser(principal.getName(), pass)) {
             CustomRevisionEntity.setMotivoText(motivo);
-            EquipamentoLog equipamentoLog = equipamentoLogService.findEquipamentoLogWithAmostras(id);
-            Amostra amostra = new Amostra();
-            amostra.setId(amostra_id);
-            equipamentoLog.getAmostra().add(amostra);
-            equipamentoLogService.update(equipamentoLog);
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("arquivos.update.success"));
+            if(equipamentoLogService.amostraExists(amostra.getId(), id)){
+                equipamentoLogService.updateAmostra(amostra.getId(), id);
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("amostra.update.success"));
+            }else{
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("amostra.is.exists"));
+                return "redirect:/equipamentoLogs/amostra/{equip_id}/{id}";
+            }
         } else {
             redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
             return "redirect:/equipamentoLogs/amostra/{equip_id}/{id}";
@@ -319,13 +338,14 @@ public class EquipamentoLogController {
     @PostMapping("/{equip_id}/{log_id}/amostra/delete/{id}")
     public String deleteAmostra(@PathVariable final Integer id,
                                 final RedirectAttributes redirectAttributes,
+                                @ModelAttribute("amostra") final Amostra amostra,
                                 @ModelAttribute("motivo") String motivo,
                                 Principal principal,
                                 @ModelAttribute("password") String pass) {
         if (usuarioService.validarUser(principal.getName(), pass)) {
             CustomRevisionEntity.setMotivoText(motivo);
-            arquivosService.deleteAmostra(id);
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("arquivos.delete.success"));
+            equipamentoLogService.deleteAmostra(amostra.getId(), id);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("amostra.delete.success"));
         } else {
             redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
         }

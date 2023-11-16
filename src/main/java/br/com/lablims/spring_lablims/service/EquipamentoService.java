@@ -10,11 +10,12 @@ import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoLogRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoTipoRepository;
-import br.com.lablims.spring_lablims.repos.EscalaMedidaRepository;
+import br.com.lablims.spring_lablims.repos.GrandezaRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,13 @@ import java.util.List;
 
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class EquipamentoService {
 
     private final EquipamentoRepository equipamentoRepository;
     private final EquipamentoTipoRepository equipamentoTipoRepository;
     private final SetorRepository setorRepository;
-    private final EscalaMedidaRepository escalaMedidaRepository;
+    private final GrandezaRepository grandezaRepository;
     private final CelulaRepository celulaRepository;
     private final AtaTurnoRepository ataTurnoRepository;
     private final ColunaLogRepository colunaLogRepository;
@@ -39,26 +40,6 @@ public class EquipamentoService {
 
     public Equipamento findById(Integer id) {
         return equipamentoRepository.findById(id).orElse(null);
-    }
-
-    public EquipamentoService(final EquipamentoRepository equipamentoRepository,
-                              final EquipamentoTipoRepository equipamentoTipoRepository,
-                              final SetorRepository setorRepository,
-                              final EscalaMedidaRepository escalaMedidaRepository,
-                              final CelulaRepository celulaRepository,
-                              final AtaTurnoRepository ataTurnoRepository,
-                              final ColunaLogRepository colunaLogRepository,
-                              final EquipamentoLogRepository equipamentoLogRepository,
-                              final ArquivosRepository arquivosRepository) {
-        this.equipamentoRepository = equipamentoRepository;
-        this.equipamentoTipoRepository = equipamentoTipoRepository;
-        this.setorRepository = setorRepository;
-        this.escalaMedidaRepository = escalaMedidaRepository;
-        this.celulaRepository = celulaRepository;
-        this.ataTurnoRepository = ataTurnoRepository;
-        this.colunaLogRepository = colunaLogRepository;
-        this.equipamentoLogRepository = equipamentoLogRepository;
-        this.arquivosRepository = arquivosRepository;
     }
 
     public SimplePage<EquipamentoDTO> findAll(final String filter, final Pageable pageable) {
@@ -148,7 +129,7 @@ public class EquipamentoService {
         equipamentoDTO.setSerialNumber(equipamento.getSerialNumber());
         equipamentoDTO.setTipo(equipamento.getTipo() == null ? null : equipamento.getTipo().getId());
         equipamentoDTO.setSetor(equipamento.getSetor() == null ? null : equipamento.getSetor().getId());
-        equipamentoDTO.setEscala(equipamento.getEscala() == null ? null : equipamento.getEscala().getId());
+        equipamentoDTO.setGrandeza(equipamento.getGrandeza() == null ? null : equipamento.getGrandeza().getId());
         equipamentoDTO.setVersion(equipamento.getVersion());
         return equipamentoDTO;
     }
@@ -176,7 +157,7 @@ public class EquipamentoService {
         equipamentoDTO.setSerialNumber(equipamento.getSerialNumber());
         equipamentoDTO.setTipoName(equipamento.getTipo() == null ? null : equipamento.getTipo().getTipo());
         equipamentoDTO.setSetorName(equipamento.getSetor() == null ? null : equipamento.getSetor().getSetor());
-        equipamentoDTO.setEscalaName(equipamento.getEscala() == null ? null : equipamento.getEscala().getEscala());
+        equipamentoDTO.setGrandezaName(equipamento.getGrandeza() == null ? null : equipamento.getGrandeza().getGrandeza());
         equipamentoDTO.setVersion(equipamento.getVersion());
         return equipamentoDTO;
     }
@@ -200,9 +181,9 @@ public class EquipamentoService {
         final Setor setor = equipamentoDTO.getSetor() == null ? null : setorRepository.findById(equipamentoDTO.getSetor())
                 .orElseThrow(() -> new NotFoundException("setor not found"));
         equipamento.setSetor(setor);
-        final EscalaMedida escala = equipamentoDTO.getEscala() == null ? null : escalaMedidaRepository.findById(equipamentoDTO.getEscala())
-                .orElseThrow(() -> new NotFoundException("escala not found"));
-        equipamento.setEscala(escala);
+        final Grandeza grandeza = equipamentoDTO.getGrandeza() == null ? null : grandezaRepository.findById(equipamentoDTO.getGrandeza())
+                .orElseThrow(() -> new NotFoundException("grandeza not found"));
+        equipamento.setGrandeza(grandeza);
         final List<Arquivos> arquivos = arquivosRepository.findAllById(
                 equipamentoDTO.getArquivos() == null ? Collections.emptyList() : equipamentoDTO.getArquivos());
         if (arquivos.size() != (equipamentoDTO.getArquivos() == null ? 0 : equipamentoDTO.getArquivos().size())) {

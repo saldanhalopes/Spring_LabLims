@@ -2,18 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/add}">
 <head>
-    <title th:text="#{colunaStorageTipo.add.headline}"/>
+    <title th:text="#{storageTipo.add.headline}"/>
 </head>
 <span layout:fragment="addHeadline">
-    <h1 th:text="#{colunaStorageTipo.add.headline}" class="flex-grow-1"/>
+    <h1 th:text="#{storageTipo.add.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="addBack">
     <a th:href="@{/colunaStorageTipos}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="addGlobalErrors">
-    <div th:replace="~{fragments/forms::globalErrors('colunaStorageTipo')}"/>
+    <div th:replace="~{fragments/forms::globalErrors('storageTipo')}"/>
 </div>
 <div layout:fragment="addContent">
-    <div th:replace="~{fragments/forms::inputRow(object='colunaStorageTipo', field='tipo')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='storageTipo', field='tipo')}" />
 </div>
 </html>

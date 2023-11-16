@@ -5,12 +5,13 @@ import br.com.lablims.spring_lablims.domain.ColunaConfig;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.ColunaConfigDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.ColunaConfigService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,6 +27,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/colunaConfigs")
 public class ColunaConfigController {
 
@@ -33,10 +35,6 @@ public class ColunaConfigController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public ColunaConfigController(final ColunaConfigService colunaConfigService) {
-        this.colunaConfigService = colunaConfigService;
-    }
 
     @Autowired
     private UsuarioService usuarioService;

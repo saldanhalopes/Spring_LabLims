@@ -7,12 +7,14 @@ import br.com.lablims.spring_lablims.model.SolucaoParemetroDTO;
 import br.com.lablims.spring_lablims.repos.SolucaoParemetroRepository;
 import br.com.lablims.spring_lablims.repos.SolucaoRegistroRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class SolucaoParemetroService {
 
     private final SolucaoParemetroRepository solucaoParemetroRepository;
@@ -20,12 +22,6 @@ public class SolucaoParemetroService {
 
     public SolucaoParemetro findById(Integer id){
         return solucaoParemetroRepository.findById(id).orElse(null);
-    }
-
-    public SolucaoParemetroService(final SolucaoParemetroRepository solucaoParemetroRepository,
-            final SolucaoRegistroRepository solucaoRegistroRepository) {
-        this.solucaoParemetroRepository = solucaoParemetroRepository;
-        this.solucaoRegistroRepository = solucaoRegistroRepository;
     }
 
     public SimplePage<SolucaoParemetroDTO> findAll(final String filter, final Pageable pageable) {

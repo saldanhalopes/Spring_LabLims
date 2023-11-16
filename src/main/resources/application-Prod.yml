@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: Prod
+
+  datasource:
+    password: ${JDBC_POSTGRES_PASSWORD}
+    username: ${JDBC_POSTGRES_USER}
+    url: jdbc:postgresql://${JDBC_POSTGRES_SERVER}:${JDBC_POSTGRES_PORT}/${JDBC_POSTGRES_DATABASE}

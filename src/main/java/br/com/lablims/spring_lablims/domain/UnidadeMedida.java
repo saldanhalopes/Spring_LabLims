@@ -24,7 +24,7 @@ public class UnidadeMedida {
     private String unidade;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "escala_medida_id")
-    private EscalaMedida escalaMedida;
+    @JoinColumn(name = "grandeza_medida_id")
+    private Grandeza grandeza;
 
 }

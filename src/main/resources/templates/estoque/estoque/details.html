@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/details}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{estoque.title}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoques}" th:text="#{estoque.details.headline}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{estoque.details.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="detailsHeadline">
+    <h1 th:text="#{estoque.details.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="detailsBack">
+    <a th:href="@{/estoques}" th:text="#{details.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="detailsAudit">
+    <a th:href="@{/estoques/audit/{id}(id=${estoque.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="detailsContent">
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='movimentacaoTipo', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='material', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='setor', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='qtdMaterial', type='number', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='unidade', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='valorUnitario', type='number', readonly='readonly')}"></div>
+</div>
+</html>

@@ -1,5 +1,10 @@
 package br.com.lablims.spring_lablims.model;
 
+import br.com.lablims.spring_lablims.domain.Usuario;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -55,5 +60,11 @@ public class EquipamentoLogDTO {
 
     private Short version;
 
+    private Integer usuarioConfencia;
+
+    private String usuarioConfenciaName;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dataConfencia;
 
 }

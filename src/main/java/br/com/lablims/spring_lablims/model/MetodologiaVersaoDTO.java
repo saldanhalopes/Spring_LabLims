@@ -27,7 +27,7 @@ public class MetodologiaVersaoDTO {
 
     private Integer anexo;
 
-    private List<Integer> material;
+    private List<Integer> produto;
 
     private Integer status;
 

@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.controller.parametros;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.EquipamentoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -13,6 +14,7 @@ import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,6 +36,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/equipamentos")
 public class EquipamentoController {
 
@@ -41,26 +44,12 @@ public class EquipamentoController {
     private final EquipamentoTipoRepository equipamentoTipoRepository;
     private final SetorRepository setorRepository;
     private final ArquivosRepository arquivosRepository;
-    private final EscalaMedidaRepository escalaMedidaRepository;
+    private final GrandezaRepository grandezaRepository;
     private final ArquivosService arquivosService;
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
     @Autowired
     private UsuarioService usuarioService;
-
-    public EquipamentoController(final EquipamentoService equipamentoService,
-                                 final EquipamentoTipoRepository equipamentoTipoRepository,
-                                 final SetorRepository setorRepository,
-                                 final EscalaMedidaRepository escalaMedidaRepository,
-                                 final ArquivosService arquivosService,
-                                 final ArquivosRepository arquivosRepository) {
-        this.equipamentoService = equipamentoService;
-        this.equipamentoTipoRepository = equipamentoTipoRepository;
-        this.setorRepository = setorRepository;
-        this.arquivosRepository = arquivosRepository;
-        this.arquivosService = arquivosService;
-        this.escalaMedidaRepository = escalaMedidaRepository;
-    }
 
     @InitBinder
     protected void initBinder(ServletRequestDataBinder binder) {
@@ -85,9 +74,9 @@ public class EquipamentoController {
         model.addAttribute("procedimentoValues", arquivosRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Arquivos::getId, Arquivos::getNome)));
-        model.addAttribute("escalaValues", escalaMedidaRepository.findAll(Sort.by("id"))
+        model.addAttribute("grandezaValues", grandezaRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(EscalaMedida::getId, EscalaMedida::getEscala)));
+                .collect(CustomCollectors.toSortedMap(Grandeza::getId, Grandeza::getGrandeza)));
     }
 
 

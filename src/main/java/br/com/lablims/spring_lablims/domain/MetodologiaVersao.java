@@ -42,11 +42,11 @@ public class MetodologiaVersao {
 
     @ManyToMany
     @JoinTable(
-            name = "metodologia_vesao_material",
+            name = "metodologia_vesao_produto",
             joinColumns = @JoinColumn(name = "metodologia_vesao_id"),
-            inverseJoinColumns = @JoinColumn(name = "material_id")
+            inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
-    private Set<Material> material;
+    private Set<Produto> produto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")

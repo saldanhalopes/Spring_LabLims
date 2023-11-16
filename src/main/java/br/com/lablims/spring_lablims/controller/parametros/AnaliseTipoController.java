@@ -5,12 +5,13 @@ import br.com.lablims.spring_lablims.domain.AnaliseTipo;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.AnaliseTipoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.AnaliseTipoService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,6 +28,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/analiseTipos")
 public class AnaliseTipoController {
 
@@ -37,10 +39,6 @@ public class AnaliseTipoController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public AnaliseTipoController(final AnaliseTipoService analiseTipoService) {
-        this.analiseTipoService = analiseTipoService;
-    }
 
     @GetMapping
     public String list(@RequestParam(required = false) final String filter,

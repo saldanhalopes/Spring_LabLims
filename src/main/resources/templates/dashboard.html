@@ -25,6 +25,10 @@
     </div>
     <!-- /.content-header -->
     <!-- Main content -->
+    <div th:if="${MSG_INFO != null}" th:text="${MSG_INFO}" class="alert alert-info alert-dismissible fade show" role="alert"/>
+    <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" class="alert alert-danger alert-dismissible fade show" role="alert"/>
+    <div th:if="${MSG_WARNING != null}" th:text="${MSG_WARNING}" class="alert alert-warning alert-dismissible fade show" role="alert"/>
+
     <section class="content">
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
@@ -607,13 +611,15 @@
     <!-- /.row (main row) -->
 
 </div>
-
-<th:block layout:fragment="script">
-    <script>
+<span layout:fragment="script">
+    <script th:inline="javascript">
         console.log("Home Page");
+        window.setTimeout(function () {
+            $('#errorAlert').fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
     </script>
-</th:block>
-
-
+</span>
 </body>
 </html>

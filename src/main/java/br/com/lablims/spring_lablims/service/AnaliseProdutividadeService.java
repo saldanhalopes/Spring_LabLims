@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.AnaliseProdutividadeRepository;
 import br.com.lablims.spring_lablims.repos.AnaliseStatusRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class AnaliseProdutividadeService {
 
     private final AnaliseProdutividadeRepository analiseProdutividadeRepository;
@@ -21,13 +23,6 @@ public class AnaliseProdutividadeService {
 
     public AnaliseProdutividade findById(Integer id){
         return analiseProdutividadeRepository.findById(id).orElse(null);
-    }
-
-    public AnaliseProdutividadeService(
-            final AnaliseProdutividadeRepository analiseProdutividadeRepository,
-            final AnaliseStatusRepository analiseStatusRepository) {
-        this.analiseProdutividadeRepository = analiseProdutividadeRepository;
-        this.analiseStatusRepository = analiseStatusRepository;
     }
 
     public SimplePage<AnaliseProdutividadeDTO> findAll(final String filter,

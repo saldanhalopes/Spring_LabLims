@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.AtaTurnoRepository;
 import br.com.lablims.spring_lablims.repos.TurnoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class TurnoService {
 
     private final TurnoRepository turnoRepository;
@@ -21,12 +23,6 @@ public class TurnoService {
 
     public Turno findById(Integer id){
         return turnoRepository.findById(id).orElse(null);
-    }
-
-    public TurnoService(final TurnoRepository turnoRepository,
-            final AtaTurnoRepository ataTurnoRepository) {
-        this.turnoRepository = turnoRepository;
-        this.ataTurnoRepository = ataTurnoRepository;
     }
 
     public SimplePage<TurnoDTO> findAll(final String filter, final Pageable pageable) {

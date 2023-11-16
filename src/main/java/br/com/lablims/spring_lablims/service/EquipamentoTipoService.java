@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoTipoRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class EquipamentoTipoService {
 
     private final EquipamentoTipoRepository equipamentoTipoRepository;
@@ -21,12 +23,6 @@ public class EquipamentoTipoService {
 
     public EquipamentoTipo findById(Integer id){
         return equipamentoTipoRepository.findById(id).orElse(null);
-    }
-
-    public EquipamentoTipoService(final EquipamentoTipoRepository equipamentoTipoRepository,
-            final EquipamentoRepository equipamentoRepository) {
-        this.equipamentoTipoRepository = equipamentoTipoRepository;
-        this.equipamentoRepository = equipamentoRepository;
     }
 
     public SimplePage<EquipamentoTipoDTO> findAll(final String filter, final Pageable pageable) {

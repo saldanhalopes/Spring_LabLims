@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.controller.parametros;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.AmostraStatusDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -11,6 +12,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +30,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/loteStatuss")
 public class LoteStatusController {
 
@@ -39,18 +42,6 @@ public class LoteStatusController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public LoteStatusController(final AmostraStatusService amostraStatusService,
-                                final LoteRepository loteRepository,
-                                final PlanoAnaliseRepository planoAnaliseRepository,
-                                final AnaliseStatusRepository analiseStatusRepository,
-                                final UsuarioRepository usuarioRepository) {
-        this.amostraStatusService = amostraStatusService;
-        this.loteRepository = loteRepository;
-        this.planoAnaliseRepository = planoAnaliseRepository;
-        this.analiseStatusRepository = analiseStatusRepository;
-        this.usuarioRepository = usuarioRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

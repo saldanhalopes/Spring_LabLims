@@ -8,7 +8,7 @@ import br.com.lablims.spring_lablims.domain.UnidadeMedida;
 import br.com.lablims.spring_lablims.model.ReagenteDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ArquivosRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
 import br.com.lablims.spring_lablims.service.ReagenteService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
@@ -16,6 +16,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,6 +34,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/reagentes")
 public class ReagenteController {
 
@@ -42,14 +44,6 @@ public class ReagenteController {
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public ReagenteController(final ReagenteService reagenteService,
-            final UnidadeMedidaRepository unidadeMedidaRepository,
-            final ArquivosRepository arquivosRepository) {
-        this.reagenteService = reagenteService;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-        this.arquivosRepository = arquivosRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

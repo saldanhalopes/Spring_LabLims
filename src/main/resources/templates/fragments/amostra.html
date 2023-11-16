@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <div th:if="${MSG_ERROR != null}" th:text="${MSG_ERROR}" id="errorAlert"
                          class="alert alert-danger alert-dismissible fade show" role="alert"></div>
-                    <div th:replace="~{fragments/forms::globalErrors('amostras')}"></div>
+                    <div th:replace="~{fragments/forms::globalErrors('amostra')}"></div>
                     <div class="main-content container-fluid">
                         <div th:replace="~{fragments/forms::inputRow(object='amostra', field='codigoAmostra', type='select', required='required')}"></div>
                     </div>
@@ -54,22 +54,22 @@
                     <thead>
                     <tr>
                         <th th:text="#{id.label}" scope="col"/>
-                        <th th:text="#{amostra.lote.label}" scope="col"/>
+<!--                        <th th:text="#{amostra.lote.label}" scope="col"/>-->
                         <th th:text="#{amostra.codigoAmostra.label}" scope="col"/>
-                        <th th:text="#{amostra.amostraTipo.label}" scope="col"/>
-                        <th th:text="#{amostra.qtdAmostra.label}" scope="col"/>
-                        <th th:text="#{amostra.dataEntrada.label}" scope="col"/>
+<!--                        <th th:text="#{amostra.amostraTipo.label}" scope="col"/>-->
+<!--                        <th th:text="#{amostra.qtdAmostra.label}" scope="col"/>-->
+<!--                        <th th:text="#{amostra.dataEntrada.label}" scope="col"/>-->
                         <th><!-- --></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="amt : ${amostras}">
                         <td th:text="${amt.id}"/>
-                        <td th:text="${amt.lote}"/>
+<!--                        <td th:text="${amt.lote}"/>-->
                         <td th:text="${amt.codigoAmostra}"/>
-                        <td th:text="${amt.amostraTipo}"/>
-                        <td th:text="${#numbers.formatDecimal(amt.qtdAmostra.doubleValue(),1,4)}"/>
-                        <td th:text="${#temporals.format(amt.dataEntrada, 'dd/MM/yyyy HH:mm:ss')}"></td>
+<!--                        <td th:text="${amt.amostraTipo}"/>-->
+<!--                        <td th:text="${#numbers.formatDecimal(amt.qtdAmostra.doubleValue(),1,4)}"/>-->
+<!--                        <td th:text="${#temporals.format(amt.dataEntrada, 'dd/MM/yyyy HH:mm:ss')}"></td>-->
                         <td>
                             <span layout:fragment="amostraLiksContent"></span>
                         </td>

@@ -14,13 +14,15 @@ import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class AtaTurnoService {
 
     private final AtaTurnoRepository ataTurnoRepository;
@@ -31,17 +33,6 @@ public class AtaTurnoService {
 
     public AtaTurno findById(Integer id){
         return ataTurnoRepository.findById(id).orElse(null);
-    }
-
-    public AtaTurnoService(final AtaTurnoRepository ataTurnoRepository,
-            final TurnoRepository turnoRepository, final SetorRepository setorRepository,
-            final UsuarioRepository usuarioRepository,
-            final EquipamentoRepository equipamentoRepository) {
-        this.ataTurnoRepository = ataTurnoRepository;
-        this.turnoRepository = turnoRepository;
-        this.setorRepository = setorRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.equipamentoRepository = equipamentoRepository;
     }
 
     public SimplePage<AtaTurnoDTO> findAll(final String filter, final Pageable pageable) {

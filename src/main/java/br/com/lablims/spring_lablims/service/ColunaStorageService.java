@@ -1,46 +1,38 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.ColunaStorage;
-import br.com.lablims.spring_lablims.domain.ColunaStorageTipo;
-import br.com.lablims.spring_lablims.domain.ColunaVaga;
+import br.com.lablims.spring_lablims.domain.Storage;
+import br.com.lablims.spring_lablims.domain.StorageTipo;
+import br.com.lablims.spring_lablims.domain.StorageEndereco;
 import br.com.lablims.spring_lablims.domain.Setor;
 import br.com.lablims.spring_lablims.model.ColunaStorageDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ColunaStorageRepository;
 import br.com.lablims.spring_lablims.repos.ColunaStorageTipoRepository;
-import br.com.lablims.spring_lablims.repos.ColunaVagaRepository;
+import br.com.lablims.spring_lablims.repos.StorageEnderecoRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class ColunaStorageService {
 
     private final ColunaStorageRepository colunaStorageRepository;
     private final SetorRepository setorRepository;
     private final ColunaStorageTipoRepository colunaStorageTipoRepository;
-    private final ColunaVagaRepository colunaVagaRepository;
+    private final StorageEnderecoRepository storageEnderecoRepository;
 
-    public ColunaStorage findById(Integer id){
+    public Storage findById(Integer id){
         return colunaStorageRepository.findById(id).orElse(null);
     }
 
-    public ColunaStorageService(final ColunaStorageRepository colunaStorageRepository,
-            final SetorRepository setorRepository,
-            final ColunaStorageTipoRepository colunaStorageTipoRepository,
-            final ColunaVagaRepository colunaVagaRepository) {
-        this.colunaStorageRepository = colunaStorageRepository;
-        this.setorRepository = setorRepository;
-        this.colunaStorageTipoRepository = colunaStorageTipoRepository;
-        this.colunaVagaRepository = colunaVagaRepository;
-    }
-
     public SimplePage<ColunaStorageDTO> findAll(final String filter, final Pageable pageable) {
-        Page<ColunaStorage> page;
+        Page<Storage> page;
         if (filter != null) {
             Integer integerFilter = null;
             try {
@@ -66,52 +58,52 @@ public class ColunaStorageService {
     }
 
     public Integer create(final ColunaStorageDTO colunaStorageDTO) {
-        final ColunaStorage colunaStorage = new ColunaStorage();
-        mapToEntity(colunaStorageDTO, colunaStorage);
-        return colunaStorageRepository.save(colunaStorage).getId();
+        final Storage storage = new Storage();
+        mapToEntity(colunaStorageDTO, storage);
+        return colunaStorageRepository.save(storage).getId();
     }
 
     public void update(final Integer id, final ColunaStorageDTO colunaStorageDTO) {
-        final ColunaStorage colunaStorage = colunaStorageRepository.findById(id)
+        final Storage storage = colunaStorageRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        mapToEntity(colunaStorageDTO, colunaStorage);
-        colunaStorageRepository.save(colunaStorage);
+        mapToEntity(colunaStorageDTO, storage);
+        colunaStorageRepository.save(storage);
     }
 
     public void delete(final Integer id) {
         colunaStorageRepository.deleteById(id);
     }
 
-    private ColunaStorageDTO mapToDTO(final ColunaStorage colunaStorage,
+    private ColunaStorageDTO mapToDTO(final Storage storage,
             final ColunaStorageDTO colunaStorageDTO) {
-        colunaStorageDTO.setId(colunaStorage.getId());
-        colunaStorageDTO.setCodigo(colunaStorage.getCodigo());
-        colunaStorageDTO.setObs(colunaStorage.getObs());
-        colunaStorageDTO.setSetor(colunaStorage.getSetor() == null ? null : colunaStorage.getSetor().getId());
-        colunaStorageDTO.setTipo(colunaStorage.getTipo() == null ? null : colunaStorage.getTipo().getId());
-        colunaStorageDTO.setVersion(colunaStorage.getVersion());
+        colunaStorageDTO.setId(storage.getId());
+        colunaStorageDTO.setCodigo(storage.getCodigo());
+        colunaStorageDTO.setObs(storage.getObs());
+        colunaStorageDTO.setSetor(storage.getSetor() == null ? null : storage.getSetor().getId());
+        colunaStorageDTO.setTipo(storage.getTipo() == null ? null : storage.getTipo().getId());
+        colunaStorageDTO.setVersion(storage.getVersion());
         return colunaStorageDTO;
     }
 
-    private ColunaStorage mapToEntity(final ColunaStorageDTO colunaStorageDTO,
-            final ColunaStorage colunaStorage) {
-        colunaStorage.setCodigo(colunaStorageDTO.getCodigo());
-        colunaStorage.setObs(colunaStorageDTO.getObs());
+    private Storage mapToEntity(final ColunaStorageDTO colunaStorageDTO,
+                                final Storage storage) {
+        storage.setCodigo(colunaStorageDTO.getCodigo());
+        storage.setObs(colunaStorageDTO.getObs());
         final Setor setor = colunaStorageDTO.getSetor() == null ? null : setorRepository.findById(colunaStorageDTO.getSetor())
                 .orElseThrow(() -> new NotFoundException("setor not found"));
-        colunaStorage.setSetor(setor);
-        final ColunaStorageTipo tipo = colunaStorageDTO.getTipo() == null ? null : colunaStorageTipoRepository.findById(colunaStorageDTO.getTipo())
+        storage.setSetor(setor);
+        final StorageTipo tipo = colunaStorageDTO.getTipo() == null ? null : colunaStorageTipoRepository.findById(colunaStorageDTO.getTipo())
                 .orElseThrow(() -> new NotFoundException("tipo not found"));
-        colunaStorage.setTipo(tipo);
-        return colunaStorage;
+        storage.setTipo(tipo);
+        return storage;
     }
 
     public String getReferencedWarning(final Integer id) {
-        final ColunaStorage colunaStorage = colunaStorageRepository.findById(id)
+        final Storage storage = colunaStorageRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final ColunaVaga colunaStorageColunaVaga = colunaVagaRepository.findFirstByColunaStorage(colunaStorage);
-        if (colunaStorageColunaVaga != null) {
-            return WebUtils.getMessage("colunaStorage.colunaVaga.colunaStorage.referenced", colunaStorageColunaVaga.getId());
+        final StorageEndereco colunaStorageStorageEndereco = storageEnderecoRepository.findFirstByStorage(storage);
+        if (colunaStorageStorageEndereco != null) {
+            return WebUtils.getMessage("colunaStorage.colunaVaga.colunaStorage.referenced", colunaStorageStorageEndereco.getId());
         }
         return null;
     }

@@ -8,12 +8,14 @@ import br.com.lablims.spring_lablims.repos.DepartamentoRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class DepartamentoService {
 
     private final DepartamentoRepository departamentoRepository;
@@ -22,13 +24,6 @@ public class DepartamentoService {
     public Departamento findById(Integer id){
         return departamentoRepository.findById(id).orElse(null);
     }
-
-    public DepartamentoService(final DepartamentoRepository departamentoRepository,
-            final SetorRepository setorRepository) {
-        this.departamentoRepository = departamentoRepository;
-        this.setorRepository = setorRepository;
-    }
-
     public SimplePage<DepartamentoDTO> findAll(final String filter, final Pageable pageable) {
         Page<Departamento> page;
         if (filter != null) {

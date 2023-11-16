@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.controller.colunas;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.ColunaUtilDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -11,6 +12,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +30,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/colunaUtils")
 public class ColunaUtilController {
 
@@ -36,26 +39,11 @@ public class ColunaUtilController {
     private final SetorRepository setorRepository;
     private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final AnaliseRepository analiseRepository;
-    private final ColunaVagaRepository colunaVagaRepository;
+    private final StorageEnderecoRepository storageEnderecoRepository;
     private final ArquivosRepository arquivosRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public ColunaUtilController(final ColunaUtilService colunaUtilService,
-            final ColunaRepository colunaRepository, final SetorRepository setorRepository,
-            final MetodologiaVersaoRepository metodologiaVersaoRepository,
-            final AnaliseRepository analiseRepository,
-            final ColunaVagaRepository colunaVagaRepository,
-            final ArquivosRepository arquivosRepository) {
-        this.colunaUtilService = colunaUtilService;
-        this.colunaRepository = colunaRepository;
-        this.setorRepository = setorRepository;
-        this.metodologiaVersaoRepository = metodologiaVersaoRepository;
-        this.analiseRepository = analiseRepository;
-        this.colunaVagaRepository = colunaVagaRepository;
-        this.arquivosRepository = arquivosRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {
@@ -71,9 +59,9 @@ public class ColunaUtilController {
         model.addAttribute("analiseValues", analiseRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Analise::getId, Analise::getAnalise)));
-        model.addAttribute("colunaVagaValues", colunaVagaRepository.findAll(Sort.by("id"))
+        model.addAttribute("colunaVagaValues", storageEnderecoRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaVaga::getId, ColunaVaga::getObs)));
+                .collect(CustomCollectors.toSortedMap(StorageEndereco::getId, StorageEndereco::getObs)));
         model.addAttribute("certificadoValues", arquivosRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Arquivos::getId, Arquivos::getNome)));

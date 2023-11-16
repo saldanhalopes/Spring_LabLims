@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -19,8 +21,9 @@ public class EquipamentoLogService {
     private final EquipamentoAtividadeRepository equipamentoAtividadeRepository;
     private final EquipamentoRepository equipamentoRepository;
     private final UsuarioRepository usuarioRepository;
-    private final AmostraRepository amostraRepository;
 
+    private final AmostraService amostraService;
+    private final AmostraRepository amostraRepository;
     private final ArquivosRepository arquivosRepository;
 
     public EquipamentoLog findById(Integer id) {
@@ -31,12 +34,12 @@ public class EquipamentoLogService {
                                  final EquipamentoAtividadeRepository equipamentoAtividadeRepository,
                                  final EquipamentoRepository equipamentoRepository,
                                  final UsuarioRepository usuarioRepository,
-                                 final AmostraRepository amostraRepository,
-                                 final ArquivosRepository arquivosRepository) {
+                                 AmostraService amostraService, AmostraRepository amostraRepository, final ArquivosRepository arquivosRepository) {
         this.equipamentoLogRepository = equipamentoLogRepository;
         this.equipamentoAtividadeRepository = equipamentoAtividadeRepository;
         this.equipamentoRepository = equipamentoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.amostraService = amostraService;
         this.amostraRepository = amostraRepository;
         this.arquivosRepository = arquivosRepository;
     }
@@ -96,6 +99,35 @@ public class EquipamentoLogService {
         equipamentoLogRepository.save(equipamentoLog);
     }
 
+    public void updateAmostra(final Integer amostra_id, final Integer id) {
+        Optional<Amostra> optional = amostraRepository.findAmostra(amostra_id);
+        EquipamentoLog equipamentoLog = equipamentoLogRepository.findEquipamentoLogWithAmostras(id);
+        if (optional.isPresent()) {
+            if (!equipamentoLog.getAmostra().contains(optional.get())) {
+                equipamentoLog.getAmostra().add(optional.get());
+                equipamentoLogRepository.save(equipamentoLog);
+            }
+        }
+    }
+
+    public void deleteAmostra(final Integer amostra_id, final Integer id) {
+        Optional<Amostra> optional = amostraRepository.findAmostra(amostra_id);
+        EquipamentoLog equipamentoLog = equipamentoLogRepository.findEquipamentoLogWithAmostras(id);
+        if (optional.isPresent()) {
+            if (!equipamentoLog.getAmostra().contains(optional.get())) {
+                equipamentoLog.getAmostra().remove(optional.get());
+                equipamentoLogRepository.save(equipamentoLog);
+            }
+        }
+    }
+
+    public boolean amostraExists(final Integer amostra_id, final Integer id) {
+        Optional<Amostra> optional = amostraRepository.findAmostra(amostra_id);
+        return equipamentoLogRepository.findEquipamentoLogWithAmostras(id)
+                .getAmostra()
+                .contains(optional.get());
+    }
+
     public List<Arquivos> findArquivosByEquipamentoLog(final Integer id) {
         final EquipamentoLog equipamentoLog = equipamentoLogRepository.findEquipamentoLogWithArquivos(id);
         return equipamentoLog.getArquivos()
@@ -122,6 +154,20 @@ public class EquipamentoLogService {
         return equipamentoLogRepository.findEquipamentoLogWithAmostras(id);
     }
 
+    public void lock(final Integer id) {
+        final EquipamentoLog equipamentoLog = equipamentoLogRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        equipamentoLog.setDataConfencia(LocalDateTime.now());
+        equipamentoLogRepository.save(equipamentoLog);
+    }
+
+    public void unlock(final Integer id) {
+        final EquipamentoLog equipamentoLog = equipamentoLogRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        equipamentoLog.setDataConfencia(null);
+        equipamentoLogRepository.save(equipamentoLog);
+    }
+
     public void delete(final Integer id) {
         equipamentoLogRepository.deleteById(id);
     }
@@ -133,10 +179,12 @@ public class EquipamentoLogService {
         equipamentoLogDTO.setDataInicio(equipamentoLog.getDataInicio());
         equipamentoLogDTO.setDataFim(equipamentoLog.getDataFim());
         equipamentoLogDTO.setObs(equipamentoLog.getObs());
+        equipamentoLogDTO.setDataConfencia(equipamentoLog.getDataConfencia());
         equipamentoLogDTO.setAtividade(equipamentoLog.getAtividade() == null ? null : equipamentoLog.getAtividade().getId());
         equipamentoLogDTO.setEquipamento(equipamentoLog.getEquipamento() == null ? null : equipamentoLog.getEquipamento().getId());
         equipamentoLogDTO.setUsuarioInicio(equipamentoLog.getUsuarioInicio() == null ? null : equipamentoLog.getUsuarioInicio().getId());
         equipamentoLogDTO.setUsuarioFim(equipamentoLog.getUsuarioFim() == null ? null : equipamentoLog.getUsuarioFim().getId());
+        equipamentoLogDTO.setUsuarioConfencia(equipamentoLog.getUsuarioConfencia() == null ? null : equipamentoLog.getUsuarioConfencia().getId());
         equipamentoLogDTO.setVersion(equipamentoLog.getVersion());
         return equipamentoLogDTO;
     }
@@ -148,6 +196,7 @@ public class EquipamentoLogService {
         equipamentoLogDTO.setDataInicio(equipamentoLog.getDataInicio());
         equipamentoLogDTO.setDataFim(equipamentoLog.getDataFim());
         equipamentoLogDTO.setObs(equipamentoLog.getObs());
+        equipamentoLogDTO.setDataConfencia(equipamentoLog.getDataConfencia());
         equipamentoLogDTO.setAtividadeName(equipamentoLog.getAtividade() == null ? "" :
                 equipamentoAtividadeRepository.findById(equipamentoLog.getAtividade().getId()).orElse(null).getAtividade());
         equipamentoLogDTO.setEquipamentoName(equipamentoLog.getEquipamento() == null ? "" :
@@ -156,6 +205,8 @@ public class EquipamentoLogService {
                 usuarioRepository.findById(equipamentoLog.getUsuarioInicio().getId()).orElse(null).getUsername());
         equipamentoLogDTO.setUsuarioFimName(equipamentoLog.getUsuarioFim() == null ? "" :
                 usuarioRepository.findById(equipamentoLog.getUsuarioFim().getId()).orElse(null).getUsername());
+        equipamentoLogDTO.setUsuarioConfenciaName(equipamentoLog.getUsuarioConfencia() == null ? "" :
+                usuarioRepository.findById(equipamentoLog.getUsuarioConfencia().getId()).orElse(null).getUsername());
         equipamentoLogDTO.setVersion(equipamentoLog.getVersion());
         return equipamentoLogDTO;
     }
@@ -166,6 +217,7 @@ public class EquipamentoLogService {
         equipamentoLog.setDataInicio(equipamentoLogDTO.getDataInicio());
         equipamentoLog.setDataFim(equipamentoLogDTO.getDataFim());
         equipamentoLog.setObs(equipamentoLogDTO.getObs());
+        equipamentoLog.setDataConfencia(equipamentoLogDTO.getDataConfencia());
         final EquipamentoAtividade atividade = equipamentoLogDTO.getAtividade() == null ? null : equipamentoAtividadeRepository.findById(equipamentoLogDTO.getAtividade())
                 .orElseThrow(() -> new NotFoundException("atividade not found"));
         equipamentoLog.setAtividade(atividade);
@@ -178,6 +230,9 @@ public class EquipamentoLogService {
         final Usuario usuarioFim = equipamentoLogDTO.getUsuarioFim() == null ? null : usuarioRepository.findById(equipamentoLogDTO.getUsuarioFim())
                 .orElseThrow(() -> new NotFoundException("usuarioFim not found"));
         equipamentoLog.setUsuarioFim(usuarioFim);
+        final Usuario usuarioConferencia = equipamentoLogDTO.getUsuarioConfencia() == null ? null : usuarioRepository.findById(equipamentoLogDTO.getUsuarioConfencia())
+                .orElseThrow(() -> new NotFoundException("usuarioFim not found"));
+        equipamentoLog.setUsuarioConfencia(usuarioConferencia);
         return equipamentoLog;
     }
 

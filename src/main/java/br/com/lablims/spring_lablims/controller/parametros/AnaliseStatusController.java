@@ -7,13 +7,14 @@ import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.AnaliseStatusDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AnaliseProdutividadeRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.AnaliseStatusService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,21 +32,16 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/analiseStatuss")
 public class AnaliseStatusController {
 
     private final AnaliseStatusService analiseStatusService;
 
-    @Autowired
-    private GenericRevisionRepository genericRevisionRepository;
-
     private final AnaliseProdutividadeRepository analiseProdutividadeRepository;
 
-    public AnaliseStatusController(final AnaliseStatusService analiseStatusService,
-            final AnaliseProdutividadeRepository analiseProdutividadeRepository) {
-        this.analiseStatusService = analiseStatusService;
-        this.analiseProdutividadeRepository = analiseProdutividadeRepository;
-    }
+    @Autowired
+    private GenericRevisionRepository genericRevisionRepository;
 
     @ModelAttribute
     public void prepareContext(final Model model) {

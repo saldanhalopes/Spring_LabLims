@@ -1,25 +1,19 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.Arquivos;
-import br.com.lablims.spring_lablims.domain.PlanoAnaliseReagente;
-import br.com.lablims.spring_lablims.domain.Reagente;
-import br.com.lablims.spring_lablims.domain.SolucaoReagente;
-import br.com.lablims.spring_lablims.domain.UnidadeMedida;
+import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.ReagenteDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.ArquivosRepository;
-import br.com.lablims.spring_lablims.repos.PlanoAnaliseReagenteRepository;
-import br.com.lablims.spring_lablims.repos.ReagenteRepository;
-import br.com.lablims.spring_lablims.repos.SolucaoReagenteRepository;
-import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
+import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class ReagenteService {
 
     private final ReagenteRepository reagenteRepository;
@@ -30,18 +24,6 @@ public class ReagenteService {
 
     public Reagente findById(Integer id){
         return reagenteRepository.findById(id).orElse(null);
-    }
-
-    public ReagenteService(final ReagenteRepository reagenteRepository,
-            final UnidadeMedidaRepository unidadeMedidaRepository,
-            final ArquivosRepository arquivosRepository,
-            final PlanoAnaliseReagenteRepository planoAnaliseReagenteRepository,
-            final SolucaoReagenteRepository solucaoReagenteRepository) {
-        this.reagenteRepository = reagenteRepository;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-        this.arquivosRepository = arquivosRepository;
-        this.planoAnaliseReagenteRepository = planoAnaliseReagenteRepository;
-        this.solucaoReagenteRepository = solucaoReagenteRepository;
     }
 
     public SimplePage<ReagenteDTO> findAll(final String filter, final Pageable pageable) {

@@ -1,30 +1,23 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.Campanha;
-import br.com.lablims.spring_lablims.domain.Celula;
-import br.com.lablims.spring_lablims.domain.CelulaTipo;
-import br.com.lablims.spring_lablims.domain.Equipamento;
-import br.com.lablims.spring_lablims.domain.Usuario;
+import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.CelulaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.CampanhaRepository;
-import br.com.lablims.spring_lablims.repos.CelulaRepository;
-import br.com.lablims.spring_lablims.repos.CelulaTipoRepository;
-import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
-import br.com.lablims.spring_lablims.repos.UsuarioRepository;
+import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
-import jakarta.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class CelulaService {
 
     private final CelulaRepository celulaRepository;
@@ -35,18 +28,6 @@ public class CelulaService {
 
     public Celula findById(Integer id){
         return celulaRepository.findById(id).orElse(null);
-    }
-
-    public CelulaService(final CelulaRepository celulaRepository,
-            final EquipamentoRepository equipamentoRepository,
-            final UsuarioRepository usuarioRepository,
-            final CelulaTipoRepository celulaTipoRepository,
-            final CampanhaRepository campanhaRepository) {
-        this.celulaRepository = celulaRepository;
-        this.equipamentoRepository = equipamentoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.celulaTipoRepository = celulaTipoRepository;
-        this.campanhaRepository = campanhaRepository;
     }
 
     public SimplePage<CelulaDTO> findAll(final String filter, final Pageable pageable) {

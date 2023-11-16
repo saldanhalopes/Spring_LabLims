@@ -57,17 +57,30 @@
                 <a th:href="@{/equipamentoLogs/details/{id}(id=${equipamentoLog.id})}"
                    th:title="#{details.label}" class="btn btn-sm btn-primary">
                     <i class="fas fa-eye"></i> </a>
-                <a th:href="@{/equipamentoLogs/amostra/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
+                <a th:if="${equipamentoLog.dataConfencia == null}"
+                   th:href="@{/equipamentoLogs/amostra/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
                    th:title="#{equipamentoLog.amostras.label}" class="btn btn-sm btn btn-outline-info">
                     <i class="fas fa-pills"></i> </a>
-                <a th:href="@{/equipamentoLogs/upload/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
+                <a th:if="${equipamentoLog.dataConfencia == null}"
+                   th:href="@{/equipamentoLogs/upload/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
                    class="btn btn-sm btn-warning" th:title="#{arquivos.arquivo.label}"
                    sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')">
                     <i class="fas fa-paperclip"></i> </a>
-                <a th:href="@{/equipamentoLogs/edit/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
+                <a th:if="${equipamentoLog.dataConfencia == null}"
+                   th:href="@{/equipamentoLogs/edit/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
                    th:title="#{equipamentoLog.list.edit}" class="btn btn-sm btn-info"
                    sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')">
                     <i class="fas fa-pen"></i> </a>
+                <a th:if="${equipamentoLog.dataFim != null && equipamentoLog.dataConfencia == null}"
+                   th:href="@{/equipamentoLogs/lock/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
+                   th:title="#{lock.btn}" class="btn btn-sm btn-dark"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')">
+                    <i class="fas fa-lock"></i> </a>
+                <a th:if="${equipamentoLog.dataFim != null && equipamentoLog.dataConfencia != null}"
+                   th:href="@{/equipamentoLogs/unlock/{equip_id}/{id}(id=${equipamentoLog.id}, equip_id=${equipamento.id})}"
+                   th:title="#{unlock.btn}" class="btn btn-sm btn-secondary"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')">
+                    <i class="fas fa-unlock"></i> </a>
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                         th:attr="data-target='#remover_'+${equipamentoLog.id}" th:title="#{delete.btn}"
                         sec:authorize="hasAnyAuthority('ADMIN')"><i class="fas fa-trash"></i></button>

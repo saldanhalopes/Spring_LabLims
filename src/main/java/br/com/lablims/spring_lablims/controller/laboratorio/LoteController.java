@@ -1,8 +1,8 @@
 package br.com.lablims.spring_lablims.controller.laboratorio;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
-import br.com.lablims.spring_lablims.model.ArquivosDTO;
 import br.com.lablims.spring_lablims.model.LoteDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.*;
@@ -13,15 +13,13 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,32 +36,19 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/lotes")
 public class LoteController {
 
     private final LoteService loteService;
     private final UnidadeMedidaRepository unidadeMedidaRepository;
-    private final MaterialRepository materialRepository;
+    private final ProdutoRepository produtoRepository;
     private final ClienteRepository clienteRepository;
     private final ArquivosService arquivosService;
     private final ArquivosRepository arquivosRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
-
-    public LoteController(final LoteService loteService,
-                          final UnidadeMedidaRepository unidadeMedidaRepository,
-                          final MaterialRepository materialRepository,
-                          final ClienteRepository clienteRepository,
-                          final ArquivosService arquivosService,
-                          final ArquivosRepository arquivosRepository) {
-        this.loteService = loteService;
-        this.unidadeMedidaRepository = unidadeMedidaRepository;
-        this.materialRepository = materialRepository;
-        this.clienteRepository = clienteRepository;
-        this.arquivosService = arquivosService;
-        this.arquivosRepository = arquivosRepository;
-    }
 
     @InitBinder
     protected void initBinder(ServletRequestDataBinder binder) {
@@ -76,9 +61,9 @@ public class LoteController {
         model.addAttribute("unidadeValues", unidadeMedidaRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(UnidadeMedida::getId, UnidadeMedida::getUnidade)));
-        model.addAttribute("materialValues", materialRepository.findAll(Sort.by("id"))
+        model.addAttribute("produtoValues", produtoRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(Material::getId, Material::getFiscalizado)));
+                .collect(CustomCollectors.toSortedMap(Produto::getId, Produto::getProduto)));
         model.addAttribute("clienteValues", clienteRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Cliente::getId, Cliente::getCliente)));
@@ -176,6 +161,15 @@ public class LoteController {
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
+
+
+//    ###
+//            //    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    #
+//    #
+//    #
+//    #
+
     @PostMapping("/upload/{id}")
     public String upload(@PathVariable final Integer id,
                          @RequestParam("arquivo") MultipartFile file, final Model model,

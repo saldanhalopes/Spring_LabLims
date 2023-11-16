@@ -1,14 +1,14 @@
 package br.com.lablims.spring_lablims.controller.colunas;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
-import br.com.lablims.spring_lablims.domain.ColunaStorage;
-import br.com.lablims.spring_lablims.domain.ColunaStorageTipo;
+import br.com.lablims.spring_lablims.domain.Storage;
+import br.com.lablims.spring_lablims.domain.StorageTipo;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.domain.Setor;
 import br.com.lablims.spring_lablims.model.ColunaStorageDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.ColunaStorageTipoRepository;
-import br.com.lablims.spring_lablims.repos.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.repos.SetorRepository;
 import br.com.lablims.spring_lablims.service.ColunaStorageService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
@@ -16,6 +16,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,6 +34,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/colunaStorages")
 public class ColunaStorageController {
 
@@ -43,14 +45,6 @@ public class ColunaStorageController {
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
-    public ColunaStorageController(final ColunaStorageService colunaStorageService,
-            final SetorRepository setorRepository,
-            final ColunaStorageTipoRepository colunaStorageTipoRepository) {
-        this.colunaStorageService = colunaStorageService;
-        this.setorRepository = setorRepository;
-        this.colunaStorageTipoRepository = colunaStorageTipoRepository;
-    }
-
     @ModelAttribute
     public void prepareContext(final Model model) {
         model.addAttribute("setorValues", setorRepository.findAll(Sort.by("id"))
@@ -58,7 +52,7 @@ public class ColunaStorageController {
                 .collect(CustomCollectors.toSortedMap(Setor::getId, Setor::getSetor)));
         model.addAttribute("tipoValues", colunaStorageTipoRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaStorageTipo::getId, ColunaStorageTipo::getTipo)));
+                .collect(CustomCollectors.toSortedMap(StorageTipo::getId, StorageTipo::getTipo)));
     }
 
     @Autowired
@@ -153,7 +147,7 @@ public class ColunaStorageController {
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit")
     public String getRevisions(Model model) {
-        List<EntityRevision<ColunaStorage>> revisoes = genericRevisionRepository.listaRevisoes(ColunaStorage.class);
+        List<EntityRevision<Storage>> revisoes = genericRevisionRepository.listaRevisoes(Storage.class);
         model.addAttribute("audits", revisoes);
         return "pages/colunaStorage/audit";
     }
@@ -161,9 +155,9 @@ public class ColunaStorageController {
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
     @RequestMapping("/audit/{id}")
     public String getRevisions(Model model, @PathVariable final Integer id) {
-        ColunaStorage colunaStorage = colunaStorageService.findById(id);
-        List<EntityRevision<ColunaStorage>> revisoes = genericRevisionRepository.listaRevisoesById(colunaStorage.getId(), ColunaStorage.class);
+        Storage storage = colunaStorageService.findById(id);
+        List<EntityRevision<Storage>> revisoes = genericRevisionRepository.listaRevisoesById(storage.getId(), Storage.class);
         model.addAttribute("audits", revisoes);
-        return "pages/colunaStorage/audit";
+        return "pages/storage/audit";
     }
 }

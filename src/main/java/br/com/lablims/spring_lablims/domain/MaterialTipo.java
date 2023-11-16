@@ -1,5 +1,6 @@
 package br.com.lablims.spring_lablims.domain;
 
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,18 +13,18 @@ import org.hibernate.envers.Audited;
 @Audited(withModifiedFlag = true)
 public class MaterialTipo {
 
-    @Version
-    private Short version;
+	@Version
+	private Short version;
 
-    @Id
-    @Column(nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@Column(nullable = false, updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column
-    private String sigla;
+	@Column
+	private String tipo;
 
-    @Column
-    private String tipo;
+	@Column
+	private String descricao;
 
 }

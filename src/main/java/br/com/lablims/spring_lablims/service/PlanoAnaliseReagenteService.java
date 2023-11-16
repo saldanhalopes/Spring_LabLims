@@ -7,12 +7,14 @@ import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseReagenteRepository;
 import br.com.lablims.spring_lablims.repos.ReagenteRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class PlanoAnaliseReagenteService {
 
     private final PlanoAnaliseReagenteRepository planoAnaliseReagenteRepository;
@@ -20,13 +22,6 @@ public class PlanoAnaliseReagenteService {
 
     public PlanoAnaliseReagente findById(Integer id){
         return planoAnaliseReagenteRepository.findById(id).orElse(null);
-    }
-
-    public PlanoAnaliseReagenteService(
-            final PlanoAnaliseReagenteRepository planoAnaliseReagenteRepository,
-            final ReagenteRepository reagenteRepository) {
-        this.planoAnaliseReagenteRepository = planoAnaliseReagenteRepository;
-        this.reagenteRepository = reagenteRepository;
     }
 
     public SimplePage<PlanoAnaliseReagenteDTO> findAll(final String filter,

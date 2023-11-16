@@ -26,8 +26,8 @@
 </div>
 <span layout:fragment="listHeader">
     <th th:text="#{lote.lote.label}" scope="col"/>
-    <th th:text="#{material.codigo.label}" scope="col"/>
-    <th th:text="#{material.material.label}" scope="col"/>
+    <th th:text="#{produto.codigo.label}" scope="col"/>
+    <th th:text="#{produto.produto.label}" scope="col"/>
     <th th:text="#{lote.dataFabricacao.label}" scope="col"/>
     <th th:text="#{lote.cliente.label}" scope="col"/>
     <th th:text="#{lote.tamanhoLote.label}" scope="col"/>
@@ -37,8 +37,8 @@
         <td th:text="${lote.id}"/>
         <td th:text="${lote.version}"/>
         <td th:text="${lote.lote}"/>
-        <td th:text="${lote.material}"/>
-        <td th:text="${lote.materialName}"/>
+        <td th:text="${lote.produto}"/>
+        <td th:text="${lote.produtoName}"/>
         <td th:text="${#temporals.format(lote.dataFabricacao, 'dd/MM/yyyy')}"></td>
         <td th:text="${lote.clienteName}"/>
         <td th:text="${lote.tamanhoLote} + ' ' + ${lote.unidadeName}"/>

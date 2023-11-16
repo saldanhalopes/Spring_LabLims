@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.controller.logs;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.ColunaLogDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -11,6 +12,7 @@ import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +30,7 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/colunaLogs")
 public class ColunaLogController {
 
@@ -42,20 +45,6 @@ public class ColunaLogController {
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
-    public ColunaLogController(final ColunaLogService colunaLogService,
-                               final ColunaUtilRepository colunaUtilRepository,
-                               final UsuarioRepository usuarioRepository, final CampanhaRepository campanhaRepository,
-                               final AnaliseRepository analiseRepository,
-                               final EquipamentoRepository equipamentoRepository,
-                               final ArquivosRepository arquivosRepository) {
-        this.colunaLogService = colunaLogService;
-        this.colunaUtilRepository = colunaUtilRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.campanhaRepository = campanhaRepository;
-        this.analiseRepository = analiseRepository;
-        this.equipamentoRepository = equipamentoRepository;
-        this.arquivosRepository = arquivosRepository;
-    }
 
     @ModelAttribute
     public void prepareContext(final Model model) {

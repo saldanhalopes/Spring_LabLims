@@ -2,26 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/add}">
 <head>
-    <title th:text="#{escalaMedida.add.headline}"/>
+    <title th:text="#{grandeza.add.headline}"/>
 </head>
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
         <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
-        <li class="breadcrumb-item"><a th:href="@{/escalaMedidas}" th:text="#{escalaMedida.escalaMedida.label}"></a></li>
-        <li class="breadcrumb-item active" th:text="#{escalaMedida.add.headline}"></li>
+        <li class="breadcrumb-item"><a th:href="@{/grandezas}" th:text="#{grandeza.grandeza.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{grandeza.add.headline}"></li>
     </ol>
 </div>
 <span layout:fragment="addHeadline">
-    <h1 th:text="#{escalaMedida.add.headline}" class="flex-grow-1"/>
+    <h1 th:text="#{grandeza.add.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="addBack">
-    <a th:href="@{/escalaMedidas}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+    <a th:href="@{/grandezas}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="addGlobalErrors">
-    <div th:replace="~{fragments/forms::globalErrors('escalaMedida')}"/>
+    <div th:replace="~{fragments/forms::globalErrors('grandeza')}"/>
 </div>
 <div layout:fragment="addContent">
-    <div th:replace="~{fragments/forms::inputRow(object='escalaMedida', field='escala')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='grandeza', field='grandeza')}" />
 </div>
 </html>

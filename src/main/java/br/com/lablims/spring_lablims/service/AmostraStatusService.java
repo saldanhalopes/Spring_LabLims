@@ -10,12 +10,14 @@ import br.com.lablims.spring_lablims.repos.AmostraStatusRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
 import br.com.lablims.spring_lablims.repos.UsuarioRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class AmostraStatusService {
 
     private final AmostraStatusRepository amostraStatusRepository;
@@ -26,18 +28,6 @@ public class AmostraStatusService {
 
     public AmostraStatus findById(Integer id){
         return amostraStatusRepository.findById(id).orElse(null);
-    }
-
-    public AmostraStatusService(final AmostraStatusRepository amostraStatusRepository,
-                                final AmostraRepository amostraRepository,
-                                final PlanoAnaliseRepository planoAnaliseRepository,
-                                final AnaliseStatusRepository analiseStatusRepository,
-                                final UsuarioRepository usuarioRepository) {
-        this.amostraStatusRepository = amostraStatusRepository;
-        this.amostraRepository = amostraRepository;
-        this.planoAnaliseRepository = planoAnaliseRepository;
-        this.analiseStatusRepository = analiseStatusRepository;
-        this.usuarioRepository = usuarioRepository;
     }
 
     public SimplePage<AmostraStatusDTO> findAll(final String filter, final Pageable pageable) {
