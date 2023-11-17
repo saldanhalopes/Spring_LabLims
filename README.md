@@ -22,7 +22,7 @@ mvnw clean package
 Inicie sua aplicação com o seguinte comando - aqui com o perfil `Prod`:
 
 ```
-java -Dspring.profiles.active=Prod -jar ./target/Spring_LabLims.jar
+mvn spring-boot:run -Dspring-boot.run.profiles=Prod
 ```
 
 Se necessário, uma imagem Docker pode ser criada com o plugin Spring Boot. Adicione `SPRING_PROFILES_ACTIVE=Prod` como
