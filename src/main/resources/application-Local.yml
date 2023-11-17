@@ -4,10 +4,11 @@ spring:
       on-profile: Local
 
   datasource:
-    password: ${JDBC_POSTGRES_PASSWORD}
     username: ${JDBC_POSTGRES_USER}
+    password: ${JDBC_POSTGRES_PASSWORD}
     url: jdbc:postgresql://${JDBC_POSTGRES_SERVER}:${JDBC_POSTGRES_PORT}/${JDBC_POSTGRES_DATABASE}
 
 
-
+server:
+  port: '8080'
 

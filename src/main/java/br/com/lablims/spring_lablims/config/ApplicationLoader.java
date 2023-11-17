@@ -46,7 +46,7 @@ public class ApplicationLoader implements ApplicationRunner {
             final Sistema sistema = new Sistema();
             sistema.setSistemaNome("Lablims");
             sistema.setSistemaCriador("Rafael Saldanha Lopes");
-            sistema.setBuilderVersao(Double.valueOf(new ApplicationProperties().getAppVersion()));
+            sistema.setBuilderVersao(1.0);
             sistema.setDetalhes("Sistema de Gerenciamento de Laboraório");
             sistemaRepository.save(sistema);
             final Seguranca seguranca = new Seguranca();
@@ -66,6 +66,8 @@ public class ApplicationLoader implements ApplicationRunner {
             usuario.setSobrenome("Lablims");
             usuario.setUsername("admin");
             usuario.setPassword("admin");
+            usuario.setAtivo(true);
+            usuario.setToken(true);
             usuario.setGrupo(adminGrupo);
             registrationService.register(usuario);
         }

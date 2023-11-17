@@ -54,9 +54,7 @@ spring:
       starttls.enable: true
       ssl.trust: smtppro.zoho.com
 
-
 server:
-  port: '8080'
   compression:
     min-response-size: '1024'
     enabled: 'true'
