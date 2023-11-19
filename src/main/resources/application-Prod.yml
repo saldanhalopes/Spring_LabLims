@@ -4,12 +4,12 @@ spring:
       on-profile: Prod
 
   datasource:
-    username: postgres
-    password: Beast666@01
-    url: jdbc:postgresql://localhost:5432/db_lablims
+    username: db_lablims
+    password: Beast666@0123
+    url: jdbc:postgresql://85.31.233.72:5432/db_lablims
 
 server:
-  port: '443'
-  ssl:
-    key-store: classpath:lablims.p12
-    key-store-password: Beast666@0123
+  port: '8080'
+#  ssl:
+#    key-store: classpath:lablims.p12
+#    key-store-password: Beast666@0123

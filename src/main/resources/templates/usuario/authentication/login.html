@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="username" th:name="username"
-                               placeholder="Usuário" autocomplete="new-password"/>
+                               placeholder="Usuário" autocomplete="new-password" maxlength="20"/>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" id="password" th:name="password"
-                               placeholder="Senha" autocomplete="new-password"/>
+                               placeholder="Senha" autocomplete="new-password" maxlength="20"/>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -50,8 +50,8 @@
                         </div>
                     </div>
                     <div th:if="${user2FaCode}" class="input-group mb-3">
-                        <input type="text" class="form-control" id="user2FaCode" name="user2FaCode" maxlength="255"
-                               placeholder="Token" autocomplete="new-password" required autofocus/>
+                        <input type="text" class="form-control" id="user2FaCode" name="user2FaCode" maxlength="6"
+                               placeholder="Token"  autocomplete="new-password" required autofocus/>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-key"></span>
@@ -81,6 +81,11 @@
 <!-- AdminLTE App -->
 <script src="/webjars/AdminLTE/3.2.0/dist/js/adminlte.min.js"></script>
 <script th:inline="javascript">
+    $(function() {
+        $("input[name='user2FaCode']").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
     window.setTimeout(function () {
         $('#infoAlert').fadeTo(500, 0).slideUp(500, function () {
             $(this).remove();

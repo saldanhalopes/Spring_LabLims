@@ -6,7 +6,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 public class CustomAuthenticationDetails extends WebAuthenticationDetails {
 
-    private String user2FaCode;
+    private final String user2FaCode;
 
     public CustomAuthenticationDetails(HttpServletRequest request) {
         super(request);

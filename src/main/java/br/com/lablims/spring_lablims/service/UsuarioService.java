@@ -1,41 +1,41 @@
 package br.com.lablims.spring_lablims.service;
 
 import br.com.lablims.spring_lablims.controller.auth.custom.UserPrincipal;
-import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.domain.Usuario;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.UsuarioDTO;
-import br.com.lablims.spring_lablims.repos.*;
+import br.com.lablims.spring_lablims.repos.UsuarioRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
-import br.com.lablims.spring_lablims.util.WebUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 @Service
 @RequiredArgsConstructor
 public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CelulaRepository celulaRepository;
-    private final ColunaLogRepository colunaLogRepository;
-    private final AtaTurnoRepository ataTurnoRepository;
-    private final EquipamentoLogRepository equipamentoLogRepository;
-    private final AmostraStatusRepository amostraStatusRepository;
-    private final SolucaoRegistroRepository solucaoRegistroRepository;
-    private final SegurancaRepository segurancaRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
+        Usuario usuario = usuarioRepository.findByUsernameWithGrupo(username);
         if (usuario == null) {
             throw new UsernameNotFoundException("user " + username + " not found");
         }
-        return new UserPrincipal(usuario, usuarioRepository, segurancaRepository);
+        UserPrincipal userPrincipal = new UserPrincipal(usuario);
+        UserDetails user = User.withUsername(userPrincipal.getUsername())
+                .password(usuario.getPassword())
+                .authorities(userPrincipal.getAuthorities()).build();
+        return user;
     }
+
 
     public SimplePage<UsuarioDTO> findAll(final String filter, final Pageable pageable) {
         Page<Usuario> page;
@@ -107,9 +107,6 @@ public class UsuarioService implements UserDetailsService {
     public void delete(final Integer id) {
         final Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        // remove many-to-many relations at owning side
-        celulaRepository.findAllByUsuario(usuario)
-                .forEach(celula -> celula.getUsuario().remove(usuario));
         usuarioRepository.delete(usuario);
     }
 
@@ -156,50 +153,9 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public String getReferencedWarning(final Integer id) {
-        final Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
-        final Celula usuarioCelula = celulaRepository.findFirstByUsuario(usuario);
-        if (usuarioCelula != null) {
-            return WebUtils.getMessage("usuario.celula.usuario.referenced", usuarioCelula.getId());
-        }
-        final ColunaLog usuarioInicioColunaLog = colunaLogRepository.findFirstByUsuarioInicio(usuario);
-        if (usuarioInicioColunaLog != null) {
-            return WebUtils.getMessage("usuario.colunaLog.usuarioInicio.referenced", usuarioInicioColunaLog.getId());
-        }
-        final ColunaLog usuarioFimColunaLog = colunaLogRepository.findFirstByUsuarioFim(usuario);
-        if (usuarioFimColunaLog != null) {
-            return WebUtils.getMessage("usuario.colunaLog.usuarioFim.referenced", usuarioFimColunaLog.getId());
-        }
-        final AtaTurno usuarioAtaTurno = ataTurnoRepository.findFirstByUsuario(usuario);
-        if (usuarioAtaTurno != null) {
-            return WebUtils.getMessage("usuario.ataTurno.usuario.referenced", usuarioAtaTurno.getId());
-        }
-        final EquipamentoLog usuarioInicioEquipamentoLog = equipamentoLogRepository.findFirstByUsuarioInicio(usuario);
-        if (usuarioInicioEquipamentoLog != null) {
-            return WebUtils.getMessage("usuario.equipamentoLog.usuarioInicio.referenced", usuarioInicioEquipamentoLog.getId());
-        }
-        final EquipamentoLog usuarioFimEquipamentoLog = equipamentoLogRepository.findFirstByUsuarioFim(usuario);
-        if (usuarioFimEquipamentoLog != null) {
-            return WebUtils.getMessage("usuario.equipamentoLog.usuarioFim.referenced", usuarioFimEquipamentoLog.getId());
-        }
-        final AmostraStatus conferente1AmostraStatus = amostraStatusRepository.findFirstByConferente1(usuario);
-        if (conferente1AmostraStatus != null) {
-            return WebUtils.getMessage("usuario.amostraStatus.conferente1.referenced", conferente1AmostraStatus.getId());
-        }
-        final AmostraStatus conferente2AmostraStatus = amostraStatusRepository.findFirstByConferente2(usuario);
-        if (conferente2AmostraStatus != null) {
-            return WebUtils.getMessage("usuario.amostraStatus.conferente2.referenced", conferente2AmostraStatus.getId());
-        }
-        final SolucaoRegistro criadorSolucaoRegistro = solucaoRegistroRepository.findFirstByCriador(usuario);
-        if (criadorSolucaoRegistro != null) {
-            return WebUtils.getMessage("usuario.solucaoRegistro.criador.referenced", criadorSolucaoRegistro.getId());
-        }
-        final SolucaoRegistro conferenteSolucaoRegistro = solucaoRegistroRepository.findFirstByConferente(usuario);
-        if (conferenteSolucaoRegistro != null) {
-            return WebUtils.getMessage("usuario.solucaoRegistro.conferente.referenced", conferenteSolucaoRegistro.getId());
-        }
         return null;
     }
+
 
 
 }

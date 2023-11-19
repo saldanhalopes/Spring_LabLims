@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class CustomAuthenticationDetailsSource implements AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> {
+public class CustomAuthenticationDetailsSource implements
+        AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> {
 
     @Override
     public WebAuthenticationDetails buildDetails(HttpServletRequest request) {

@@ -2,6 +2,7 @@ package br.com.lablims.spring_lablims.config;
 
 import br.com.lablims.spring_lablims.controller.auth.custom.CustomAuthenticationDetailsSource;
 import br.com.lablims.spring_lablims.controller.auth.custom.CustomAuthenticationProvider;
+import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomAccessDeniedHandler;
 import br.com.lablims.spring_lablims.util.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -19,11 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 
 @Configuration
+@EnableWebSecurity
 @EnableMethodSecurity
 public class HttpSecurityConfig {
 
@@ -36,21 +39,20 @@ public class HttpSecurityConfig {
     private CustomAuthenticationDetailsSource customAuthenticationDetailsSource;
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(@Autowired UserDetailsService userDetailsService,
-                                                            @Autowired PasswordEncoder passwordEncoder) {
-        return new CustomAuthenticationProvider(userDetailsService, passwordEncoder);
+    public DaoAuthenticationProvider authenticationProvider(
+            @Autowired UsuarioService usuarioService,
+            @Autowired PasswordEncoder passwordEncoder) {
+        return new CustomAuthenticationProvider(usuarioService, passwordEncoder);
     }
 
     @Bean
     public SecurityFilterChain httpFilterChain(final HttpSecurity http) throws Exception {
         return http
-                .csrf((csrf -> csrf.disable()))
+                .csrf((AbstractHttpConfigurer::disable))
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/login", "/qrCodeAuth/**", "/alterarSenha/**",
                                 "/resources/**", "/css/**", "/img/**", "/js/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
-//                        .anyRequest()
-//                                .permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
@@ -76,8 +78,7 @@ public class HttpSecurityConfig {
 
     @Bean
     public SessionRegistry sessionRegistry() {
-        SessionRegistry sessionRegistry = new SessionRegistryImpl();
-        return sessionRegistry;
+        return new SessionRegistryImpl();
     }
 
     @Bean
@@ -89,5 +90,6 @@ public class HttpSecurityConfig {
     public AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
+
 
 }

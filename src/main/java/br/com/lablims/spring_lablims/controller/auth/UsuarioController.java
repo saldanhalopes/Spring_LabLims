@@ -103,7 +103,8 @@ public class UsuarioController {
     public String edit(@PathVariable final Integer id,
                        @ModelAttribute("usuario") @Valid final UsuarioDTO usuarioDTO,
                        final BindingResult bindingResult, final Model model,
-                       final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
+                       final RedirectAttributes redirectAttributes,
+                       @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         final UsuarioDTO currentUsuarioDTO = usuarioService.get(id);
         if (!bindingResult.hasFieldErrors("email") &&
