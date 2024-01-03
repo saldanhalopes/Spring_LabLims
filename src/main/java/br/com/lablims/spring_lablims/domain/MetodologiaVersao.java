@@ -24,6 +24,9 @@ public class MetodologiaVersao {
     private Integer id;
 
     @Column
+    private Double revisao;
+
+    @Column
     private LocalDateTime dataRevisao;
 
     @Column

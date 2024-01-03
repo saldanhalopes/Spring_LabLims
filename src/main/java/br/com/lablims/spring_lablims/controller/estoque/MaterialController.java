@@ -3,10 +3,12 @@ package br.com.lablims.spring_lablims.controller.estoque;
 import br.com.lablims.spring_lablims.config.EntityRevision;
 import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.model.AmostraTipoDTO;
 import br.com.lablims.spring_lablims.model.MaterialDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
+import br.com.lablims.spring_lablims.repos.FabricanteRepository;
 import br.com.lablims.spring_lablims.repos.FornecedorRepository;
-import br.com.lablims.spring_lablims.repos.MaterialTipoRepository;
+import br.com.lablims.spring_lablims.repos.CategoriaRepository;
 import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
 import br.com.lablims.spring_lablims.service.MaterialService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
@@ -16,6 +18,7 @@ import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -37,37 +40,52 @@ import java.util.List;
 public class MaterialController {
 
     private final MaterialService materialService;
-    private final MaterialTipoRepository materialTipoRepository;
+    private final CategoriaRepository categoriaRepository;
     private final UnidadeMedidaRepository unidadeMedidaRepository;
     private final FornecedorRepository fornecedorRepository;
+    private final FabricanteRepository fabricanteRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("materialTipoValues", materialTipoRepository.findAll(Sort.by("id"))
+        model.addAttribute("categoriaValues", categoriaRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(MaterialTipo::getId, MaterialTipo::getTipo)));
+                .collect(CustomCollectors.toSortedMap(Categoria::getId, Categoria::getCategoria)));
         model.addAttribute("unidadeValues", unidadeMedidaRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(UnidadeMedida::getId, UnidadeMedida::getUnidade)));
         model.addAttribute("fornecedorValues", fornecedorRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Fornecedor::getId, Fornecedor::getFornecedor)));
+        model.addAttribute("fabricanteValues", fabricanteRepository.findAll(Sort.by("id"))
+                .stream()
+                .collect(CustomCollectors.toSortedMap(Fabricante::getId, Fabricante::getFabricante)));
     }
 
     @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping
-    public String list(@SortDefault(sort = "id") @PageableDefault(size = 20) final Pageable pageable,
+    public String list(@RequestParam(required = false) final String filter,
+                       @RequestParam(defaultValue = "50") final int size,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "id") String sort,
+                       @RequestParam(required = false) String sortDir,
                        final Model model) {
-        final SimplePage<MaterialDTO> materials = materialService.findAllOfMateriais(pageable);
+        Pageable pag = PageRequest.of(page, size, WebUtils.getSortDirection(sortDir), sort);
+        model.addAttribute("filter", filter);
+        model.addAttribute("size", size);
+        model.addAttribute("page", page);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortDir", sortDir);
+        final SimplePage<MaterialDTO> materials = materialService.findAll(filter, pag);
         model.addAttribute("materials", materials);
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(materials));
         return "estoque/material/list";
     }
+
 
     @GetMapping("/add")
     public String add(@ModelAttribute("material") final MaterialDTO materialDTO) {
@@ -80,9 +98,11 @@ public class MaterialController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "estoque/material/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
+                System.out.println("Novo Registro");
                 CustomRevisionEntity.setMotivoText("Novo Registro");
                 materialService.create(materialDTO);
                 redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("material.create.success"));
@@ -114,6 +134,7 @@ public class MaterialController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "estoque/material/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

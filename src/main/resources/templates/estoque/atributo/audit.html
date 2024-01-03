@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/audit}">
+<head>
+    <title th:text="#{atributo.list.headline} + ' ' + Auditoria"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/atributos}" th:text="#{atributo.atributo.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{atributo.list.headline}+ ' ' + Auditoria"></li>
+    </ol>
+</div>
+<span layout:fragment="auditHeadline">
+    <h2 th:text="#{atributo.list.headline} + ' ' + Auditoria" class="flex-grow-1"/>
+</span>
+<span layout:fragment="auditBack">
+    <a th:href="@{/atributos}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="auditHeads">
+    <th th:text="#{atributo.categoria.label}" scope="col" />
+    <th th:text="#{atributo.atributo.label}" scope="col" />
+    <th th:text="#{atributo.valor.label}" scope="col" />
+    <th th:text="#{atributo.descricao.label}" scope="col" />
+</span>
+<span layout:fragment="auditBody">
+    <td th:text="${a.getEntidade().getCategoria().getId()}"></td>
+    <td th:text="${a.getEntidade().getAtributo()}"></td>
+    <td th:text="${a.getEntidade().getValor()}"></td>
+    <td th:text="${a.getEntidade().getDescricao()}"></td>
+</span>
+</html>

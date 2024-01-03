@@ -53,7 +53,14 @@ spring:
       starttls.enable: true
       ssl.trust: smtppro.zoho.com
 
+  thymeleaf:
+    encoding: UTF-8
+
 server:
+  tomcat:
+    uri-encoding: UTF-8
+  messages:
+    encoding: utf-8
   compression:
     min-response-size: '1024'
     enabled: 'true'
@@ -75,3 +82,11 @@ server:
 
 springdoc:
   pathsToMatch: /api/**
+
+keycloak:
+  auth-server-url: http://lablims.com.br:9090/auth
+  realm: Lablims
+  resource: lablims
+  credentials:
+    secret: eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5NzdmNDdkZi1hNDAxLTQ1YTctYTQwMy1lYjE2ZTk4ODg4NmIifQ
+

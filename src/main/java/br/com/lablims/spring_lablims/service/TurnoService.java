@@ -85,7 +85,7 @@ public class TurnoService {
                 .orElseThrow(NotFoundException::new);
         final AtaTurno turnoAtaTurno = ataTurnoRepository.findFirstByTurno(turno);
         if (turnoAtaTurno != null) {
-            return WebUtils.getMessage("turno.ataTurno.turno.referenced", turnoAtaTurno.getId());
+            return WebUtils.getMessage("entity.referenced", turnoAtaTurno.getId());
         }
         return null;
     }

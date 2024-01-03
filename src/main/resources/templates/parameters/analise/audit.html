@@ -8,7 +8,7 @@
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
         <li class="breadcrumb-item"><a th:href="@{/parameters}" th:text="#{parameters.title}"></a></li>
-        <li class="breadcrumb-item"><a th:href="@{/templates/laboratorio}" th:text="#{analise.list.headline}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/analises}" th:text="#{analise.analise.label}"></a></li>
         <li class="breadcrumb-item active" th:text="#{analiseTipo.list.headline}+ ' ' + Auditoria"></li>
     </ol>
 </div>
@@ -22,10 +22,12 @@
     <th th:text="#{analise.analise.label}" scope="col"/>
     <th th:text="#{analise.siglaAnalise.label}" scope="col"/>
     <th th:text="#{analise.descricaoAnalise.label}" scope="col"/>
+    <th th:text="#{analise.analiseTipo.label}" scope="col"/>
 </span>
 <span layout:fragment="auditBody">
     <td th:text="${a.getEntidade().getAnalise()}"></td>
     <td th:text="${a.getEntidade().getSiglaAnalise()}"></td>
     <td th:text="${a.getEntidade().getDescricaoAnalise()}"></td>
+    <td th:text="${a.getEntidade().getAnaliseTipo()}"></td>
 </span>
 </html>

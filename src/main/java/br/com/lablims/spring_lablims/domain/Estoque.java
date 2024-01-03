@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.envers.Audited;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -27,7 +28,7 @@ public class Estoque {
 	private MovimentacaoTipo movimentacaoTipo;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "produto_id")
+	@JoinColumn(name = "material_id")
 	private Material material;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -37,11 +38,22 @@ public class Estoque {
 	@Column
 	private BigDecimal qtdMaterial;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "unidade_id")
-	private UnidadeMedida unidade;
-
 	@Column
 	private Double valorUnitario;
+
+	@Column
+	private Double valorTotal;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "storage_endereco_id")
+	private StorageEndereco storageEndereco;
+
+	@ManyToMany
+	@JoinTable(
+			name = "equipamento_arquivo",
+			joinColumns = @JoinColumn(name = "equipamento_id"),
+			inverseJoinColumns = @JoinColumn(name = "arquivo_id")
+	)
+	private Set<Arquivos> arquivos;
 
 }

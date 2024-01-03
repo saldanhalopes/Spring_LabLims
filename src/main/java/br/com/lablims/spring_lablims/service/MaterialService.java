@@ -1,11 +1,11 @@
 package br.com.lablims.spring_lablims.service;
 
 import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.model.AmostraTipoDTO;
 import br.com.lablims.spring_lablims.model.MaterialDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,26 +17,21 @@ import org.springframework.stereotype.Service;
 public class MaterialService {
 
     private final MaterialRepository materialRepository;
-    private final MaterialTipoRepository materialTipoRepository;
+    private final CategoriaRepository categoriaRepository;
     private final UnidadeMedidaRepository unidadeMedidaRepository;
     private final FornecedorRepository fornecedorRepository;
+    private final FabricanteRepository fabricanteRepository;
 
-    public Material findById(Integer id){
+    public Material findById(Integer id) {
         return materialRepository.findById(id).orElse(null);
     }
 
     public SimplePage<MaterialDTO> findAll(final String filter, final Pageable pageable) {
         Page<Material> page;
         if (filter != null) {
-            Integer integerFilter = null;
-            try {
-                integerFilter = Integer.parseInt(filter);
-            } catch (final NumberFormatException numberFormatException) {
-                // keep null - no parseable input
-            }
-            page = materialRepository.findAllById(integerFilter, pageable);
+            page = materialRepository.findAllByKeyword(filter, pageable);
         } else {
-            page = materialRepository.findAll(pageable);
+            page = materialRepository.findAllOfMateriais(pageable);
         }
         return new SimplePage<>(page.getContent()
                 .stream()
@@ -45,19 +40,8 @@ public class MaterialService {
                 page.getTotalElements(), pageable);
     }
 
-    public SimplePage<MaterialDTO> findAllOfMateriais(final Pageable pageable) {
-        Page<Material> page;
-        page = materialRepository.findAllOfMateriais(pageable);
-        return new SimplePage<>(page.getContent()
-                .stream()
-                .map(material -> mapToDTO(material, new MaterialDTO()))
-                .toList(),
-                page.getTotalElements(), pageable);
-    }
-
-
     public MaterialDTO get(final Integer id) {
-        return materialRepository.findById(id)
+        return materialRepository.findMaterialById(id)
                 .map(material -> mapToDTO(material, new MaterialDTO()))
                 .orElseThrow(NotFoundException::new);
     }
@@ -91,23 +75,27 @@ public class MaterialService {
         materialDTO.setControlado(material.getControlado());
         materialDTO.setPartNumber(material.getPartNumber());
         materialDTO.setCasNumber(material.getCasNumber());
-        materialDTO.setFabricante(material.getFabricante());
         materialDTO.setMarca(material.getMarca());
         materialDTO.setModelo(material.getModelo());
         materialDTO.setEstoqueMin(material.getEstoqueMin());
         materialDTO.setEstoqueMax(material.getEstoqueMax());
         materialDTO.setCompraUnica(material.isCompraUnica());
         materialDTO.setObs(material.getObs());
-        materialDTO.setMaterialTipo(material.getMaterialTipo() == null ? null : material.getMaterialTipo().getId());
-        materialDTO.setMaterialTipoNome(material.getMaterialTipo().getTipo() == null ? null : material.getMaterialTipo().getTipo());
+        materialDTO.setCategoria(material.getCategoria() == null ? null : material.getCategoria().getId());
         materialDTO.setUnidade(material.getUnidade() == null ? null : material.getUnidade().getId());
-        materialDTO.setUnidadeNome(material.getUnidade().getUnidade() == null ? null : material.getUnidade().getUnidade());
         materialDTO.setFornecedor(material.getFornecedor() == null ? null : material.getFornecedor().getId());
-        materialDTO.setFornecedorNome(material.getFornecedor().getFornecedor() == null ? null : material.getFornecedor().getFornecedor());
+        materialDTO.setFabricante(material.getFabricante() == null ? null : material.getFabricante().getId());
+//        try {
+            materialDTO.setCategoriaNome(material.getCategoria() == null ? null : material.getCategoria().getCategoria());
+            materialDTO.setUnidadeNome(material.getUnidade() == null ? null : material.getUnidade().getUnidade());
+            materialDTO.setFornecedorNome(material.getFornecedor() == null ? null : material.getFornecedor().getFornecedor());
+            materialDTO.setFabricanteNome(material.getFabricante() == null ? null : material.getFabricante().getFabricante());
+//        }catch (Exception e){
+//
+//        }
         materialDTO.setVersion(material.getVersion());
         return materialDTO;
     }
-
 
 
     private Material mapToEntity(final MaterialDTO materialDTO, final Material material) {
@@ -119,22 +107,24 @@ public class MaterialService {
         material.setControlado(materialDTO.getControlado());
         material.setPartNumber(materialDTO.getPartNumber());
         material.setCasNumber(materialDTO.getCasNumber());
-        material.setFabricante(materialDTO.getFabricante());
         material.setMarca(materialDTO.getMarca());
         material.setModelo(materialDTO.getModelo());
         material.setEstoqueMin(materialDTO.getEstoqueMin());
         material.setEstoqueMax(materialDTO.getEstoqueMax());
         material.setCompraUnica(materialDTO.isCompraUnica());
         material.setObs(materialDTO.getObs());
-        final MaterialTipo materialTipo = materialDTO.getMaterialTipo() == null ? null : materialTipoRepository.findById(materialDTO.getMaterialTipo())
-                .orElseThrow(() -> new NotFoundException("MaterialTipo not found"));
-        material.setMaterialTipo(materialTipo);
+        final Categoria categoria = materialDTO.getCategoria() == null ? null : categoriaRepository.findById(materialDTO.getCategoria())
+                .orElseThrow(() -> new NotFoundException("Categoria not found"));
+        material.setCategoria(categoria);
         final UnidadeMedida unidade = materialDTO.getUnidade() == null ? null : unidadeMedidaRepository.findById(materialDTO.getUnidade())
                 .orElseThrow(() -> new NotFoundException("UnidadeMedida not found"));
         material.setUnidade(unidade);
         final Fornecedor fornecedor = materialDTO.getFornecedor() == null ? null : fornecedorRepository.findById(materialDTO.getFornecedor())
                 .orElseThrow(() -> new NotFoundException("Fornecedor not found"));
         material.setFornecedor(fornecedor);
+        final Fabricante fabricante = materialDTO.getFabricante() == null ? null : fabricanteRepository.findById(materialDTO.getFabricante())
+                .orElseThrow(() -> new NotFoundException("Fabricante not found"));
+        material.setFabricante(fabricante);
         return material;
     }
 

@@ -15,7 +15,7 @@
     <h2 th:text="#{analise.list.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="createNew">
-    <a th:href="@{/templates/laboratorio/add}" th:text="#{analise.list.createNew}"
+    <a th:href="@{/analises/add}" th:text="#{analise.list.createNew}"
        class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
 </span>
 <span layout:fragment="listBackMenu">
@@ -23,11 +23,16 @@
 </span>
 <div layout:fragment="listErrors">
     <div th:if="${analises.empty}" th:text="#{analise.list.empty}"></div>
+    <div th:if="${!analises.empty}" class="table-responsive"></div>
+</div>
+<div layout:fragment="search">
+    <div th:replace="~{fragments/utils::searchFilter(object='analise', sortOptions=${ {'id', 'analise', 'siglaAnalise', 'tipo.analiseTipo'} })}"></div>
 </div>
 <span layout:fragment="listHeader">
     <th th:text="#{analise.analise.label}" scope="col"/>
     <th th:text="#{analise.descricaoAnalise.label}" scope="col"/>
     <th th:text="#{analise.siglaAnalise.label}" scope="col"/>
+    <th th:text="#{analise.analiseTipo.label}" scope="col"/>
 </span>
 <span layout:fragment="listContent">
     <tr th:each="analise : ${analises}">
@@ -36,9 +41,12 @@
         <td th:text="${analise.analise}"/>
         <td th:text="${analise.descricaoAnalise}"/>
         <td th:text="${analise.siglaAnalise}"/>
+        <td th:text="${analise.analiseTipoNome}"/>
         <td>
             <div class="float-end text-nowrap">
-                <a th:href="@{/templates/laboratorio/edit/{id}(id=${analise.id})}"
+                <a th:href="@{/analises/details/{id}(id=${analise.id})}"
+                   class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i> </a>
+                <a th:href="@{/analises/edit/{id}(id=${analise.id})}"
                    th:text="#{analise.list.edit}" class="btn btn-sm btn-info"
                    sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
@@ -50,7 +58,7 @@
     </tr>
 </span>
 <span layout:fragment="listAudit">
-    <a th:href="@{/templates/laboratorio/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2"
+    <a th:href="@{/analises/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2"
        sec:authorize="hasAnyAuthority('ADMIN')"/>
 </span>
 </html>

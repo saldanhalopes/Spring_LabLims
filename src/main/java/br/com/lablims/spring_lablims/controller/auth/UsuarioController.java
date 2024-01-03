@@ -78,6 +78,7 @@ public class UsuarioController {
             bindingResult.rejectValue("username", "Exists.usuario.username");
         }
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "usuario/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -118,6 +119,7 @@ public class UsuarioController {
             bindingResult.rejectValue("username", "Exists.usuario.username");
         }
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/usuario/edit";
         }if (usuarioService.validarUser(principal.getName(), pass)) {
             CustomRevisionEntity.setMotivoText(motivo);

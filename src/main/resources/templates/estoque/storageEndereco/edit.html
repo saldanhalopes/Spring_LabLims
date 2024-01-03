@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/edit}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{storageEndereco.edit.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/storageEnderecos}" th:text="#{storageEndereco.storage.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{storageEndereco.edit.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="editHeadline">
+    <h1 th:text="#{storageEndereco.edit.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="editBack">
+    <a th:href="@{/storageEnderecos}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="editAudit">
+    <a th:href="@{/storageEnderecos/audit/{id}(id=${storageEndereco.id})}" th:text="#{audit.list}"
+       class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+<div layout:fragment="editGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('storageEndereco')}"></div>
+</div>
+<div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='storageEndereco', field='storage', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='storageEndereco', field='endereco', maxlength='255', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='storageEndereco', field='obs', type='textarea', maxlength='255')}"></div>
+</div>
+</html>

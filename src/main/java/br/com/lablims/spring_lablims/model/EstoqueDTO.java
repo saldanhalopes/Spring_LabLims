@@ -3,8 +3,10 @@ package br.com.lablims.spring_lablims.model;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Getter
@@ -15,7 +17,6 @@ public class EstoqueDTO {
 
     private Short version;
 
-    @NotNull
     private String movimentacaoTipo;
 
     @NotNull
@@ -23,10 +24,7 @@ public class EstoqueDTO {
 
     private String materialNome;
 
-    @NotNull
-    private Integer unidade;
-
-    private String unidadeNome;
+    private String materialUnidade;
 
     @NotNull
     private Integer setor;
@@ -36,6 +34,20 @@ public class EstoqueDTO {
     @NotNull
     private BigDecimal qtdMaterial;
 
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
     private Double valorUnitario;
+
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    private Double valorTotal;
+
+    private String materialCategoria;
+
+    private String materialFornecedor;
+
+    private Integer storageEndereco;
+
+    private String storageEnderecoNome;
+
+    private List<Integer> arquivos;
 
 }

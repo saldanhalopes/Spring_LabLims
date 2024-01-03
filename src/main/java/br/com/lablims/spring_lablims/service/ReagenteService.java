@@ -128,11 +128,11 @@ public class ReagenteService {
                 .orElseThrow(NotFoundException::new);
         final PlanoAnaliseReagente reagentePlanoAnaliseReagente = planoAnaliseReagenteRepository.findFirstByReagente(reagente);
         if (reagentePlanoAnaliseReagente != null) {
-            return WebUtils.getMessage("reagente.planoAnaliseReagente.reagente.referenced", reagentePlanoAnaliseReagente.getId());
+            return WebUtils.getMessage("entity.referenced", reagentePlanoAnaliseReagente.getId());
         }
         final SolucaoReagente reagenteSolucaoReagente = solucaoReagenteRepository.findFirstByReagente(reagente);
         if (reagenteSolucaoReagente != null) {
-            return WebUtils.getMessage("reagente.solucaoReagente.reagente.referenced", reagenteSolucaoReagente.getId());
+            return WebUtils.getMessage("entity.referenced", reagenteSolucaoReagente.getId());
         }
         return null;
     }

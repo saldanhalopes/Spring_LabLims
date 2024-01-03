@@ -1,7 +1,5 @@
 package br.com.lablims.spring_lablims.config;
 
-import br.com.lablims.spring_lablims.controller.auth.custom.CustomAuthenticationDetailsSource;
-import br.com.lablims.spring_lablims.controller.auth.custom.CustomAuthenticationProvider;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomAccessDeniedHandler;
 import br.com.lablims.spring_lablims.util.CustomAuthenticationFailureHandler;
@@ -16,7 +14,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,8 +23,6 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
 public class HttpSecurityConfig {
 
     @Bean

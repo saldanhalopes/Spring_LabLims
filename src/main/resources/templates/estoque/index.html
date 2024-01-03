@@ -27,15 +27,30 @@
     <div class="container-fluid">
         <section class="wrapper">
             <div class="row">
-                <!--Material Tipo-->
+                <!--Categoria-->
                 <div class="col-lg-3">
                     <section class="panel">
                         <div class="panel-body">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title"><h3><b><label th:text="#{materialTipo.list.headline}"/></b></h3>
+                                    <h5 class="card-title"><h3><b><label th:text="#{categoria.list.headline}"/></b></h3>
                                     </h5>
-                                    <a th:href="@{/materialTipos}" th:text="#{materialTipo.list.headline}"
+                                    <a th:href="@{/categorias}" th:text="#{categoria.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--Atributo-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{atributo.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/atributos}" th:text="#{atributo.list.headline}"
                                        class="btn btn-primary"/>
                                 </div>
                             </div>
@@ -72,7 +87,82 @@
                         </div>
                     </section>
                 </div>
+                <!--EstoqueSaldo-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{estoqueSaldo.list.headline}"/></b>
+                                    </h3></h5>
+                                    <a th:href="@{/estoqueSaldos}" th:text="#{estoqueSaldo.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
 
+                <!--Fornecedor-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{fornecedor.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/fornecedors}" th:text="#{fornecedor.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--Storage Tipo-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{storageTipo.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/storageTipos}" th:text="#{storageTipo.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--Storage-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{storage.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/storages}" th:text="#{storage.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--storageEndereco-->
+                <div class="col-lg-3">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><h3><b><label th:text="#{storageEndereco.list.headline}"/></b></h3>
+                                    </h5>
+                                    <a th:href="@{/storageEnderecos}" th:text="#{storageEndereco.list.headline}"
+                                       class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
 
             </div>
         </section>

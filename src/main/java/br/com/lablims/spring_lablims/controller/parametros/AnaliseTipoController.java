@@ -51,6 +51,12 @@ public class AnaliseTipoController {
         return "parameters/analiseTipo/list";
     }
 
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable final Integer id, final Model model) {
+        model.addAttribute("analiseTipo", analiseTipoService.get(id));
+        return "parameters/analiseTipo/details";
+    }
+
     @GetMapping("/add")
     public String add(@ModelAttribute("analiseTipo") final AnaliseTipoDTO analiseTipoDTO) {
         return "parameters/analiseTipo/add";
@@ -58,10 +64,11 @@ public class AnaliseTipoController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("analiseTipo") @Valid final AnaliseTipoDTO analiseTipoDTO,  final BindingResult bindingResult,
+    public String add(@ModelAttribute("analiseTipo") @Valid final AnaliseTipoDTO analiseTipoDTO, final BindingResult bindingResult,
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/analiseTipo/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -90,6 +97,7 @@ public class AnaliseTipoController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/analiseTipo/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -111,17 +119,12 @@ public class AnaliseTipoController {
                          @ModelAttribute("motivo") String motivo,
                          Principal principal,
                          @ModelAttribute("password") String pass) {
-        final String referencedWarning = analiseTipoService.getReferencedWarning(id);
-        if (referencedWarning != null) {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, referencedWarning);
+        if (usuarioService.validarUser(principal.getName(), pass)) {
+            CustomRevisionEntity.setMotivoText(motivo);
+            analiseTipoService.delete(id);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("analiseTipo.delete.success"));
         } else {
-            if (usuarioService.validarUser(principal.getName(), pass)) {
-                CustomRevisionEntity.setMotivoText(motivo);
-                analiseTipoService.delete(id);
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("analiseTipo.delete.success"));
-            } else {
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
-            }
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
         }
         return "redirect:/analiseTipos";
     }

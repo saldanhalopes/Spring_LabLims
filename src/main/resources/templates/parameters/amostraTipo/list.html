@@ -15,14 +15,20 @@
     <h2 th:text="#{amostraTipo.list.headline}" class="flex-grow-1"/>
 </span>
 <span layout:fragment="createNew">
-    <a th:href="@{/amostraTipos/add}" th:text="#{amostraTipo.list.createNew}"
-       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+    <a th:href="@{/amostraTipos/add}" class="btn btn-success"
+       sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')">
+        <i class="fas fa-plus"></i>
+        <span th:text="#{amostraTipo.list.createNew}"></span>
+    </a>
 </span>
 <span layout:fragment="listBackMenu">
     <a th:href="@{/parameters}" th:text="#{back.menu}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="listErrors">
     <div th:if="${amostraTipos.empty}" th:text="#{amostraTipo.list.empty}"></div>
+</div>
+<div layout:fragment="search">
+    <div th:replace="~{fragments/utils::searchFilter(object='amostraTipo', sortOptions=${ {'id', 'tipo'} })}" ></div>
 </div>
 <span layout:fragment="listHeader">
     <th th:text="#{amostraTipo.tipo.label}" scope="col"/>

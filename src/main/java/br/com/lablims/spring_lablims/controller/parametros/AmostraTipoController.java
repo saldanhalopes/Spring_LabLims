@@ -13,7 +13,9 @@ import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,14 +49,25 @@ public class AmostraTipoController {
 
     @GetMapping
     public String list(@RequestParam(required = false) final String filter,
-                       @SortDefault(sort = "id") @PageableDefault(size = 20) final Pageable pageable,
+                       @RequestParam(defaultValue = "10") final int size,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "id") String sort,
+                       @RequestParam(required = false) String sortDir,
                        final Model model) {
-        final SimplePage<AmostraTipoDTO> amostraTipos = amostraTipoService.findAll(filter, pageable);
-        model.addAttribute("amostraTipos", amostraTipos);
+        Pageable pag = PageRequest.of(page, size, WebUtils.getSortDirection(sortDir), sort);
         model.addAttribute("filter", filter);
+        model.addAttribute("size", size);
+        model.addAttribute("page", page);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortDir", sortDir);
+        final SimplePage<AmostraTipoDTO> amostraTipos = amostraTipoService.findAll(filter, pag);
+        model.addAttribute("amostraTipos", amostraTipos);
+//        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(amostraTipos));
         return "parameters/amostraTipo/list";
     }
+
+
 
     @GetMapping("/add")
     public String add(@ModelAttribute("amostraTipo") final AmostraTipoDTO amostraTipoDTO) {
@@ -62,10 +76,11 @@ public class AmostraTipoController {
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
     @PostMapping("/add")
-    public String add(@ModelAttribute("amostraTipo") @Valid final AmostraTipoDTO amostraTipoDTO,  final BindingResult bindingResult,
+    public String add(@ModelAttribute("amostraTipo") @Valid final AmostraTipoDTO amostraTipoDTO, final BindingResult bindingResult,
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/amostraTipo/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -94,6 +109,7 @@ public class AmostraTipoController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/amostraTipo/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

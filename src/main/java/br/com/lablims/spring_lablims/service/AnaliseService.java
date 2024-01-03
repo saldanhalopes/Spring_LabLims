@@ -1,15 +1,9 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.Analise;
-import br.com.lablims.spring_lablims.domain.ColunaLog;
-import br.com.lablims.spring_lablims.domain.ColunaUtil;
-import br.com.lablims.spring_lablims.domain.PlanoAnalise;
+import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.AnaliseDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.AnaliseRepository;
-import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
-import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
-import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
+import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +20,7 @@ public class AnaliseService {
     private final ColunaUtilRepository colunaUtilRepository;
     private final ColunaLogRepository colunaLogRepository;
     private final PlanoAnaliseRepository planoAnaliseRepository;
+    private final AnaliseTipoRepository analiseTipoRepository;
 
     public Analise findById(Integer id){
         return analiseRepository.findById(id).orElse(null);
@@ -34,15 +29,9 @@ public class AnaliseService {
     public SimplePage<AnaliseDTO> findAll(final String filter, final Pageable pageable) {
         Page<Analise> page;
         if (filter != null) {
-            Integer integerFilter = null;
-            try {
-                integerFilter = Integer.parseInt(filter);
-            } catch (final NumberFormatException numberFormatException) {
-                // keep null - no parseable input
-            }
-            page = analiseRepository.findAllById(integerFilter, pageable);
+            page = analiseRepository.findAllByKeyword(filter, pageable);
         } else {
-            page = analiseRepository.findAll(pageable);
+            page = analiseRepository.findAllOfAnalise(pageable);
         }
         return new SimplePage<>(page.getContent()
                 .stream()
@@ -52,7 +41,7 @@ public class AnaliseService {
     }
 
     public AnaliseDTO get(final Integer id) {
-        return analiseRepository.findById(id)
+        return analiseRepository.findAnaliseById(id)
                 .map(analise -> mapToDTO(analise, new AnaliseDTO()))
                 .orElseThrow(NotFoundException::new);
     }
@@ -79,6 +68,8 @@ public class AnaliseService {
         analiseDTO.setAnalise(analise.getAnalise());
         analiseDTO.setDescricaoAnalise(analise.getDescricaoAnalise());
         analiseDTO.setSiglaAnalise(analise.getSiglaAnalise());
+        analiseDTO.setAnaliseTipo(analise.getAnaliseTipo() == null ? null : analise.getAnaliseTipo().getId());
+        analiseDTO.setAnaliseTipoNome(analise.getAnaliseTipo() == null ? null : analise.getAnaliseTipo().getAnaliseTipo());
         analiseDTO.setVersion(analise.getVersion());
         return analiseDTO;
     }
@@ -87,6 +78,9 @@ public class AnaliseService {
         analise.setAnalise(analiseDTO.getAnalise());
         analise.setDescricaoAnalise(analiseDTO.getDescricaoAnalise());
         analise.setSiglaAnalise(analiseDTO.getSiglaAnalise());
+        final AnaliseTipo analiseTipo = analiseDTO.getAnaliseTipo() == null ? null : analiseTipoRepository.findById(analiseDTO.getAnaliseTipo())
+                .orElseThrow(() -> new NotFoundException("analiseTipo not found"));
+        analise.setAnaliseTipo(analiseTipo);
         return analise;
     }
 
@@ -95,15 +89,15 @@ public class AnaliseService {
                 .orElseThrow(NotFoundException::new);
         final ColunaUtil analiseColunaUtil = colunaUtilRepository.findFirstByAnalise(analise);
         if (analiseColunaUtil != null) {
-            return WebUtils.getMessage("analise.colunaUtil.analise.referenced", analiseColunaUtil.getId());
+            return WebUtils.getMessage("entity.referenced", analiseColunaUtil.getId());
         }
         final ColunaLog analiseColunaLog = colunaLogRepository.findFirstByAnalise(analise);
         if (analiseColunaLog != null) {
-            return WebUtils.getMessage("analise.colunaLog.analise.referenced", analiseColunaLog.getId());
+            return WebUtils.getMessage("entity.referenced", analiseColunaLog.getId());
         }
         final PlanoAnalise analisePlanoAnalise = planoAnaliseRepository.findFirstByAnalise(analise);
         if (analisePlanoAnalise != null) {
-            return WebUtils.getMessage("analise.planoAnalise.analise.referenced", analisePlanoAnalise.getId());
+            return WebUtils.getMessage("entity.referenced", analisePlanoAnalise.getId());
         }
         return null;
     }

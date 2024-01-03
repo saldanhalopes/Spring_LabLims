@@ -28,7 +28,7 @@
     <th th:text="#{analiseStatus.analiseStatus.label}" scope="col"/>
     <th th:text="#{analiseStatus.siglaAnaliseStatus.label}" scope="col" />
     <th th:text="#{analiseStatus.descricaoAnaliseStatus.label}" scope="col" />
-    <th th:text="#{analiseStatus.analiseProdutividade.label}" scope="col" />
+    <th th:text="#{analiseStatus.atividade.label}" scope="col" />
 </span>
 <span layout:fragment="listContent">
     <tr th:each="analiseStatus : ${analiseStatuss}">
@@ -37,7 +37,7 @@
         <td th:text="${analiseStatus.analiseStatus}"/>
         <td th:text="${analiseStatus.siglaAnaliseStatus}" />
         <td th:text="${analiseStatus.descricaoAnaliseStatus}" />
-        <td th:text="${analiseStatus.analiseProdutividade}" />
+        <td th:text="${analiseStatus.atividade}" />
         <td>
             <div class="float-end text-nowrap">
                 <a th:href="@{/analiseStatuss/edit/{id}(id=${analiseStatus.id})}"

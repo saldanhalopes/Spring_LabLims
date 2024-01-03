@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{fabricante.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/templates/parameters}" th:text="#{parameters.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/fabricantes}" th:text="#{fabricante.fabricante.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{fabricante.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{fabricante.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/fabricantes}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('fabricante')}"></div>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='fabricante', field='fabricante', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='fabricante', field='descricao', type='textarea', maxlength='2555')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='fabricante', field='obs', maxlength='255')}"></div>
+</div>
+</html>

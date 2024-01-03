@@ -23,11 +23,11 @@
        class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
 </span>
 <div layout:fragment="editGlobalErrors">
-    <div th:replace="~{fragments/forms::globalErrors('analiseTipo')}"/>
+    <div th:replace="~{fragments/forms::globalErrors('analiseTipo')}"></div>
 </div>
 <div layout:fragment="editContent">
-    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='analiseTipo')}"/>
-    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='siglaAnaliseTipo')}"/>
-    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='descricaoAnaliseTipo')}"/>
+    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='analiseTipo', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='siglaAnaliseTipo', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='analiseTipo', field='descricaoAnaliseTipo')}"></div>
 </div>
 </html>

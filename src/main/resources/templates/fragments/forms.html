@@ -2,14 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
     <body>
         <div th:fragment="inputRow(object, field)" th:with="type=${type} ?: 'text', required=${required}, inputClass=${inputClass}, readonly=${readonly}, accept=${accept}" th:object="${__${object}__}" class="row mb-3">
-            <div th:if="${type == 'checkbox'}" class="col-md-10 offset-md-2">
-                <div class="form-check">
-                    <input th:type="${type}" th:field="*{__${field}__}" th:readonly="${readonly}"
+            <label th:if="${type == 'checkbox'}" th:for="${field}" class="col-md-2 col-form-label">
+                <span th:text="#{__${object}__.__${field}__.label}" /><!--/*
+                */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" ></span>
+            </label>
+            <div th:if="${type == 'checkbox'}" class="col-md-10">
+                <div class="icheck-primary">
+                    <input th:type="${type}" th:field="*{__${field}__}" th:disabled="${disabled}"
                            th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}" class="form-check-input" />
-                    <label th:for="${#ids.prev(field)}" class="form-check-label">
-                        <span th:text="#{__${object}__.__${field}__.label}" /><!--/*
-                        */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" ></span>
-                    </label>
+                    <label th:for="${#ids.prev(field)}" class="form-check-label"></label>
                 </div>
                 <div th:replace="~{:: fieldErrors(${object}, ${field})}" ></div>
             </div>
@@ -29,6 +30,19 @@
                 <div th:if="${type == 'file'}" class="input-group mb-3">
                     <div class="custom-file">
                         <input th:type="${type}" th:field="*{__${field}__}" class="form-control" th:readonly="${readonly}" th:accept="${accept}" th:required="${required}">
+                    </div>
+                </div>
+                <div th:if="${type == 'colorpicker1'}">
+                    <input type="text" th:field="*{__${field}__}" th:readonly="${readonly}" th:required="${required}"
+                           th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}"
+                           class="form-control colorpicker1" maxlength="7" />
+                </div>
+                <div th:if="${type == 'colorpicker2'}" class="input-group mb-3 colorpicker2">
+                    <input type="text" th:field="*{__${field}__}" th:readonly="${readonly}" th:required="${required}"
+                           th:classappend="${#fields.hasErrors(field) ? 'is-invalid' : ''} + ' ' + ${inputClass}"
+                           class="form-control" maxlength="7" />
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-square"></i></span>
                     </div>
                 </div>
                 <textarea th:if="${type == 'textarea'}" th:field="*{__${field}__}" th:readonly="${readonly}" th:required="${required}"

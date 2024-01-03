@@ -147,7 +147,7 @@ public class ColunaUtilService {
                 .orElseThrow(NotFoundException::new);
         final ColunaLog colunaUtilColunaLog = colunaLogRepository.findFirstByColunaUtil(colunaUtil);
         if (colunaUtilColunaLog != null) {
-            return WebUtils.getMessage("colunaUtil.colunaLog.colunaUtil.referenced", colunaUtilColunaLog.getId());
+            return WebUtils.getMessage("entity.referenced", colunaUtilColunaLog.getId());
         }
         return null;
     }

@@ -24,13 +24,13 @@ public class PlanoAnalise {
     private String descricao;
 
     @Column
-    private Integer leadTimeMin;
+    private Integer leadTimeSetup;
 
     @Column
-    private Integer leadTimeMedio;
+    private Integer leadTimeAnalise;
 
     @Column
-    private Integer leadTimeMax;
+    private Integer leadTimeLimpeza;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "metodologia_versao_id")
@@ -41,8 +41,8 @@ public class PlanoAnalise {
     private Analise analise;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "analise_tipo_id")
-    private AnaliseTipo analiseTipo;
+    @JoinColumn(name = "analise_tecnica_id")
+    private AnaliseTecnica analiseTecnica;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "setor_id")

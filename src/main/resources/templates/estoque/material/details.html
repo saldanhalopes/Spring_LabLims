@@ -23,23 +23,23 @@
        class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
 </span>
 <div layout:fragment="detailsContent">
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='ativo', type='checkbox', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='materialTipo', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='ativo', type='checkbox', disabled='disabled')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='categoriaNome', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='material', field='material', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='material', field='descricao', type='textarea', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='codigo', type='number', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='numeroIdentificacao', type='number', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='fornecedor', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='controlado', type='checkbox', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='codigo', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='numeroIdentificacao', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='fornecedorNome', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='controlado', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='material', field='partNumber', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='material', field='casNumber', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='fabricante', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='fabricanteNome', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='material', field='marca', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='material', field='modelo', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='estoqueMin', type='number', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='estoqueMax', type='number', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='material', field='compraUnica', type='checkbox', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='amostra', field='unidade', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='estoqueMin', type='number', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='estoqueMax', type='number', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='compraUnica', type='checkbox', disabled='disabled')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='material', field='unidadeNome', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='material', field='obs', type='textarea', readonly='readonly')}"></div>
 </div>
 </html>

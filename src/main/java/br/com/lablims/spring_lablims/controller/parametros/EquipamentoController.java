@@ -46,6 +46,7 @@ public class EquipamentoController {
     private final ArquivosRepository arquivosRepository;
     private final GrandezaRepository grandezaRepository;
     private final ArquivosService arquivosService;
+
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
     @Autowired
@@ -102,6 +103,7 @@ public class EquipamentoController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/equipamento/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -136,6 +138,7 @@ public class EquipamentoController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) throws IOException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/equipamento/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

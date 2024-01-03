@@ -103,19 +103,19 @@ public class UnidadeMedidaService {
                 .orElseThrow(NotFoundException::new);
         final PlanoAnaliseColuna unidadePlanoAnaliseColuna = planoAnaliseColunaRepository.findFirstByUnidade(unidadeMedida);
         if (unidadePlanoAnaliseColuna != null) {
-            return WebUtils.getMessage("unidadeMedida.planoAnaliseColuna.unidade.referenced", unidadePlanoAnaliseColuna.getId());
+            return WebUtils.getMessage("entity.referenced", unidadePlanoAnaliseColuna.getId());
         }
         final Reagente unidadeReagente = reagenteRepository.findFirstByUnidade(unidadeMedida);
         if (unidadeReagente != null) {
-            return WebUtils.getMessage("unidadeMedida.reagente.unidade.referenced", unidadeReagente.getId());
+            return WebUtils.getMessage("entity.referenced", unidadeReagente.getId());
         }
         final SolucaoRegistro unidadeSolucaoRegistro = solucaoRegistroRepository.findFirstByUnidade(unidadeMedida);
         if (unidadeSolucaoRegistro != null) {
-            return WebUtils.getMessage("unidadeMedida.solucaoRegistro.unidade.referenced", unidadeSolucaoRegistro.getId());
+            return WebUtils.getMessage("entity.referenced", unidadeSolucaoRegistro.getId());
         }
         final SolucaoReagente unidadeSolucaoReagente = solucaoReagenteRepository.findFirstByUnidade(unidadeMedida);
         if (unidadeSolucaoReagente != null) {
-            return WebUtils.getMessage("unidadeMedida.solucaoReagente.unidade.referenced", unidadeSolucaoReagente.getId());
+            return WebUtils.getMessage("entity.referenced", unidadeSolucaoReagente.getId());
         }
         return null;
     }

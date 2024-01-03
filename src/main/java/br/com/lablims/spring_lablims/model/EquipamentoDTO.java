@@ -23,8 +23,9 @@ public class EquipamentoDTO {
     @Size(max = 255)
     private String tag;
 
-    @Size(max = 255)
-    private String fabricante;
+    private Integer fabricante;
+
+    private String fabricanteName;
 
     @Size(max = 255)
     private String marca;

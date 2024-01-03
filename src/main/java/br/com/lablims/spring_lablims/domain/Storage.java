@@ -21,7 +21,7 @@ public class Storage {
     private Integer id;
 
     @Column
-    private String codigo;
+    private String storage;
 
     @Column
     private String obs;

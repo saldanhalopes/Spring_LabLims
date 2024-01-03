@@ -34,8 +34,9 @@ public class Equipamento {
     @Column
     private String tag;
 
-    @Column
-    private String fabricante;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fabricante_id")
+    private Fabricante fabricante;
 
     @Column
     private String marca;

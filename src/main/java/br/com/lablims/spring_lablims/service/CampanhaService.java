@@ -126,7 +126,7 @@ public class CampanhaService {
                 .orElseThrow(NotFoundException::new);
         final ColunaLog campanhaColunaLog = colunaLogRepository.findFirstByCampanha(campanha);
         if (campanhaColunaLog != null) {
-            return WebUtils.getMessage("campanha.colunaLog.campanha.referenced", campanhaColunaLog.getId());
+            return WebUtils.getMessage("entity.referenced", campanhaColunaLog.getId());
         }
         return null;
     }

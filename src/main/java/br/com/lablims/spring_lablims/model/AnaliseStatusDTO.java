@@ -20,7 +20,15 @@ public class AnaliseStatusDTO {
     @Size(max = 255)
     private String descricaoAnaliseStatus;
 
-    private Integer analiseProdutividade;
+    private Integer atividade;
+
+    private String atividadeNome;
+
+    private boolean atividadeProdutivo;
+
+    private String atividadeSigla;
+
+    private String atividadeCor;
 
     private Short version;
 }

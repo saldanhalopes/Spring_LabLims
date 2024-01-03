@@ -21,6 +21,7 @@ public class ArquivosService {
     private final EquipamentoLogRepository equipamentoLogRepository;
     private final LoteRepository loteRepository;
     private final AmostraRepository amostraRepository;
+    private final EstoqueRepository estoqueRepository;
 
     public Arquivos findById(Integer id) {
         return arquivosRepository.findById(id).orElse(null);
@@ -76,6 +77,15 @@ public class ArquivosService {
                 .orElseThrow(NotFoundException::new);
         // remove many-to-many relations at owning side
         equipamentoRepository.findAllByArquivos(arquivos)
+                .forEach(equipamento -> equipamento.getArquivos().remove(arquivos));
+        arquivosRepository.delete(arquivos);
+    }
+
+    public void deleteEstoque(final Integer id) {
+        final Arquivos arquivos = arquivosRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+        // remove many-to-many relations at owning side
+        estoqueRepository.findAllByArquivos(arquivos)
                 .forEach(equipamento -> equipamento.getArquivos().remove(arquivos));
         arquivosRepository.delete(arquivos);
     }

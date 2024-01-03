@@ -44,7 +44,7 @@ public class MetodologiaController {
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("MetodologiaValues", categoriaMetodologiaRepository.findAll(Sort.by("id"))
+        model.addAttribute("categoriaMetodologiaValues", categoriaMetodologiaRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(CategoriaMetodologia::getId, CategoriaMetodologia::getCategoria)));
     }
@@ -63,6 +63,12 @@ public class MetodologiaController {
         return "parameters/metodologia/list";
     }
 
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable final Integer id, final Model model) {
+        model.addAttribute("metodologia", metodologiaService.get(id));
+        return "parameters/metodologia/details";
+    }
+
     @GetMapping("/add")
     public String add(@ModelAttribute("metodologia") final MetodologiaDTO metodologiaDTO) {
         return "parameters/metodologia/add";
@@ -74,6 +80,7 @@ public class MetodologiaController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/metodologia/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -102,6 +109,7 @@ public class MetodologiaController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/metodologia/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

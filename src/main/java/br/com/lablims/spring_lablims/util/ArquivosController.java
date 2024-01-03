@@ -67,6 +67,7 @@ public class ArquivosController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/arquivos/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -95,6 +96,7 @@ public class ArquivosController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/arquivos/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

@@ -38,6 +38,8 @@
         <td th:text="${analiseTipo.descricaoAnaliseTipo}"/>
         <td>
             <div class="float-end">
+                <a th:href="@{/analiseTipos/details/{id}(id=${analiseTipo.id})}"
+                   class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i> </a>
                 <a th:href="@{/analiseTipos/edit/{id}(id=${analiseTipo.id})}"
                    class="btn btn-sm btn-info"  sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')">
                     <i class="fas fa-edit"></i> </a>

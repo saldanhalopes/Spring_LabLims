@@ -61,6 +61,7 @@ public class ProdutoTipoController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/produtoTipo/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -89,6 +90,7 @@ public class ProdutoTipoController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/produtoTipo/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

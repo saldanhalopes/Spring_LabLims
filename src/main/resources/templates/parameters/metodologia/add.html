@@ -19,12 +19,12 @@
     <a th:href="@{/metodologias}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="addGlobalErrors">
-    <div th:replace="~{fragments/forms::globalErrors('metodologia')}"/>
+    <div th:replace="~{fragments/forms::globalErrors('metodologia')}"></div>
 </div>
 <div layout:fragment="addContent">
-    <div th:replace="~{fragments/forms::inputRow(object='metodologia', field='codigo')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='metodologia', field='metodo')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='metodologia', field='obs')}" />
-    <div th:replace="~{fragments/forms::inputRow(object='metodologia', field='categoriaMetodologia', type='select')}" />
+    <div th:replace="~{fragments/forms::inputRow(object='metodologia', field='codigo', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='metodologia', field='metodo', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='metodologia', field='categoriaMetodologia', type='select', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='metodologia', field='obs')}" ></div>
 </div>
 </html>

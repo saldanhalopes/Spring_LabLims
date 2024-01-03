@@ -138,15 +138,15 @@ public class SolucaoRegistroService {
                 .orElseThrow(NotFoundException::new);
         final SolucaoParemetro solucaoRegistroSolucaoParemetro = solucaoParemetroRepository.findFirstBySolucaoRegistro(solucaoRegistro);
         if (solucaoRegistroSolucaoParemetro != null) {
-            return WebUtils.getMessage("solucaoRegistro.solucaoParemetro.solucaoRegistro.referenced", solucaoRegistroSolucaoParemetro.getId());
+            return WebUtils.getMessage("entity.referenced", solucaoRegistroSolucaoParemetro.getId());
         }
         final SolucaoEquipamento solucaoRegistroSolucaoEquipamento = solucaoEquipamentoRepository.findFirstBySolucaoRegistro(solucaoRegistro);
         if (solucaoRegistroSolucaoEquipamento != null) {
-            return WebUtils.getMessage("solucaoRegistro.solucaoEquipamento.solucaoRegistro.referenced", solucaoRegistroSolucaoEquipamento.getId());
+            return WebUtils.getMessage("entity.referenced", solucaoRegistroSolucaoEquipamento.getId());
         }
         final SolucaoReagente solucaoRegistroSolucaoReagente = solucaoReagenteRepository.findFirstBySolucaoRegistro(solucaoRegistro);
         if (solucaoRegistroSolucaoReagente != null) {
-            return WebUtils.getMessage("solucaoRegistro.solucaoReagente.solucaoRegistro.referenced", solucaoRegistroSolucaoReagente.getId());
+            return WebUtils.getMessage("", solucaoRegistroSolucaoReagente.getId());
         }
         return null;
     }

@@ -4,13 +4,7 @@ import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
 import br.com.lablims.spring_lablims.model.PlanoAnaliseDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.AnaliseRepository;
-import br.com.lablims.spring_lablims.repos.AnaliseTipoRepository;
-import br.com.lablims.spring_lablims.repos.AmostraStatusRepository;
-import br.com.lablims.spring_lablims.repos.MetodologiaVersaoRepository;
-import br.com.lablims.spring_lablims.repos.PlanoAnaliseColunaRepository;
-import br.com.lablims.spring_lablims.repos.PlanoAnaliseRepository;
-import br.com.lablims.spring_lablims.repos.SetorRepository;
+import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +20,7 @@ public class PlanoAnaliseService {
     private final PlanoAnaliseRepository planoAnaliseRepository;
     private final MetodologiaVersaoRepository metodologiaVersaoRepository;
     private final AnaliseRepository analiseRepository;
-    private final AnaliseTipoRepository analiseTipoRepository;
+    private final AnaliseTecnicaRepository analiseTecnicaRepository;
     private final SetorRepository setorRepository;
     private final PlanoAnaliseColunaRepository planoAnaliseColunaRepository;
     private final AmostraStatusRepository amostraStatusRepository;
@@ -82,12 +76,15 @@ public class PlanoAnaliseService {
             final PlanoAnaliseDTO planoAnaliseDTO) {
         planoAnaliseDTO.setId(planoAnalise.getId());
         planoAnaliseDTO.setDescricao(planoAnalise.getDescricao());
-        planoAnaliseDTO.setLeadTimeMin(planoAnalise.getLeadTimeMin());
-        planoAnaliseDTO.setLeadTimeMedio(planoAnalise.getLeadTimeMedio());
-        planoAnaliseDTO.setLeadTimeMax(planoAnalise.getLeadTimeMax());
+        planoAnaliseDTO.setLeadTimeSetup(planoAnalise.getLeadTimeSetup());
+        planoAnaliseDTO.setLeadTimeAnalise(planoAnalise.getLeadTimeAnalise());
+        planoAnaliseDTO.setLeadTimeLimpeza(planoAnalise.getLeadTimeLimpeza());
         planoAnaliseDTO.setMetodologiaVersao(planoAnalise.getMetodologiaVersao() == null ? null : planoAnalise.getMetodologiaVersao().getId());
         planoAnaliseDTO.setAnalise(planoAnalise.getAnalise() == null ? null : planoAnalise.getAnalise().getId());
-        planoAnaliseDTO.setAnaliseTipo(planoAnalise.getAnaliseTipo() == null ? null : planoAnalise.getAnaliseTipo().getId());
+        planoAnaliseDTO.setAnaliseNome(planoAnalise.getAnalise() == null ? null : planoAnalise.getAnalise().getAnalise());
+        planoAnaliseDTO.setAnaliseTipo(planoAnalise.getAnalise() == null ? null : planoAnalise.getAnalise().getAnaliseTipo().getAnaliseTipo());
+        planoAnaliseDTO.setAnaliseTecnica(planoAnalise.getAnaliseTecnica() == null ? null : planoAnalise.getAnaliseTecnica().getId());
+        planoAnaliseDTO.setAnaliseTecnicaNome(planoAnalise.getAnaliseTecnica() == null ? null : planoAnalise.getAnaliseTecnica().getAnaliseTecnica());
         planoAnaliseDTO.setSetor(planoAnalise.getSetor() == null ? null : planoAnalise.getSetor().getId());
         planoAnaliseDTO.setVersion(planoAnalise.getVersion());
         return planoAnaliseDTO;
@@ -96,18 +93,18 @@ public class PlanoAnaliseService {
     private PlanoAnalise mapToEntity(final PlanoAnaliseDTO planoAnaliseDTO,
             final PlanoAnalise planoAnalise) {
         planoAnalise.setDescricao(planoAnaliseDTO.getDescricao());
-        planoAnalise.setLeadTimeMin(planoAnaliseDTO.getLeadTimeMin());
-        planoAnalise.setLeadTimeMedio(planoAnaliseDTO.getLeadTimeMedio());
-        planoAnalise.setLeadTimeMax(planoAnaliseDTO.getLeadTimeMax());
+        planoAnalise.setLeadTimeSetup(planoAnaliseDTO.getLeadTimeSetup());
+        planoAnalise.setLeadTimeAnalise(planoAnaliseDTO.getLeadTimeAnalise());
+        planoAnalise.setLeadTimeLimpeza(planoAnaliseDTO.getLeadTimeLimpeza());
         final MetodologiaVersao metodologiaVersao = planoAnaliseDTO.getMetodologiaVersao() == null ? null : metodologiaVersaoRepository.findById(planoAnaliseDTO.getMetodologiaVersao())
                 .orElseThrow(() -> new NotFoundException("metodologiaVersao not found"));
         planoAnalise.setMetodologiaVersao(metodologiaVersao);
         final Analise analise = planoAnaliseDTO.getAnalise() == null ? null : analiseRepository.findById(planoAnaliseDTO.getAnalise())
                 .orElseThrow(() -> new NotFoundException("analise not found"));
         planoAnalise.setAnalise(analise);
-        final AnaliseTipo analiseTipo = planoAnaliseDTO.getAnaliseTipo() == null ? null : analiseTipoRepository.findById(planoAnaliseDTO.getAnaliseTipo())
+        final AnaliseTecnica analiseTecnica = planoAnaliseDTO.getAnaliseTecnica() == null ? null : analiseTecnicaRepository.findById(planoAnaliseDTO.getAnaliseTecnica())
                 .orElseThrow(() -> new NotFoundException("analiseTipo not found"));
-        planoAnalise.setAnaliseTipo(analiseTipo);
+        planoAnalise.setAnaliseTecnica(analiseTecnica);
         final Setor setor = planoAnaliseDTO.getSetor() == null ? null : setorRepository.findById(planoAnaliseDTO.getSetor())
                 .orElseThrow(() -> new NotFoundException("setor not found"));
         planoAnalise.setSetor(setor);
@@ -119,11 +116,11 @@ public class PlanoAnaliseService {
                 .orElseThrow(NotFoundException::new);
         final PlanoAnaliseColuna planoAnalisePlanoAnaliseColuna = planoAnaliseColunaRepository.findFirstByPlanoAnalise(planoAnalise);
         if (planoAnalisePlanoAnaliseColuna != null) {
-            return WebUtils.getMessage("planoAnalise.planoAnaliseColuna.planoAnalise.referenced", planoAnalisePlanoAnaliseColuna.getId());
+            return WebUtils.getMessage("entity.referenced", planoAnalisePlanoAnaliseColuna.getId());
         }
         final AmostraStatus planoAnaliseAmostraStatus = amostraStatusRepository.findFirstByPlanoAnalise(planoAnalise);
         if (planoAnaliseAmostraStatus != null) {
-            return WebUtils.getMessage("planoAnalise.amostraStatus.planoAnalise.referenced", planoAnaliseAmostraStatus.getId());
+            return WebUtils.getMessage("entity.referenced", planoAnaliseAmostraStatus.getId());
         }
         return null;
     }

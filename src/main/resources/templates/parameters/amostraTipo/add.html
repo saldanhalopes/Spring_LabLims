@@ -19,9 +19,9 @@
     <a th:href="@{/amostraTipos}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
 </span>
 <div layout:fragment="addGlobalErrors">
-    <div th:replace="~{fragments/forms::globalErrors('amostraTipo')}"/>
+    <div th:replace="~{fragments/forms::globalErrors('amostraTipo')}"></div>
 </div>
 <div layout:fragment="addContent">
-    <div th:replace="~{fragments/forms::inputRow(object='amostraTipo', field='tipo')}"/>
+    <div th:replace="~{fragments/forms::inputRow(object='amostraTipo', field='tipo')}"></div>
 </div>
 </html>

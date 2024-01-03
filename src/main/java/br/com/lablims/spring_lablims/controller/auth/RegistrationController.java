@@ -80,6 +80,7 @@ public class RegistrationController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) throws MessagingException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "usuario/registration/register";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

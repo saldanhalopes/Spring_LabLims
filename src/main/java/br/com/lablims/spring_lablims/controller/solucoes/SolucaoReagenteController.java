@@ -83,6 +83,7 @@ public class SolucaoReagenteController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/solucaoReagente/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -111,6 +112,7 @@ public class SolucaoReagenteController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/solucaoReagente/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

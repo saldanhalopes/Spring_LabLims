@@ -20,6 +20,8 @@ public class MetodologiaVersaoDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dataProximaRevisao;
 
+    private Double revisao;
+
     @Size(max = 255)
     private String obs;
 

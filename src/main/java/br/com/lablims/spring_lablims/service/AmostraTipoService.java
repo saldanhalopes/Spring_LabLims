@@ -32,13 +32,7 @@ public class AmostraTipoService {
     public SimplePage<AmostraTipoDTO> findAll(final String filter, final Pageable pageable) {
         Page<AmostraTipo> page;
         if (filter != null) {
-            Integer integerFilter = null;
-            try {
-                integerFilter = Integer.parseInt(filter);
-            } catch (final NumberFormatException numberFormatException) {
-                // keep null - no parseable input
-            }
-            page = amostraTipoRepository.findAllById(integerFilter, pageable);
+            page = amostraTipoRepository.findAllByKeyword(filter, pageable);
         } else {
             page = amostraTipoRepository.findAll(pageable);
         }
@@ -91,7 +85,7 @@ public class AmostraTipoService {
                 .orElseThrow(NotFoundException::new);
         final Amostra amostraTipoAmostra = amostraRepository.findFirstByAmostraTipo(amostraTipo);
         if (amostraTipoAmostra != null) {
-            return WebUtils.getMessage("amostraTipo.amostra.amostraTipo.referenced", amostraTipoAmostra.getId());
+            return WebUtils.getMessage("entity.referenced", amostraTipoAmostra.getId());
         }
         return null;
     }

@@ -8,19 +8,28 @@
             <div layout:fragment="breadcrumb"></div>
         </div>
     </section>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title d-flex">
+                <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
+                <span layout:fragment="listHeadline"></span>
+            </h5>
+            <div class="card-tools mt-2">
+                <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                        <span layout:fragment="createNew"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div layout:fragment="search"></div>
     <div class="container-fluid">
-        <div class="card card-info card-outline">
+        <div class="card">
             <div class="card-header">
-                <h5 class="card-title d-flex">
-                    <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>
-                    <span layout:fragment="listHeadline"></span>
-                </h5>
-                <div class="card-tools">
-                    <ul class="nav nav-pills ml-auto">
-                        <li class="nav-item">
-                            <span layout:fragment="createNew"></span>
-                        </li>
-                    </ul>
+                <div id="card_Top_Table" class="card-title"></div>
+                <div class="card-tools mt-2">
+                    <div id="filtro_pesquisa"></div>
                 </div>
             </div>
             <div class="card-body table-responsive">
@@ -45,10 +54,10 @@
                     </tbody>
                 </table>
                 <div th:replace="~{fragments/utils::pagination()}"></div>
-            </div>
-            <div class="card-footer">
-                <span layout:fragment="listAudit"></span>
-                <span layout:fragment="listBackMenu"></span>
+                <div class="card-footer">
+                    <span layout:fragment="listAudit"></span>
+                    <span layout:fragment="listBackMenu"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -59,7 +68,7 @@
     <script th:inline="javascript">
         $(document).ready(function () {
             $('#tableList').DataTable({
-                "dom": '<"top"f>rt<"bottom"B><"clear">',
+                "dom": '<"data_filter"f>rt<"bottom"B><"clear">',
                 "paging": false,
                 "lengthChange": true,
                 "searching": true,
@@ -67,6 +76,14 @@
                 "info": false,
                 "responsive": false,
                 "autoWidth": true,
+                "language": {
+                    search: "",
+                    lengthMenu: "Exibir por página _MENU_",
+                    zeroRecords: "Nada encontrado - desculpe",
+                    info: "Mostrando a página _PAGE_ de _PAGES_",
+                    infoEmpty: "Não há registros disponíveis",
+                    infoFiltered: "(filtrado do total de _MAX_ registros)"
+                },
                 "buttons": [
                     {
                         extend: 'copy',
@@ -78,11 +95,16 @@
                         extend: 'excel',
                         exportOptions: {columns: ':visible:not(:eq(-1))'}
                     }, {
+                        extend: 'pdf',
+                        exportOptions: {columns: ':visible:not(:eq(-1))'}
+                    }, {
                         extend: 'print',
                         exportOptions: {columns: ':visible:not(:eq(-1))'}
                     }]
-            }).buttons().container().appendTo('#tableList_wrapper .col-md-6:eq(0)');
-            $('.dataTables_filter label').addClass('input-group input-group-sm');
+            }).buttons().container().appendTo('#card_Top_Table');
+            $('.data_filter').appendTo('#filtro_pesquisa');
+            $('.dataTables_filter label').addClass('input-group');
+            $('.dataTables_filter label').append('<span class="input-group-text"><i class="fas fa-search"></i></span>');
         });
 
         window.setTimeout(function () {
@@ -97,12 +119,19 @@
             });
         }, 4000);
         $(function () {
-            $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+            $(document).on('click', '[data-toggle="lightbox"]', function (event) {
                 event.preventDefault();
                 $(this).ekkoLightbox({
                     alwaysShowClose: true
                 });
             });
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
         })
     </script>
 </span>

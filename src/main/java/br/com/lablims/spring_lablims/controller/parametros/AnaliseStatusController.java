@@ -1,13 +1,13 @@
 package br.com.lablims.spring_lablims.controller.parametros;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
-import br.com.lablims.spring_lablims.domain.AnaliseProdutividade;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.AnaliseStatus;
+import br.com.lablims.spring_lablims.domain.Atividade;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.AnaliseStatusDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.AnaliseProdutividadeRepository;
-import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.repos.AtividadeRepository;
 import br.com.lablims.spring_lablims.service.AnaliseStatusService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
@@ -38,16 +38,16 @@ public class AnaliseStatusController {
 
     private final AnaliseStatusService analiseStatusService;
 
-    private final AnaliseProdutividadeRepository analiseProdutividadeRepository;
+    private final AtividadeRepository atividadeRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("analiseProdutividadeValues", analiseProdutividadeRepository.findAll(Sort.by("id"))
+        model.addAttribute("atividadeValues", atividadeRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(AnaliseProdutividade::getId, AnaliseProdutividade::getAnaliseProdutividade)));
+                .collect(CustomCollectors.toSortedMap(Atividade::getId, Atividade::getAtividade)));
     }
 
     @Autowired
@@ -75,6 +75,7 @@ public class AnaliseStatusController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/analiseStatus/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -103,6 +104,7 @@ public class AnaliseStatusController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/analiseStatus/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

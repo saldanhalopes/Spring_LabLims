@@ -23,4 +23,7 @@ public class StorageTipo {
     @Column
     private String tipo;
 
+    @Column
+    private String condicoesArmazenamento;
+
 }

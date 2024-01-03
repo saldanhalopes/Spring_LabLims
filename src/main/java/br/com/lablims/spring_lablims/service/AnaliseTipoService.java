@@ -1,5 +1,6 @@
 package br.com.lablims.spring_lablims.service;
 
+import br.com.lablims.spring_lablims.domain.AnaliseTecnica;
 import br.com.lablims.spring_lablims.domain.AnaliseTipo;
 import br.com.lablims.spring_lablims.domain.PlanoAnalise;
 import br.com.lablims.spring_lablims.model.AnaliseTipoDTO;
@@ -84,16 +85,6 @@ public class AnaliseTipoService {
         analiseTipo.setSiglaAnaliseTipo(analiseTipoDTO.getSiglaAnaliseTipo());
         analiseTipo.setDescricaoAnaliseTipo(analiseTipoDTO.getDescricaoAnaliseTipo());
         return analiseTipo;
-    }
-
-    public String getReferencedWarning(final Integer id) {
-        final AnaliseTipo analiseTipo = analiseTipoRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
-        final PlanoAnalise analiseTipoPlanoAnalise = planoAnaliseRepository.findFirstByAnaliseTipo(analiseTipo);
-        if (analiseTipoPlanoAnalise != null) {
-            return WebUtils.getMessage("analiseTipo.planoAnalise.analiseTipo.referenced", analiseTipoPlanoAnalise.getId());
-        }
-        return null;
     }
 
 }

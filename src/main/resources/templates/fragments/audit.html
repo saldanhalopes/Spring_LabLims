@@ -97,7 +97,7 @@
     <script th:inline="javascript">
         $(document).ready(function () {
             $('#tableAudit').DataTable({
-                "dom": '<"top"lf>rt<"bottom"B>p<"clear">',
+                "dom": '<"top"lf>rt<"bottom"B>pi<"clear">',
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
@@ -105,10 +105,19 @@
                 "info": true,
                 "responsive": false,
                 "autoWidth": true,
+                "language": {
+                    search: "Filtrar : ",
+                    lengthMenu: "Exibir por página _MENU_",
+                    zeroRecords: "Nada encontrado - desculpe",
+                    info: "Mostrando a página _PAGE_ de _PAGES_",
+                    infoEmpty: "Não há registros disponíveis",
+                    infoFiltered: "(filtrado do total de _MAX_ registros)"
+                },
                 "buttons": [
                     { extend: 'copy'},
                     { extend: 'csv'},
                     { extend: 'excel'},
+                    { extend: 'pdf'},
                     { extend: 'print'}],
                 "select": true,
                 initComplete: function () {

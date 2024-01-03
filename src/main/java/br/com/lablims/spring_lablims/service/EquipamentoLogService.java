@@ -18,7 +18,7 @@ import java.util.Optional;
 public class EquipamentoLogService {
 
     private final EquipamentoLogRepository equipamentoLogRepository;
-    private final EquipamentoAtividadeRepository equipamentoAtividadeRepository;
+    private final AtividadeRepository atividadeRepository;
     private final EquipamentoRepository equipamentoRepository;
     private final UsuarioRepository usuarioRepository;
 
@@ -31,12 +31,12 @@ public class EquipamentoLogService {
     }
 
     public EquipamentoLogService(final EquipamentoLogRepository equipamentoLogRepository,
-                                 final EquipamentoAtividadeRepository equipamentoAtividadeRepository,
+                                 final AtividadeRepository atividadeRepository,
                                  final EquipamentoRepository equipamentoRepository,
                                  final UsuarioRepository usuarioRepository,
                                  AmostraService amostraService, AmostraRepository amostraRepository, final ArquivosRepository arquivosRepository) {
         this.equipamentoLogRepository = equipamentoLogRepository;
-        this.equipamentoAtividadeRepository = equipamentoAtividadeRepository;
+        this.atividadeRepository = atividadeRepository;
         this.equipamentoRepository = equipamentoRepository;
         this.usuarioRepository = usuarioRepository;
         this.amostraService = amostraService;
@@ -198,7 +198,7 @@ public class EquipamentoLogService {
         equipamentoLogDTO.setObs(equipamentoLog.getObs());
         equipamentoLogDTO.setDataConfencia(equipamentoLog.getDataConfencia());
         equipamentoLogDTO.setAtividadeName(equipamentoLog.getAtividade() == null ? "" :
-                equipamentoAtividadeRepository.findById(equipamentoLog.getAtividade().getId()).orElse(null).getAtividade());
+                atividadeRepository.findById(equipamentoLog.getAtividade().getId()).orElse(null).getAtividade());
         equipamentoLogDTO.setEquipamentoName(equipamentoLog.getEquipamento() == null ? "" :
                 equipamentoRepository.findById(equipamentoLog.getEquipamento().getId()).orElse(null).getTag());
         equipamentoLogDTO.setUsuarioInicioName(equipamentoLog.getUsuarioInicio() == null ? "" :
@@ -218,7 +218,7 @@ public class EquipamentoLogService {
         equipamentoLog.setDataFim(equipamentoLogDTO.getDataFim());
         equipamentoLog.setObs(equipamentoLogDTO.getObs());
         equipamentoLog.setDataConfencia(equipamentoLogDTO.getDataConfencia());
-        final EquipamentoAtividade atividade = equipamentoLogDTO.getAtividade() == null ? null : equipamentoAtividadeRepository.findById(equipamentoLogDTO.getAtividade())
+        final Atividade atividade = equipamentoLogDTO.getAtividade() == null ? null : atividadeRepository.findById(equipamentoLogDTO.getAtividade())
                 .orElseThrow(() -> new NotFoundException("atividade not found"));
         equipamentoLog.setAtividade(atividade);
         final Equipamento equipamento = equipamentoLogDTO.getEquipamento() == null ? null : equipamentoRepository.findById(equipamentoLogDTO.getEquipamento())
@@ -240,7 +240,7 @@ public class EquipamentoLogService {
                                              final EquipamentoLog equipamentoLog) {
         equipamentoLog.setDescricao(equipamentoLogDTO.getDescricao());
         equipamentoLog.setObs(equipamentoLogDTO.getObs());
-        final EquipamentoAtividade atividade = equipamentoLogDTO.getAtividade() == null ? null : equipamentoAtividadeRepository.findById(equipamentoLogDTO.getAtividade())
+        final Atividade atividade = equipamentoLogDTO.getAtividade() == null ? null : atividadeRepository.findById(equipamentoLogDTO.getAtividade())
                 .orElseThrow(() -> new NotFoundException("atividade not found"));
         equipamentoLog.setAtividade(atividade);
         return equipamentoLog;

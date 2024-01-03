@@ -30,7 +30,7 @@ public class AnaliseStatus {
     private String descricaoAnaliseStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "analise_produtividade_id")
-    private AnaliseProdutividade analiseProdutividade;
+    @JoinColumn(name = "analise_atividade_id")
+    private Atividade atividade;
 
 }

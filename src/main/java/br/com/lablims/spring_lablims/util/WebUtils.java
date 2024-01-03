@@ -1,21 +1,17 @@
 package br.com.lablims.spring_lablims.util;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import lombok.SneakyThrows;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.LocaleResolver;
+
+import java.util.ArrayList;
 
 
 @Component
@@ -50,6 +46,12 @@ public class WebUtils {
         String stepUrl = "?page=" + targetPage + "&size=" + page.getSize();
         if (getRequest().getParameter("filter") != null) {
             stepUrl += "&filter=" + getRequest().getParameter("filter");
+        }
+        if (getRequest().getParameter("sort") != null) {
+            stepUrl += "&sort=" + getRequest().getParameter("sort");
+        }
+        if (getRequest().getParameter("sortDir") != null) {
+            stepUrl += "&sortDir=" + getRequest().getParameter("sortDir");
         }
         return stepUrl;
     }
@@ -88,6 +90,17 @@ public class WebUtils {
         paginationModel.setSteps(steps);
         paginationModel.setElements(getMessage("pagination.elements", range, page.getTotalElements()));
         return paginationModel;
+    }
+
+    public static Sort.Direction getSortDirection(String direction) {
+        if (direction != null) {
+            if (direction.equals("ASC")) {
+                return Sort.Direction.ASC;
+            } else if (direction.equals("DESC")) {
+                return Sort.Direction.DESC;
+            }
+        }
+        return Sort.Direction.ASC;
     }
 
 }

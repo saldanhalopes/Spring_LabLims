@@ -127,11 +127,11 @@ public class MetodologiaVersaoService {
                 .orElseThrow(NotFoundException::new);
         final ColunaUtil metodologiaVersaoColunaUtil = colunaUtilRepository.findFirstByMetodologiaVersao(metodologiaVersao);
         if (metodologiaVersaoColunaUtil != null) {
-            return WebUtils.getMessage("metodologiaVersao.colunaUtil.metodologiaVersao.referenced", metodologiaVersaoColunaUtil.getId());
+            return WebUtils.getMessage("entity.referenced", metodologiaVersaoColunaUtil.getId());
         }
         final PlanoAnalise metodologiaVersaoPlanoAnalise = planoAnaliseRepository.findFirstByMetodologiaVersao(metodologiaVersao);
         if (metodologiaVersaoPlanoAnalise != null) {
-            return WebUtils.getMessage("metodologiaVersao.planoAnalise.metodologiaVersao.referenced", metodologiaVersaoPlanoAnalise.getId());
+            return WebUtils.getMessage("entity.referenced", metodologiaVersaoPlanoAnalise.getId());
         }
         return null;
     }

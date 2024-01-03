@@ -24,10 +24,10 @@
 </span>
 <div layout:fragment="detailsContent">
     <div th:replace="~{fragments/forms::inputRow(object='estoque', field='movimentacaoTipo', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='material', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='setor', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='materialNome', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='setorNome', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='estoque', field='qtdMaterial', type='number', readonly='readonly')}"></div>
-    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='unidade', readonly='readonly')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='estoque', field='materialUnidade', readonly='readonly')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='estoque', field='valorUnitario', type='number', readonly='readonly')}"></div>
 </div>
 </html>

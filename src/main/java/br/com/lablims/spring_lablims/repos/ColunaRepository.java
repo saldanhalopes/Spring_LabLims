@@ -1,7 +1,7 @@
 package br.com.lablims.spring_lablims.repos;
 
+import br.com.lablims.spring_lablims.domain.Atributo;
 import br.com.lablims.spring_lablims.domain.Coluna;
-import br.com.lablims.spring_lablims.domain.ColunaConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,18 +11,18 @@ public interface ColunaRepository extends JpaRepository<Coluna, Integer> {
 
     Page<Coluna> findAllById(Integer id, Pageable pageable);
 
-    Coluna findFirstByTipoColuna(ColunaConfig colunaConfig);
+    Coluna findFirstByTipoColuna(Atributo atributo);
 
-    Coluna findFirstByFabricanteColuna(ColunaConfig colunaConfig);
+    Coluna findFirstByFabricanteColuna(Atributo atributo);
 
-    Coluna findFirstByMarcaColuna(ColunaConfig colunaConfig);
+    Coluna findFirstByMarcaColuna(Atributo atributo);
 
-    Coluna findFirstByFaseColuna(ColunaConfig colunaConfig);
+    Coluna findFirstByFaseColuna(Atributo atributo);
 
-    Coluna findFirstByTamanhoColuna(ColunaConfig colunaConfig);
+    Coluna findFirstByTamanhoColuna(Atributo atributo);
 
-    Coluna findFirstByDiametroColuna(ColunaConfig colunaConfig);
+    Coluna findFirstByDiametroColuna(Atributo atributo);
 
-    Coluna findFirstByParticulaColuna(ColunaConfig colunaConfig);
+    Coluna findFirstByParticulaColuna(Atributo atributo);
 
 }

@@ -1,10 +1,6 @@
 package br.com.lablims.spring_lablims.repos;
 
-import br.com.lablims.spring_lablims.domain.Analise;
-import br.com.lablims.spring_lablims.domain.AnaliseTipo;
-import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
-import br.com.lablims.spring_lablims.domain.PlanoAnalise;
-import br.com.lablims.spring_lablims.domain.Setor;
+import br.com.lablims.spring_lablims.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +16,6 @@ public interface PlanoAnaliseRepository extends JpaRepository<PlanoAnalise, Inte
 
     PlanoAnalise findFirstByAnalise(Analise analise);
 
-    PlanoAnalise findFirstByAnaliseTipo(AnaliseTipo analiseTipo);
+    PlanoAnalise findFirstByAnaliseTecnica(AnaliseTecnica analiseTecnica);
 
 }

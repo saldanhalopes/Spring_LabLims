@@ -87,7 +87,7 @@ public class ProdutoTipoService {
     public String getReferencedWarning(final Integer id) {
         final ProdutoTipo produtoTipo = produtoTipoRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final Produto tipoProdutoProduto = produtoRepository.findFirstByTipoProduto(produtoTipo);
+        final Produto tipoProdutoProduto = produtoRepository.findFirstByProdutoTipo(produtoTipo);
         if (tipoProdutoProduto != null) {
             return WebUtils.getMessage("produtoTipo.produto.tipoProduto.referenced", tipoProdutoProduto.getId());
         }

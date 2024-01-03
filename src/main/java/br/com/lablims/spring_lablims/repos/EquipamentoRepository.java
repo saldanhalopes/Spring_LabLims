@@ -1,6 +1,7 @@
 package br.com.lablims.spring_lablims.repos;
 
 import br.com.lablims.spring_lablims.domain.*;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,12 +15,13 @@ public interface EquipamentoRepository extends JpaRepository<Equipamento, Intege
 
     Page<Equipamento> findAllById(Integer id, Pageable pageable);
 
-    @Query("Select eq FROM Equipamento eq LEFT JOIN eq.tipo tp LEFT JOIN eq.setor st LEFT JOIN eq.grandeza esc")
+    @Transactional
+    @Query("Select eq FROM Equipamento eq LEFT JOIN eq.tipo tp LEFT JOIN eq.setor st LEFT JOIN eq.grandeza esc LEFT JOIN eq.fabricante fab")
     Page<Equipamento> findAllOfEquipamentos(Pageable pageable);
-
+    @Transactional
     @Query("Select eq FROM Equipamento eq INNER JOIN eq.tipo tp INNER JOIN eq.setor st WHERE tp.tipo = :tipoEq AND st.id = :setorID ORDER BY tp.tipo ASC")
     Page<Equipamento> findTagByTipoSetor(@Param("tipoEq") String tipoEq, @Param("setorID") Integer setorID,Pageable pageable);
-
+    @Transactional
     @Query("Select eq FROM Equipamento eq LEFT JOIN FETCH eq.arquivos arq WHERE eq.id = :eqId")
     Equipamento findArquivosByEquipamento(@Param("eqId") Integer eqId);
 

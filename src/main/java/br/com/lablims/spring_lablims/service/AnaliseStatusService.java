@@ -1,13 +1,13 @@
 package br.com.lablims.spring_lablims.service;
 
 import br.com.lablims.spring_lablims.domain.AmostraStatus;
-import br.com.lablims.spring_lablims.domain.AnaliseProdutividade;
 import br.com.lablims.spring_lablims.domain.AnaliseStatus;
+import br.com.lablims.spring_lablims.domain.Atividade;
 import br.com.lablims.spring_lablims.model.AnaliseStatusDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.AnaliseProdutividadeRepository;
-import br.com.lablims.spring_lablims.repos.AnaliseStatusRepository;
 import br.com.lablims.spring_lablims.repos.AmostraStatusRepository;
+import br.com.lablims.spring_lablims.repos.AnaliseStatusRepository;
+import br.com.lablims.spring_lablims.repos.AtividadeRepository;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,8 @@ import org.springframework.stereotype.Service;
 public class AnaliseStatusService {
 
     private final AnaliseStatusRepository analiseStatusRepository;
-    private final AnaliseProdutividadeRepository analiseProdutividadeRepository;
+
+    private final AtividadeRepository atividadeRepository;
     private final AmostraStatusRepository amostraStatusRepository;
 
     public AnaliseStatus findById(Integer id){
@@ -76,7 +77,11 @@ public class AnaliseStatusService {
         analiseStatusDTO.setAnaliseStatus(analiseStatus.getAnaliseStatus());
         analiseStatusDTO.setSiglaAnaliseStatus(analiseStatus.getSiglaAnaliseStatus());
         analiseStatusDTO.setDescricaoAnaliseStatus(analiseStatus.getDescricaoAnaliseStatus());
-        analiseStatusDTO.setAnaliseProdutividade(analiseStatus.getAnaliseProdutividade() == null ? null : analiseStatus.getAnaliseProdutividade().getId());
+        analiseStatusDTO.setAtividade(analiseStatus.getAtividade() == null ? null : analiseStatus.getAtividade().getId());
+        analiseStatusDTO.setAtividadeNome(analiseStatus.getAtividade().getAtividade() == null ? null : analiseStatus.getAtividade().getAtividade());
+        analiseStatusDTO.setAtividadeCor(analiseStatus.getAtividade().getCor() == null ? null : analiseStatus.getAtividade().getCor());
+        analiseStatusDTO.setAtividadeProdutivo(analiseStatus.getAtividade().isProdutivo());
+        analiseStatusDTO.setAtividadeSigla(analiseStatus.getAtividade().getSigla() == null ? null : analiseStatus.getAtividade().getSigla());
         return analiseStatusDTO;
     }
 
@@ -85,9 +90,10 @@ public class AnaliseStatusService {
         analiseStatus.setAnaliseStatus(analiseStatusDTO.getAnaliseStatus());
         analiseStatus.setSiglaAnaliseStatus(analiseStatusDTO.getSiglaAnaliseStatus());
         analiseStatus.setDescricaoAnaliseStatus(analiseStatusDTO.getDescricaoAnaliseStatus());
-        final AnaliseProdutividade analiseProdutividade = analiseStatusDTO.getAnaliseProdutividade() == null ? null : analiseProdutividadeRepository.findById(analiseStatusDTO.getAnaliseProdutividade())
-                .orElseThrow(() -> new NotFoundException("analiseProdutividade not found"));
-        analiseStatus.setAnaliseProdutividade(analiseProdutividade);
+        final Atividade atividade = analiseStatusDTO.getAtividade() == null ? null :
+                atividadeRepository.findById(analiseStatusDTO.getAtividade())
+                .orElseThrow(() -> new NotFoundException("Atividade not found"));
+        analiseStatus.setAtividade(atividade);
         return analiseStatus;
     }
 
@@ -96,7 +102,7 @@ public class AnaliseStatusService {
                 .orElseThrow(NotFoundException::new);
         final AmostraStatus analiseStatusAmostraStatus = amostraStatusRepository.findFirstByAnaliseStatus(analiseStatus);
         if (analiseStatusAmostraStatus != null) {
-            return WebUtils.getMessage("analiseStatus.amostraStatus.analiseStatus.referenced", analiseStatusAmostraStatus.getId());
+            return WebUtils.getMessage("entity.referenced", analiseStatusAmostraStatus.getId());
         }
         return null;
     }

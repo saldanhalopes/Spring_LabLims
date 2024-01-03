@@ -31,15 +31,9 @@ public class MetodologiaService {
     public SimplePage<MetodologiaDTO> findAll(final String filter, final Pageable pageable) {
         Page<Metodologia> page;
         if (filter != null) {
-            Integer integerFilter = null;
-            try {
-                integerFilter = Integer.parseInt(filter);
-            } catch (final NumberFormatException numberFormatException) {
-                // keep null - no parseable input
-            }
-            page = metodologiaRepository.findAllById(integerFilter, pageable);
+            page = metodologiaRepository.findAllByKeyword(filter, pageable);
         } else {
-            page = metodologiaRepository.findAll(pageable);
+            page = metodologiaRepository.findAllOfMetodologia(pageable);
         }
         return new SimplePage<>(page.getContent()
                 .stream()
@@ -49,7 +43,7 @@ public class MetodologiaService {
     }
 
     public MetodologiaDTO get(final Integer id) {
-        return metodologiaRepository.findById(id)
+        return metodologiaRepository.findMetodologiaById(id)
                 .map(metodologia -> mapToDTO(metodologia, new MetodologiaDTO()))
                 .orElseThrow(NotFoundException::new);
     }
@@ -78,6 +72,7 @@ public class MetodologiaService {
         metodologiaDTO.setMetodo(metodologia.getMetodo());
         metodologiaDTO.setObs(metodologia.getObs());
         metodologiaDTO.setCategoriaMetodologia(metodologia.getCategoriaMetodologia() == null ? null : metodologia.getCategoriaMetodologia().getId());
+        metodologiaDTO.setCategoriaMetodologiaNome(metodologia.getCategoriaMetodologia() == null ? null : metodologia.getCategoriaMetodologia().getCategoria());
         metodologiaDTO.setVersion(metodologia.getVersion());
         return metodologiaDTO;
     }
@@ -98,7 +93,7 @@ public class MetodologiaService {
                 .orElseThrow(NotFoundException::new);
         final MetodologiaVersao metodologiaMetodologiaVersao = metodologiaVersaoRepository.findFirstByMetodologia(metodologia);
         if (metodologiaMetodologiaVersao != null) {
-            return WebUtils.getMessage("metodologia.metodologiaVersao.metodologia.referenced", metodologiaMetodologiaVersao.getId());
+            return WebUtils.getMessage("entity.referenced", metodologiaMetodologiaVersao.getId());
         }
         return null;
     }

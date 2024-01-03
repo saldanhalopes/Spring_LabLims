@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/upload}">
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoques}" th:text="#{estoque.list.headline}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{arquivos.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="uploadBackMenu">
+    <a th:href="@{/estoques}" th:text="#{update.back}" class="btn btn-secondary float-right"/>
+</span>
+<span layout:fragment="uploadLiksContent">
+    <div th:replace="~{fragments/upload :: uploadLiks(field=${estoque.id}, link='estoques')}"></div>
+</span>
+</html>

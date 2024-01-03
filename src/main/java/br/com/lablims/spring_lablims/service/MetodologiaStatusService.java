@@ -87,7 +87,7 @@ public class MetodologiaStatusService {
                 .orElseThrow(NotFoundException::new);
         final MetodologiaVersao statusMetodologiaVersao = metodologiaVersaoRepository.findFirstByStatus(metodologiaStatus);
         if (statusMetodologiaVersao != null) {
-            return WebUtils.getMessage("metodologiaStatus.metodologiaVersao.status.referenced", statusMetodologiaVersao.getId());
+            return WebUtils.getMessage("entity.referenced", statusMetodologiaVersao.getId());
         }
         return null;
     }

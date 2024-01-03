@@ -24,7 +24,7 @@ public interface EquipamentoLogRepository extends JpaRepository<EquipamentoLog, 
 
     EquipamentoLog findFirstByEquipamento(Equipamento equipamento);
 
-    EquipamentoLog findFirstByAtividade(EquipamentoAtividade equipamentoAtividade);
+    EquipamentoLog findFirstByAtividade(Atividade atividade);
 
     @Transactional
     @Query("Select eqLog FROM EquipamentoLog eqLog LEFT JOIN FETCH eqLog.arquivos arq WHERE eqLog.id = :id")

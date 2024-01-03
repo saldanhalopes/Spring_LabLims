@@ -90,7 +90,7 @@ public class DepartamentoService {
                 .orElseThrow(NotFoundException::new);
         final Setor departamentoSetor = setorRepository.findFirstByDepartamento(departamento);
         if (departamentoSetor != null) {
-            return WebUtils.getMessage("departamento.setor.departamento.referenced", departamentoSetor.getId());
+            return WebUtils.getMessage("entity.referenced", departamentoSetor.getId());
         }
         return null;
     }

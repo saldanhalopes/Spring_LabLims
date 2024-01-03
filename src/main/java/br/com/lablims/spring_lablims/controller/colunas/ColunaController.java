@@ -1,12 +1,12 @@
 package br.com.lablims.spring_lablims.controller.colunas;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.domain.Atributo;
 import br.com.lablims.spring_lablims.domain.Coluna;
-import br.com.lablims.spring_lablims.domain.ColunaConfig;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.ColunaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.ColunaConfigRepository;
+import br.com.lablims.spring_lablims.repos.AtributoRepository;
 import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.service.ColunaService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
@@ -37,34 +37,34 @@ import java.util.List;
 public class ColunaController {
 
     private final ColunaService colunaService;
-    private final ColunaConfigRepository colunaConfigRepository;
+    private final AtributoRepository atributoRepository;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("tipoColunaValues", colunaConfigRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaConfig::getId, ColunaConfig::getTipo)));
-        model.addAttribute("fabricanteColunaValues", colunaConfigRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaConfig::getId, ColunaConfig::getTipo)));
-        model.addAttribute("marcaColunaValues", colunaConfigRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaConfig::getId, ColunaConfig::getTipo)));
-        model.addAttribute("faseColunaValues", colunaConfigRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaConfig::getId, ColunaConfig::getTipo)));
-        model.addAttribute("tamanhoColunaValues", colunaConfigRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaConfig::getId, ColunaConfig::getTipo)));
-        model.addAttribute("diametroColunaValues", colunaConfigRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaConfig::getId, ColunaConfig::getTipo)));
-        model.addAttribute("particulaColunaValues", colunaConfigRepository.findAll(Sort.by("id"))
-                .stream()
-                .collect(CustomCollectors.toSortedMap(ColunaConfig::getId, ColunaConfig::getTipo)));
+//        model.addAttribute("tipoColunaValues", atributoRepository.findAll(Sort.by("id"))
+//                .stream()
+//                .collect(CustomCollectors.toSortedMap(br.com.lablims.spring_lablims.domain.Atributo::getId, br.com.lablims.spring_lablims.domain.Atributo::getTipo)));
+//        model.addAttribute("fabricanteColunaValues", atributoRepository.findAll(Sort.by("id"))
+//                .stream()
+//                .collect(CustomCollectors.toSortedMap(Atributo::getId, br.com.lablims.spring_lablims.domain.Atributo::getTipo)));
+//        model.addAttribute("marcaColunaValues", atributoRepository.findAll(Sort.by("id"))
+//                .stream()
+//                .collect(CustomCollectors.toSortedMap(br.com.lablims.spring_lablims.domain.Atributo::getId, br.com.lablims.spring_lablims.domain.Atributo::getTipo)));
+//        model.addAttribute("faseColunaValues", atributoRepository.findAll(Sort.by("id"))
+//                .stream()
+//                .collect(CustomCollectors.toSortedMap(br.com.lablims.spring_lablims.domain.Atributo::getId, br.com.lablims.spring_lablims.domain.Atributo::getTipo)));
+//        model.addAttribute("tamanhoColunaValues", atributoRepository.findAll(Sort.by("id"))
+//                .stream()
+//                .collect(CustomCollectors.toSortedMap(br.com.lablims.spring_lablims.domain.Atributo::getId, br.com.lablims.spring_lablims.domain.Atributo::getTipo)));
+//        model.addAttribute("diametroColunaValues", atributoRepository.findAll(Sort.by("id"))
+//                .stream()
+//                .collect(CustomCollectors.toSortedMap(br.com.lablims.spring_lablims.domain.Atributo::getId, br.com.lablims.spring_lablims.domain.Atributo::getTipo)));
+//        model.addAttribute("particulaColunaValues", atributoRepository.findAll(Sort.by("id"))
+//                .stream()
+//                .collect(CustomCollectors.toSortedMap(br.com.lablims.spring_lablims.domain.Atributo::getId, br.com.lablims.spring_lablims.domain.Atributo::getTipo)));
     }
 
     @Autowired
@@ -92,6 +92,7 @@ public class ColunaController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/coluna/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -120,6 +121,7 @@ public class ColunaController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/coluna/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

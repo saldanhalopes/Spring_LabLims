@@ -4,6 +4,8 @@ import br.com.lablims.spring_lablims.config.EntityRevision;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.domain.Produto;
 import br.com.lablims.spring_lablims.domain.ProdutoTipo;
+import br.com.lablims.spring_lablims.model.EstoqueDTO;
+import br.com.lablims.spring_lablims.model.EstoqueSaldoDTO;
 import br.com.lablims.spring_lablims.model.ProdutoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
@@ -16,6 +18,7 @@ import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -54,14 +57,29 @@ public class ProdutoController {
 
     @GetMapping
     public String list(@RequestParam(required = false) final String filter,
-                       @SortDefault(sort = "id") @PageableDefault(size = 20) final Pageable pageable,
+                       @RequestParam(defaultValue = "50") final int size,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "id") String sort,
+                       @RequestParam(required = false) String sortDir,
                        final Model model) {
-        final SimplePage<ProdutoDTO> produtos = produtoService.findAll(filter, pageable);
-        model.addAttribute("produtos", produtos);
+        Pageable pag = PageRequest.of(page, size, WebUtils.getSortDirection(sortDir), sort);
         model.addAttribute("filter", filter);
+        model.addAttribute("size", size);
+        model.addAttribute("page", page);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortDir", sortDir);
+        final SimplePage<ProdutoDTO> produtos = produtoService.findAll(filter, pag);
+        model.addAttribute("produtos", produtos);
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(produtos));
         return "parameters/produto/list";
     }
+
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable final Integer id, final Model model) {
+        model.addAttribute("produto", produtoService.get(id));
+        return "parameters/produto/details";
+    }
+
 
     @GetMapping("/add")
     public String add(@ModelAttribute("produto") final ProdutoDTO produtoDTO) {
@@ -74,6 +92,7 @@ public class ProdutoController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/produto/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -102,6 +121,7 @@ public class ProdutoController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/produto/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

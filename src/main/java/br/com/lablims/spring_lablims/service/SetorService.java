@@ -6,7 +6,7 @@ import br.com.lablims.spring_lablims.model.SetorDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.AtaTurnoRepository;
 import br.com.lablims.spring_lablims.repos.CampanhaRepository;
-import br.com.lablims.spring_lablims.repos.ColunaStorageRepository;
+import br.com.lablims.spring_lablims.repos.StorageRepository;
 import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
 import br.com.lablims.spring_lablims.repos.DepartamentoRepository;
 import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
@@ -26,7 +26,7 @@ public class SetorService {
 
     private final SetorRepository setorRepository;
     private final DepartamentoRepository departamentoRepository;
-    private final ColunaStorageRepository colunaStorageRepository;
+    private final StorageRepository storageRepository;
     private final ColunaUtilRepository colunaUtilRepository;
     private final EquipamentoRepository equipamentoRepository;
     private final CampanhaRepository campanhaRepository;
@@ -105,29 +105,29 @@ public class SetorService {
     public String getReferencedWarning(final Integer id) {
         final Setor setor = setorRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
-        final Storage setorStorage = colunaStorageRepository.findFirstBySetor(setor);
+        final Storage setorStorage = storageRepository.findFirstBySetor(setor);
         if (setorStorage != null) {
-            return WebUtils.getMessage("setor.colunaStorage.setor.referenced", setorStorage.getId());
+            return WebUtils.getMessage("entity.referenced", setorStorage.getId());
         }
         final ColunaUtil setorColunaUtil = colunaUtilRepository.findFirstBySetor(setor);
         if (setorColunaUtil != null) {
-            return WebUtils.getMessage("setor.colunaUtil.setor.referenced", setorColunaUtil.getId());
+            return WebUtils.getMessage("entity.referenced", setorColunaUtil.getId());
         }
         final Equipamento setorEquipamento = equipamentoRepository.findFirstBySetor(setor);
         if (setorEquipamento != null) {
-            return WebUtils.getMessage("setor.equipamento.setor.referenced", setorEquipamento.getId());
+            return WebUtils.getMessage("entity.referenced", setorEquipamento.getId());
         }
         final Campanha setorCampanha = campanhaRepository.findFirstBySetor(setor);
         if (setorCampanha != null) {
-            return WebUtils.getMessage("setor.campanha.setor.referenced", setorCampanha.getId());
+            return WebUtils.getMessage("entity.referenced", setorCampanha.getId());
         }
         final AtaTurno setorAtaTurno = ataTurnoRepository.findFirstBySetor(setor);
         if (setorAtaTurno != null) {
-            return WebUtils.getMessage("setor.ataTurno.setor.referenced", setorAtaTurno.getId());
+            return WebUtils.getMessage("entity.referenced", setorAtaTurno.getId());
         }
         final PlanoAnalise setorPlanoAnalise = planoAnaliseRepository.findFirstBySetor(setor);
         if (setorPlanoAnalise != null) {
-            return WebUtils.getMessage("setor.planoAnalise.setor.referenced", setorPlanoAnalise.getId());
+            return WebUtils.getMessage("entity.referenced", setorPlanoAnalise.getId());
         }
         return null;
     }

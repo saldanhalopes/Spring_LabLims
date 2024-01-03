@@ -23,13 +23,16 @@
 </span>
 <div layout:fragment="listErrors">
     <div th:if="${materials.empty}" th:text="#{material.list.empty}"></div>
+    <div th:if="${!materials.empty}" class="table-responsive"></div>
+</div>
+<div layout:fragment="search">
+    <div th:replace="~{fragments/utils::searchFilter(object='material', sortOptions=${ {'id', 'ativo', 'codigo', 'material', 'categoria', 'fornecedor'} })}" ></div>
 </div>
 <span layout:fragment="listHeader">
     <th th:text="#{material.ativo.label}" scope="col" />
     <th th:text="#{material.codigo.label}" scope="col" />
     <th th:text="#{material.material.label}" scope="col" />
-    <th th:text="#{material.materialTipo.label}" scope="col" />
-    <th th:text="#{material.numeroIdentificacao.label}" scope="col" />
+    <th th:text="#{material.categoria.label}" scope="col" />
     <th th:text="#{material.fornecedor.label}" scope="col" />
     <th th:text="#{material.estoqueMin.label}" scope="col" />
     <th th:text="#{material.estoqueMax.label}" scope="col" />
@@ -39,13 +42,13 @@
     <tr th:each="material : ${materials}">
         <td th:text="${material.id}"/>
         <td th:text="${material.version}"/>
+        <td><div class="icheck-primary"><input type="checkbox" disabled th:checked="${material.ativo}"/><label/></div></td>
         <td th:text="${material.codigo}" />
         <td th:text="${material.material}" />
-        <td th:text="${material.materialTipoNome}" />
-        <td th:text="${material.numeroIdentificacao}" />
+        <td th:text="${material.categoriaNome}" />
         <td th:text="${material.fornecedorNome}" />
-        <td th:text="${material.estoqueMin}" />
-        <td th:text="${material.estoqueMax}" />
+         <td th:text="${material.estoqueMin}"/>
+         <td th:text="${material.estoqueMax}"/>
         <td th:text="${material.unidadeNome}" />
         <td>
             <div class="float-end text-nowrap">

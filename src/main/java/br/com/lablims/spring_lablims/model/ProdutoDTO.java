@@ -21,7 +21,9 @@ public class ProdutoDTO {
     @Size(max = 255)
     private String produto;
 
-    private Integer tipoProduto;
+    private Integer produtoTipo;
+
+    private String produtoTipoNome;
 
     private Short version;
 

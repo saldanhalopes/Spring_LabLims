@@ -1,9 +1,7 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.domain.Lote;
-import br.com.lablims.spring_lablims.domain.Produto;
-import br.com.lablims.spring_lablims.domain.ProdutoTipo;
-import br.com.lablims.spring_lablims.domain.MetodologiaVersao;
+import br.com.lablims.spring_lablims.domain.*;
+import br.com.lablims.spring_lablims.model.EstoqueSaldoDTO;
 import br.com.lablims.spring_lablims.model.ProdutoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.repos.LoteRepository;
@@ -35,15 +33,9 @@ public class ProdutoService {
     public SimplePage<ProdutoDTO> findAll(final String filter, final Pageable pageable) {
         Page<Produto> page;
         if (filter != null) {
-            Integer integerFilter = null;
-            try {
-                integerFilter = Integer.parseInt(filter);
-            } catch (final NumberFormatException numberFormatException) {
-                // keep null - no parseable input
-            }
-            page = produtoRepository.findAllById(integerFilter, pageable);
+            page = produtoRepository.findAllByKeyword(filter, pageable);
         } else {
-            page = produtoRepository.findAll(pageable);
+            page = produtoRepository.findAllOfProduto(pageable);
         }
         return new SimplePage<>(page.getContent()
                 .stream()
@@ -53,7 +45,7 @@ public class ProdutoService {
     }
 
     public ProdutoDTO get(final Integer id) {
-        return produtoRepository.findById(id)
+        return produtoRepository.findProdutoById(id)
                 .map(produto -> mapToDTO(produto, new ProdutoDTO()))
                 .orElseThrow(NotFoundException::new);
     }
@@ -86,7 +78,8 @@ public class ProdutoService {
         produtoDTO.setFiscalizado(produto.getFiscalizado());
         produtoDTO.setCodigo(produto.getCodigo());
         produtoDTO.setProduto(produto.getProduto());
-        produtoDTO.setTipoProduto(produto.getTipoProduto() == null ? null : produto.getTipoProduto().getId());
+        produtoDTO.setProdutoTipo(produto.getProdutoTipo() == null ? null : produto.getProdutoTipo().getId());
+        produtoDTO.setProdutoTipoNome(produto.getProdutoTipo() == null ? null : produto.getProdutoTipo().getSigla());
         produtoDTO.setVersion(produto.getVersion());
         return produtoDTO;
     }
@@ -96,9 +89,9 @@ public class ProdutoService {
         produto.setFiscalizado(produtoDTO.getFiscalizado());
         produto.setCodigo(produtoDTO.getCodigo());
         produto.setProduto(produtoDTO.getProduto());
-        final ProdutoTipo tipoProduto = produtoDTO.getTipoProduto() == null ? null : produtoTipoRepository.findById(produtoDTO.getTipoProduto())
+        final ProdutoTipo produtoTipo = produtoDTO.getProdutoTipo() == null ? null : produtoTipoRepository.findById(produtoDTO.getProdutoTipo())
                 .orElseThrow(() -> new NotFoundException("tipoProduto not found"));
-        produto.setTipoProduto(tipoProduto);
+        produto.setProdutoTipo(produtoTipo);
         return produto;
     }
 
@@ -107,11 +100,11 @@ public class ProdutoService {
                 .orElseThrow(NotFoundException::new);
         final MetodologiaVersao produtoMetodologiaVersao = metodologiaVersaoRepository.findFirstByProduto(produto);
         if (produtoMetodologiaVersao != null) {
-            return WebUtils.getMessage("produto.metodologiaVersao.produto.referenced", produtoMetodologiaVersao.getId());
+            return WebUtils.getMessage("entity.referenced", produtoMetodologiaVersao.getId());
         }
         final Lote produtoLote = loteRepository.findFirstByProduto(produto);
         if (produtoLote != null) {
-            return WebUtils.getMessage("produto.lote.produto.referenced", produtoLote.getId());
+            return WebUtils.getMessage("entity.referenced", produtoLote.getId());
         }
         return null;
     }

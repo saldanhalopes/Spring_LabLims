@@ -3,7 +3,6 @@ package br.com.lablims.spring_lablims.controller.logs;
 import br.com.lablims.spring_lablims.config.EntityRevision;
 import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.*;
-import br.com.lablims.spring_lablims.model.AmostraDTO;
 import br.com.lablims.spring_lablims.model.EquipamentoDTO;
 import br.com.lablims.spring_lablims.model.EquipamentoLogDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,7 +39,7 @@ public class EquipamentoLogController {
 
     private final EquipamentoLogService equipamentoLogService;
     private final EquipamentoService equipamentoService;
-    private final EquipamentoAtividadeRepository equipamentoAtividadeRepository;
+    private final AtividadeRepository atividadeRepository;
     private final ArquivosRepository arquivosRepository;
     private final ArquivosService arquivosService;
     private final AmostraRepository amostraRepository;
@@ -51,9 +49,9 @@ public class EquipamentoLogController {
 
     @ModelAttribute
     public void prepareContext(final Model model) {
-        model.addAttribute("atividadeValues", equipamentoAtividadeRepository.findAll(Sort.by("id"))
+        model.addAttribute("atividadeValues", atividadeRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(EquipamentoAtividade::getId, EquipamentoAtividade::getAtividade)));
+                .collect(CustomCollectors.toSortedMap(Atividade::getId, Atividade::getAtividade)));
         model.addAttribute("codigoAmostraValues", amostraRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Amostra::getId, Amostra::getCodigoAmostra)));
@@ -97,6 +95,7 @@ public class EquipamentoLogController {
                       final Model model, final RedirectAttributes redirectAttributes, @PathVariable final Integer equip_id,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "logs/equipamentoLog/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -140,6 +139,7 @@ public class EquipamentoLogController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "logs/equipamentoLog/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

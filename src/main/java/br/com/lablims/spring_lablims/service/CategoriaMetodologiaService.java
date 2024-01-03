@@ -88,7 +88,7 @@ public class CategoriaMetodologiaService {
                 .orElseThrow(NotFoundException::new);
         final Metodologia categoriaMetodologiaMetodologia = metodologiaRepository.findFirstByCategoriaMetodologia(categoriaMetodologia);
         if (categoriaMetodologiaMetodologia != null) {
-            return WebUtils.getMessage("categoriaMetodologia.metodologia.categoriaMetodologia.referenced", categoriaMetodologiaMetodologia.getId());
+            return WebUtils.getMessage("entity.referenced", categoriaMetodologiaMetodologia.getId());
         }
         return null;
     }

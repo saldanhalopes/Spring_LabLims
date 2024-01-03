@@ -20,6 +20,10 @@ public class AnaliseDTO {
     @Size(max = 255)
     private String siglaAnalise;
 
+    private Integer analiseTipo;
+
+    private String analiseTipoNome;
+
     private Short version;
 
 }

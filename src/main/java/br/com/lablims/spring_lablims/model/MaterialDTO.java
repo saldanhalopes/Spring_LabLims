@@ -1,8 +1,6 @@
 package br.com.lablims.spring_lablims.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Digits;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,49 +13,49 @@ public class MaterialDTO {
 
     private Integer id;
 
-    @Size(max = 50)
-    @NotNull
-    @NotBlank
+    //    @NotNull
+//    @NotBlank
     private String codigo;
 
-    @Size(max = 255)
-    @NotNull
-    @NotBlank
+    //    @NotNull
+//    @NotBlank
     private String material;
 
     private boolean ativo;
 
     private Short version;
 
-    @NotNull
+    //    @NotNull
     private Integer produtoTipo;
 
     private String produtoTipoNome;
 
-    @NotNull
+    //    @NotNull
     private Integer fornecedor;
 
     private String fornecedorNome;
 
-    @NotNull
+    //    @NotNull
     private Integer unidade;
 
     private String unidadeNome;
 
-    @NotNull
+    //    @NotNull
+    @Digits(integer = 6, fraction = 6)
     private BigDecimal estoqueMin;
 
-    @NotNull
+    //    @NotNull
+    @Digits(integer = 6, fraction = 6)
     private BigDecimal estoqueMax;
 
     private double percentual;
 
-    @Size(max = 2555)
+    //    @Size(max = 2555)
     private String descricao;
 
-    private Integer materialTipo;
+    private Integer categoria;
 
-    private String materialTipoNome;
+    private String categoriaNome;
 
     private String partNumber;
 
@@ -67,7 +65,9 @@ public class MaterialDTO {
 
     private String numeroIdentificacao;
 
-    private String fabricante;
+    private Integer fabricante;
+
+    private String fabricanteNome;
 
     private String marca;
 

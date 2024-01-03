@@ -32,30 +32,30 @@ public class Coluna {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_coluna_id")
-    private ColunaConfig tipoColuna;
+    private Atributo tipoColuna;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fabricante_coluna_id")
-    private ColunaConfig fabricanteColuna;
+    private Atributo fabricanteColuna;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "marca_coluna_id")
-    private ColunaConfig marcaColuna;
+    private Atributo marcaColuna;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fase_coluna_id")
-    private ColunaConfig faseColuna;
+    private Atributo faseColuna;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tamanho_coluna_id")
-    private ColunaConfig tamanhoColuna;
+    private Atributo tamanhoColuna;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diametro_coluna_id")
-    private ColunaConfig diametroColuna;
+    private Atributo diametroColuna;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "particula_coluna_id")
-    private ColunaConfig particulaColuna;
+    private Atributo particulaColuna;
 
 }

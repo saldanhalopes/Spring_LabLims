@@ -3,15 +3,7 @@ package br.com.lablims.spring_lablims.service;
 import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.model.EquipamentoDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.ArquivosRepository;
-import br.com.lablims.spring_lablims.repos.AtaTurnoRepository;
-import br.com.lablims.spring_lablims.repos.CelulaRepository;
-import br.com.lablims.spring_lablims.repos.ColunaLogRepository;
-import br.com.lablims.spring_lablims.repos.EquipamentoLogRepository;
-import br.com.lablims.spring_lablims.repos.EquipamentoRepository;
-import br.com.lablims.spring_lablims.repos.EquipamentoTipoRepository;
-import br.com.lablims.spring_lablims.repos.GrandezaRepository;
-import br.com.lablims.spring_lablims.repos.SetorRepository;
+import br.com.lablims.spring_lablims.repos.*;
 import br.com.lablims.spring_lablims.util.NotFoundException;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.transaction.Transactional;
@@ -36,6 +28,7 @@ public class EquipamentoService {
     private final AtaTurnoRepository ataTurnoRepository;
     private final ColunaLogRepository colunaLogRepository;
     private final EquipamentoLogRepository equipamentoLogRepository;
+    private final FabricanteRepository fabricanteRepository;
     private final ArquivosRepository arquivosRepository;
 
     public Equipamento findById(Integer id) {
@@ -118,7 +111,6 @@ public class EquipamentoService {
         equipamentoDTO.setId(equipamento.getId());
         equipamentoDTO.setDescricao(equipamento.getDescricao());
         equipamentoDTO.setTag(equipamento.getTag());
-        equipamentoDTO.setFabricante(equipamento.getFabricante());
         equipamentoDTO.setMarca(equipamento.getMarca());
         equipamentoDTO.setModelo(equipamento.getModelo());
         equipamentoDTO.setUltimaCalibracao(equipamento.getUltimaCalibracao());
@@ -130,6 +122,7 @@ public class EquipamentoService {
         equipamentoDTO.setTipo(equipamento.getTipo() == null ? null : equipamento.getTipo().getId());
         equipamentoDTO.setSetor(equipamento.getSetor() == null ? null : equipamento.getSetor().getId());
         equipamentoDTO.setGrandeza(equipamento.getGrandeza() == null ? null : equipamento.getGrandeza().getId());
+        equipamentoDTO.setFabricante(equipamento.getFabricante() == null ? null : equipamento.getFabricante().getId());
         equipamentoDTO.setVersion(equipamento.getVersion());
         return equipamentoDTO;
     }
@@ -146,7 +139,6 @@ public class EquipamentoService {
         equipamentoDTO.setId(equipamento.getId());
         equipamentoDTO.setDescricao(equipamento.getDescricao());
         equipamentoDTO.setTag(equipamento.getTag());
-        equipamentoDTO.setFabricante(equipamento.getFabricante());
         equipamentoDTO.setMarca(equipamento.getMarca());
         equipamentoDTO.setModelo(equipamento.getModelo());
         equipamentoDTO.setUltimaCalibracao(equipamento.getUltimaCalibracao());
@@ -158,6 +150,7 @@ public class EquipamentoService {
         equipamentoDTO.setTipoName(equipamento.getTipo() == null ? null : equipamento.getTipo().getTipo());
         equipamentoDTO.setSetorName(equipamento.getSetor() == null ? null : equipamento.getSetor().getSetor());
         equipamentoDTO.setGrandezaName(equipamento.getGrandeza() == null ? null : equipamento.getGrandeza().getGrandeza());
+        equipamentoDTO.setFabricanteName(equipamento.getFabricante() == null ? null : equipamento.getFabricante().getFabricante());
         equipamentoDTO.setVersion(equipamento.getVersion());
         return equipamentoDTO;
     }
@@ -166,7 +159,6 @@ public class EquipamentoService {
                                     final Equipamento equipamento) {
         equipamento.setDescricao(equipamentoDTO.getDescricao());
         equipamento.setTag(equipamentoDTO.getTag());
-        equipamento.setFabricante(equipamentoDTO.getFabricante());
         equipamento.setMarca(equipamentoDTO.getMarca());
         equipamento.setModelo(equipamentoDTO.getModelo());
         equipamento.setUltimaCalibracao(equipamentoDTO.getUltimaCalibracao());
@@ -176,14 +168,17 @@ public class EquipamentoService {
         equipamento.setImagem(equipamentoDTO.getImagem());
         equipamento.setSerialNumber(equipamentoDTO.getSerialNumber());
         final EquipamentoTipo tipo = equipamentoDTO.getTipo() == null ? null : equipamentoTipoRepository.findById(equipamentoDTO.getTipo())
-                .orElseThrow(() -> new NotFoundException("tipo not found"));
+                .orElseThrow(() -> new NotFoundException("Tipo not found"));
         equipamento.setTipo(tipo);
         final Setor setor = equipamentoDTO.getSetor() == null ? null : setorRepository.findById(equipamentoDTO.getSetor())
-                .orElseThrow(() -> new NotFoundException("setor not found"));
+                .orElseThrow(() -> new NotFoundException("Setor not found"));
         equipamento.setSetor(setor);
         final Grandeza grandeza = equipamentoDTO.getGrandeza() == null ? null : grandezaRepository.findById(equipamentoDTO.getGrandeza())
-                .orElseThrow(() -> new NotFoundException("grandeza not found"));
+                .orElseThrow(() -> new NotFoundException("Grandeza not found"));
         equipamento.setGrandeza(grandeza);
+        final Fabricante fabricante = equipamentoDTO.getFabricante() == null ? null : fabricanteRepository.findById(equipamentoDTO.getFabricante())
+                .orElseThrow(() -> new NotFoundException("Fabricante not found"));
+        equipamento.setFabricante(fabricante);
         final List<Arquivos> arquivos = arquivosRepository.findAllById(
                 equipamentoDTO.getArquivos() == null ? Collections.emptyList() : equipamentoDTO.getArquivos());
         if (arquivos.size() != (equipamentoDTO.getArquivos() == null ? 0 : equipamentoDTO.getArquivos().size())) {
@@ -197,15 +192,15 @@ public class EquipamentoService {
                 .orElseThrow(NotFoundException::new);
         final Celula equipamentoCelula = celulaRepository.findFirstByEquipamento(equipamento);
         if (equipamentoCelula != null) {
-            return WebUtils.getMessage("equipamento.celula.equipamento.referenced", equipamentoCelula.getId());
+            return WebUtils.getMessage("entity.referenced", equipamentoCelula.getId());
         }
         final ColunaLog equipamentoColunaLog = colunaLogRepository.findFirstByEquipamento(equipamento);
         if (equipamentoColunaLog != null) {
-            return WebUtils.getMessage("equipamento.colunaLog.equipamento.referenced", equipamentoColunaLog.getId());
+            return WebUtils.getMessage("entity.referenced", equipamentoColunaLog.getId());
         }
         final AtaTurno equipamentosAtaTurno = ataTurnoRepository.findFirstByEquipamentos(equipamento);
         if (equipamentosAtaTurno != null) {
-            return WebUtils.getMessage("equipamento.ataTurno.equipamentos.referenced", equipamentosAtaTurno.getId());
+            return WebUtils.getMessage("entity.referenced", equipamentosAtaTurno.getId());
         }
         final EquipamentoLog equipamentoEquipamentoLog = equipamentoLogRepository.findFirstByEquipamento(equipamento);
         if (equipamentoEquipamentoLog != null) {

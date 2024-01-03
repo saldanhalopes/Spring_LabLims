@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
@@ -41,7 +40,7 @@ public class EquipamentoLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "atividade_id")
-    private EquipamentoAtividade atividade;
+    private Atividade atividade;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipamento_id")

@@ -85,7 +85,7 @@ public class CelulaTipoService {
                 .orElseThrow(NotFoundException::new);
         final Celula tipoCelula = celulaRepository.findFirstByTipo(celulaTipo);
         if (tipoCelula != null) {
-            return WebUtils.getMessage("celulaTipo.celula.tipo.referenced", tipoCelula.getId());
+            return WebUtils.getMessage("entity.referenced", tipoCelula.getId());
         }
         return null;
     }

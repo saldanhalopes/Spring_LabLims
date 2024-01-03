@@ -114,7 +114,7 @@ public class CelulaService {
                 .orElseThrow(NotFoundException::new);
         final Campanha celulaCampanha = campanhaRepository.findFirstByCelula(celula);
         if (celulaCampanha != null) {
-            return WebUtils.getMessage("celula.campanha.celula.referenced", celulaCampanha.getId());
+            return WebUtils.getMessage("entity.referenced", celulaCampanha.getId());
         }
         return null;
     }

@@ -29,4 +29,8 @@ public class Analise {
     @Column
     private String siglaAnalise;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "analise_tipo_id")
+    private AnaliseTipo analiseTipo;
+
 }

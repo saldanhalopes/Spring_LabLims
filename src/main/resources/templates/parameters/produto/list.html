@@ -23,25 +23,31 @@
 </span>
 <div layout:fragment="listErrors">
     <div th:if="${produtos.empty}" th:text="#{produto.list.empty}"></div>
+    <div th:if="${!produtos.empty}" class="table-responsive"></div>
+</div>
+<div layout:fragment="search">
+    <div th:replace="~{fragments/utils::searchFilter(object='produto', sortOptions=${ {'id', 'codigo', 'controleEspecial', 'tipo.tipo', 'tipo.sigla'} })}"></div>
 </div>
 <span layout:fragment="listHeader">
     <th th:text="#{produto.controleEspecial.label}" scope="col" />
     <th th:text="#{produto.fiscalizado.label}" scope="col" />
     <th th:text="#{produto.codigo.label}" scope="col" />
     <th th:text="#{produto.produto.label}" scope="col" />
-    <th th:text="#{produto.tipoProduto.label}" scope="col" />
+    <th th:text="#{produto.produtoTipo.label}" scope="col" />
 </span>
 <span layout:fragment="listContent">
     <tr th:each="produto : ${produtos}">
         <td th:text="${produto.id}"/>
         <td th:text="${produto.version}"/>
-        <td th:text="${produto.controleEspecial}" />
+        <td><div class="icheck-primary"><input type="checkbox" disabled th:checked="${produto.controleEspecial}"/><label/></div></td>
         <td th:text="${produto.fiscalizado}" />
         <td th:text="${produto.codigo}" />
         <td th:text="${produto.produto}" />
-        <td th:text="${produto.tipoProduto}" />
+        <td th:text="${produto.produtoTipoNome}" />
         <td>
             <div class="float-end text-nowrap">
+                <a th:href="@{/produtos/details/{id}(id=${produto.id})}"
+                   class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i> </a>
                 <a th:href="@{/produtos/edit/{id}(id=${produto.id})}"
                    th:text="#{produto.list.edit}" class="btn btn-sm btn-info"
                    sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>

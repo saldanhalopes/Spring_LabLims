@@ -82,6 +82,7 @@ public class PlanoAnaliseColunaController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/planoAnaliseColuna/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -110,6 +111,7 @@ public class PlanoAnaliseColunaController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/planoAnaliseColuna/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

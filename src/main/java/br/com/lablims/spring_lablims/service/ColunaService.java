@@ -1,12 +1,12 @@
 package br.com.lablims.spring_lablims.service;
 
+import br.com.lablims.spring_lablims.domain.Atributo;
 import br.com.lablims.spring_lablims.domain.Coluna;
-import br.com.lablims.spring_lablims.domain.ColunaConfig;
 import br.com.lablims.spring_lablims.domain.ColunaUtil;
 import br.com.lablims.spring_lablims.domain.PlanoAnaliseColuna;
 import br.com.lablims.spring_lablims.model.ColunaDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.ColunaConfigRepository;
+import br.com.lablims.spring_lablims.repos.AtributoRepository;
 import br.com.lablims.spring_lablims.repos.ColunaRepository;
 import br.com.lablims.spring_lablims.repos.ColunaUtilRepository;
 import br.com.lablims.spring_lablims.repos.PlanoAnaliseColunaRepository;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class ColunaService {
 
     private final ColunaRepository colunaRepository;
-    private final ColunaConfigRepository colunaConfigRepository;
+    private final AtributoRepository atributoRepository;
     private final ColunaUtilRepository colunaUtilRepository;
     private final PlanoAnaliseColunaRepository planoAnaliseColunaRepository;
 
@@ -94,25 +94,25 @@ public class ColunaService {
         coluna.setCodigo(colunaDTO.getCodigo());
         coluna.setPartNumber(colunaDTO.getPartNumber());
         coluna.setObs(colunaDTO.getObs());
-        final ColunaConfig tipoColuna = colunaDTO.getTipoColuna() == null ? null : colunaConfigRepository.findById(colunaDTO.getTipoColuna())
+        final Atributo tipoColuna = colunaDTO.getTipoColuna() == null ? null : atributoRepository.findById(colunaDTO.getTipoColuna())
                 .orElseThrow(() -> new NotFoundException("tipoColuna not found"));
         coluna.setTipoColuna(tipoColuna);
-        final ColunaConfig fabricanteColuna = colunaDTO.getFabricanteColuna() == null ? null : colunaConfigRepository.findById(colunaDTO.getFabricanteColuna())
+        final Atributo fabricanteColuna = colunaDTO.getFabricanteColuna() == null ? null : atributoRepository.findById(colunaDTO.getFabricanteColuna())
                 .orElseThrow(() -> new NotFoundException("fabricanteColuna not found"));
         coluna.setFabricanteColuna(fabricanteColuna);
-        final ColunaConfig marcaColuna = colunaDTO.getMarcaColuna() == null ? null : colunaConfigRepository.findById(colunaDTO.getMarcaColuna())
+        final Atributo marcaColuna = colunaDTO.getMarcaColuna() == null ? null : atributoRepository.findById(colunaDTO.getMarcaColuna())
                 .orElseThrow(() -> new NotFoundException("marcaColuna not found"));
         coluna.setMarcaColuna(marcaColuna);
-        final ColunaConfig faseColuna = colunaDTO.getFaseColuna() == null ? null : colunaConfigRepository.findById(colunaDTO.getFaseColuna())
+        final Atributo faseColuna = colunaDTO.getFaseColuna() == null ? null : atributoRepository.findById(colunaDTO.getFaseColuna())
                 .orElseThrow(() -> new NotFoundException("faseColuna not found"));
         coluna.setFaseColuna(faseColuna);
-        final ColunaConfig tamanhoColuna = colunaDTO.getTamanhoColuna() == null ? null : colunaConfigRepository.findById(colunaDTO.getTamanhoColuna())
+        final Atributo tamanhoColuna = colunaDTO.getTamanhoColuna() == null ? null : atributoRepository.findById(colunaDTO.getTamanhoColuna())
                 .orElseThrow(() -> new NotFoundException("tamanhoColuna not found"));
         coluna.setTamanhoColuna(tamanhoColuna);
-        final ColunaConfig diametroColuna = colunaDTO.getDiametroColuna() == null ? null : colunaConfigRepository.findById(colunaDTO.getDiametroColuna())
+        final Atributo diametroColuna = colunaDTO.getDiametroColuna() == null ? null : atributoRepository.findById(colunaDTO.getDiametroColuna())
                 .orElseThrow(() -> new NotFoundException("diametroColuna not found"));
         coluna.setDiametroColuna(diametroColuna);
-        final ColunaConfig particulaColuna = colunaDTO.getParticulaColuna() == null ? null : colunaConfigRepository.findById(colunaDTO.getParticulaColuna())
+        final Atributo particulaColuna = colunaDTO.getParticulaColuna() == null ? null : atributoRepository.findById(colunaDTO.getParticulaColuna())
                 .orElseThrow(() -> new NotFoundException("particulaColuna not found"));
         coluna.setParticulaColuna(particulaColuna);
         return coluna;
@@ -123,11 +123,11 @@ public class ColunaService {
                 .orElseThrow(NotFoundException::new);
         final ColunaUtil colunaColunaUtil = colunaUtilRepository.findFirstByColuna(coluna);
         if (colunaColunaUtil != null) {
-            return WebUtils.getMessage("coluna.colunaUtil.coluna.referenced", colunaColunaUtil.getId());
+            return WebUtils.getMessage("entity.referenced", colunaColunaUtil.getId());
         }
         final PlanoAnaliseColuna colunaPlanoAnaliseColuna = planoAnaliseColunaRepository.findFirstByColuna(coluna);
         if (colunaPlanoAnaliseColuna != null) {
-            return WebUtils.getMessage("coluna.planoAnaliseColuna.coluna.referenced", colunaPlanoAnaliseColuna.getId());
+            return WebUtils.getMessage("entity.referenced", colunaPlanoAnaliseColuna.getId());
         }
         return null;
     }

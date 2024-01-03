@@ -1,31 +1,30 @@
 package br.com.lablims.spring_lablims.controller.parametros;
 
 import br.com.lablims.spring_lablims.config.EntityRevision;
+import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
 import br.com.lablims.spring_lablims.domain.Analise;
+import br.com.lablims.spring_lablims.domain.AnaliseTipo;
+import br.com.lablims.spring_lablims.domain.CategoriaMetodologia;
 import br.com.lablims.spring_lablims.domain.CustomRevisionEntity;
 import br.com.lablims.spring_lablims.model.AnaliseDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.config.GenericRevisionRepository;
+import br.com.lablims.spring_lablims.repos.AnaliseTipoRepository;
 import br.com.lablims.spring_lablims.service.AnaliseService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
+import br.com.lablims.spring_lablims.util.CustomCollectors;
 import br.com.lablims.spring_lablims.util.UserRoles;
 import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -38,21 +37,43 @@ import java.util.List;
 public class AnaliseController {
 
     private final AnaliseService analiseService;
+
+    private final AnaliseTipoRepository analiseTipoRepository;
     @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
+    @ModelAttribute
+    public void prepareContext(final Model model) {
+        model.addAttribute("analiseTipoValues", analiseTipoRepository.findAll(Sort.by("id"))
+                .stream()
+                .collect(CustomCollectors.toSortedMap(AnaliseTipo::getId, AnaliseTipo::getAnaliseTipo)));
+    }
     @GetMapping
     public String list(@RequestParam(required = false) final String filter,
-                       @SortDefault(sort = "id") @PageableDefault(size = 20) final Pageable pageable,
+                       @RequestParam(defaultValue = "50") final int size,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "id") String sort,
+                       @RequestParam(required = false) String sortDir,
                        final Model model) {
-        final SimplePage<AnaliseDTO> analises = analiseService.findAll(filter, pageable);
-        model.addAttribute("analises", analises);
+        Pageable pag = PageRequest.of(page, size, WebUtils.getSortDirection(sortDir), sort);
         model.addAttribute("filter", filter);
+        model.addAttribute("size", size);
+        model.addAttribute("page", page);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortDir", sortDir);
+        final SimplePage<AnaliseDTO> analises = analiseService.findAll(filter, pag);
+        model.addAttribute("analises", analises);
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(analises));
         return "parameters/analise/list";
+    }
+
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable final Integer id, final Model model) {
+        model.addAttribute("analise", analiseService.get(id));
+        return "parameters/analise/details";
     }
 
     @GetMapping("/add")
@@ -66,6 +87,7 @@ public class AnaliseController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/analise/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -94,6 +116,7 @@ public class AnaliseController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "parameters/analise/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

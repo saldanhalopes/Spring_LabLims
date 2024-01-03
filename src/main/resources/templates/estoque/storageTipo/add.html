@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{storageTipo.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/storageTipos}" th:text="#{storageTipo.list.headline}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{storageTipo.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{storageTipo.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/storageTipos}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('storageTipo')}"></div>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='storageTipo', field='tipo', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='storageTipo', field='condicoesArmazenamento', type='textarea', maxlength='255')}" ></div>
+</div>
+</html>

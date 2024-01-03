@@ -6,9 +6,8 @@ import br.com.lablims.spring_lablims.domain.*;
 import br.com.lablims.spring_lablims.enums.MovimentacaoTipo;
 import br.com.lablims.spring_lablims.model.EstoqueDTO;
 import br.com.lablims.spring_lablims.model.SimplePage;
-import br.com.lablims.spring_lablims.repos.MaterialRepository;
-import br.com.lablims.spring_lablims.repos.SetorRepository;
-import br.com.lablims.spring_lablims.repos.UnidadeMedidaRepository;
+import br.com.lablims.spring_lablims.repos.*;
+import br.com.lablims.spring_lablims.service.ArquivosService;
 import br.com.lablims.spring_lablims.service.EstoqueService;
 import br.com.lablims.spring_lablims.service.UsuarioService;
 import br.com.lablims.spring_lablims.util.CustomCollectors;
@@ -17,18 +16,20 @@ import br.com.lablims.spring_lablims.util.WebUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -42,6 +43,9 @@ public class EstoqueController {
     private final SetorRepository setorRepository;
 
     private final UnidadeMedidaRepository unidadeMedidaRepository;
+    private final StorageEnderecoRepository storageEnderecoRepository;
+    private final ArquivosRepository arquivosRepository;
+    private final ArquivosService arquivosService;
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
@@ -50,22 +54,41 @@ public class EstoqueController {
         model.addAttribute("setorValues", setorRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(Setor::getId, Setor::getSetor)));
-        model.addAttribute("materialValues", materialRepository.findAll(Sort.by("id"))
+        model.addAttribute("materialValues", materialRepository.findListOfMateriais(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(Material::getId, Material::getMaterial)));
+                .collect(CustomCollectors.toSortedMap(Material::getId,
+                        material -> material.getCodigo() + " - " + material.getMaterial()
+                                + " (" + material.getCategoria().getCategoria() + " / " + material.getFornecedor().getFornecedor()
+                                + ") - Unid: " + material.getUnidade().getUnidade())));
         model.addAttribute("unidadeValues", unidadeMedidaRepository.findAll(Sort.by("id"))
                 .stream()
                 .collect(CustomCollectors.toSortedMap(UnidadeMedida::getId, UnidadeMedida::getUnidade)));
         model.addAttribute("movimentacaoTipoValues", MovimentacaoTipo.values());
+        model.addAttribute("storageEnderecoValues", storageEnderecoRepository.findListOfStorageEnderecos(Sort.by("id"))
+                .stream()
+                .collect(CustomCollectors.toSortedMap(StorageEndereco::getId,
+                        storageEndereco -> storageEndereco.getStorage().getSetor().getSiglaSetor()
+                                + " - " + storageEndereco.getStorage().getStorage() + " - " + storageEndereco.getEndereco()
+                                + " - Cond. Arm.: " + storageEndereco.getStorage().getTipo().getCondicoesArmazenamento())));
     }
 
     @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping
-    public String list(@SortDefault(sort = "id") @PageableDefault(size = 20) final Pageable pageable,
+    public String list(@RequestParam(required = false) final String filter,
+                       @RequestParam(defaultValue = "50") final int size,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "id") String sort,
+                       @RequestParam(required = false) String sortDir,
                        final Model model) {
-        final SimplePage<EstoqueDTO> estoques = estoqueService.findAllOfEstoque(pageable);
+        Pageable pag = PageRequest.of(page, size, WebUtils.getSortDirection(sortDir), sort);
+        model.addAttribute("filter", filter);
+        model.addAttribute("size", size);
+        model.addAttribute("page", page);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortDir", sortDir);
+        final SimplePage<EstoqueDTO> estoques = estoqueService.findAll(filter, pag);
         model.addAttribute("estoques", estoques);
         model.addAttribute("paginationModel", WebUtils.getPaginationModel(estoques));
         return "estoque/estoque/list";
@@ -82,6 +105,7 @@ public class EstoqueController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "estoque/estoque/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -102,49 +126,59 @@ public class EstoqueController {
         return "estoque/estoque/details";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable final Integer id, final Model model) {
+    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
+    @GetMapping("/upload/{id}")
+    public String uploads(@PathVariable final Integer id,
+                          @ModelAttribute("arquivos") final Arquivos arquivos,
+                          final Model model) {
+        final List<Arquivos> arquivoss = estoqueService.findArquivosByEstoque(id);
         model.addAttribute("estoque", estoqueService.get(id));
-        return "estoque/estoque/edit";
+        model.addAttribute("arquivoss", arquivoss);
+        return "estoque/estoque/upload";
     }
 
-    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "')")
-    @PostMapping("/edit/{id}")
-    public String edit(@PathVariable final Integer id,
-                       @ModelAttribute("estoque") @Valid final EstoqueDTO estoqueDTO,
-                       final BindingResult bindingResult, final Model model,
-                       final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
-                       Principal principal, @ModelAttribute("password") String pass) {
-        if (bindingResult.hasErrors()) {
-            return "estoque/estoque/edit";
+    @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "', '" + UserRoles.MASTERUSER + "', '" + UserRoles.POWERUSER + "')")
+    @PostMapping("/upload/{id}")
+    public String upload(@PathVariable final Integer id,
+                         @RequestParam("arquivo") MultipartFile file, final Model model,
+                         final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
+                         Principal principal, @ModelAttribute("password") String pass) throws IOException {
+        if (usuarioService.validarUser(principal.getName(), pass)) {
+            CustomRevisionEntity.setMotivoText(motivo);
+            Estoque estoque  = estoqueService.findEstoqueWithArquivos(id);
+            Arquivos arquivos = new Arquivos();
+            arquivos.setArquivo(file.getBytes());
+            arquivos.setTamanho(file.getSize());
+            arquivos.setNome(file.getOriginalFilename());
+            arquivos.setTipo(file.getContentType());
+            arquivos.setDescricao(motivo);
+            arquivosRepository.save(arquivos);
+            estoque.getArquivos().add(arquivos);
+            estoqueService.update(estoque);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("arquivos.update.success"));
         } else {
-            if (usuarioService.validarUser(principal.getName(), pass)) {
-                CustomRevisionEntity.setMotivoText(motivo);
-                estoqueService.update(id, estoqueDTO);
-                redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("estoque.update.success"));
-            } else {
-                model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
-                return "estoque/estoque/edit";
-            }
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
+            return "redirect:/estoques/upload/{id}";
         }
-        return "redirect:/estoques";
+        return "redirect:/estoques/upload/{id}";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")
-    @PostMapping("/delete/{id}")
-    public String delete(@PathVariable final Integer id,
-                         final RedirectAttributes redirectAttributes,
-                         @ModelAttribute("motivo") String motivo,
-                         Principal principal,
-                         @ModelAttribute("password") String pass) {
+    @PostMapping("/{eqId}/arquivo/delete/{id}")
+    public String deleteArquivo(@PathVariable final Integer eqId,
+                                @PathVariable final Integer id,
+                                final RedirectAttributes redirectAttributes,
+                                @ModelAttribute("motivo") String motivo,
+                                Principal principal,
+                                @ModelAttribute("password") String pass) {
         if (usuarioService.validarUser(principal.getName(), pass)) {
             CustomRevisionEntity.setMotivoText(motivo);
-            estoqueService.delete(id);
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("estoque.delete.success"));
+            arquivosService.deleteEstoque(id);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("arquivos.delete.success"));
         } else {
             redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("authentication.error"));
         }
-        return "redirect:/estoques";
+        return "redirect:/estoques/upload/{eqId}";
     }
 
     @PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "')")

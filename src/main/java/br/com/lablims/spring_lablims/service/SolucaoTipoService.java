@@ -89,7 +89,7 @@ public class SolucaoTipoService {
                 .orElseThrow(NotFoundException::new);
         final SolucaoRegistro solucaoTipoSolucaoRegistro = solucaoRegistroRepository.findFirstBySolucaoTipo(solucaoTipo);
         if (solucaoTipoSolucaoRegistro != null) {
-            return WebUtils.getMessage("solucaoTipo.solucaoRegistro.solucaoTipo.referenced", solucaoTipoSolucaoRegistro.getId());
+            return WebUtils.getMessage("entity.referenced", solucaoTipoSolucaoRegistro.getId());
         }
         return null;
     }

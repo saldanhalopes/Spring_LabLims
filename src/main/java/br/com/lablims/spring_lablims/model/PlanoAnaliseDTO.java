@@ -14,17 +14,23 @@ public class PlanoAnaliseDTO {
     @Size(max = 255)
     private String descricao;
 
-    private Integer leadTimeMin;
+    private Integer leadTimeSetup;
 
-    private Integer leadTimeMedio;
+    private Integer leadTimeAnalise;
 
-    private Integer leadTimeMax;
+    private Integer leadTimeLimpeza;
 
     private Integer metodologiaVersao;
 
     private Integer analise;
 
-    private Integer analiseTipo;
+    private String analiseNome;
+
+    private String analiseTipo;
+
+    private Integer analiseTecnica;
+
+    private String analiseTecnicaNome;
 
     private Integer setor;
 

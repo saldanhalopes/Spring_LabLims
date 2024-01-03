@@ -35,8 +35,8 @@ public class Produto {
     private String produto;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipo_produto_id")
-    private ProdutoTipo tipoProduto;
+    @JoinColumn(name = "produto_tipo_id")
+    private ProdutoTipo produtoTipo;
 
     @ManyToMany(mappedBy = "produto")
     private Set<MetodologiaVersao> metodologiaVersao;

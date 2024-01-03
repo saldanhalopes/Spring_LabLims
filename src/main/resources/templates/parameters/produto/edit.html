@@ -26,10 +26,10 @@
     <div th:replace="~{fragments/forms::globalErrors('produto')}"/>
 </div>
 <div layout:fragment="editContent">
+    <div th:replace="~{fragments/forms::inputRow(object='produto', field='produtoTipo', type='select', required='required')}"></div>
     <div th:replace="~{fragments/forms::inputRow(object='produto', field='controleEspecial', type='checkbox')}" ></div>
     <div th:replace="~{fragments/forms::inputRow(object='produto', field='fiscalizado')}" ></div>
-    <div th:replace="~{fragments/forms::inputRow(object='produto', field='codigo', type='number')}" ></div>
-    <div th:replace="~{fragments/forms::inputRow(object='produto', field='produto')}" ></div>
-    <div th:replace="~{fragments/forms::inputRow(object='produto', field='tipoProduto', type='select')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='produto', field='codigo', type='number', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='produto', field='produto', required='required')}" ></div>
 </div>
 </html>

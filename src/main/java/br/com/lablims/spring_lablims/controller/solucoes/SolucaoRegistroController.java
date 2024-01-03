@@ -85,6 +85,7 @@ public class SolucaoRegistroController {
                       final Model model, final RedirectAttributes redirectAttributes,
                       Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/solucaoRegistro/add";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {
@@ -113,6 +114,7 @@ public class SolucaoRegistroController {
                        final RedirectAttributes redirectAttributes, @ModelAttribute("motivo") String motivo,
                        Principal principal, @ModelAttribute("password") String pass) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("bindingResult.hasErrors"));
             return "pages/solucaoRegistro/edit";
         } else {
             if (usuarioService.validarUser(principal.getName(), pass)) {

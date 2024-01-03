@@ -1,6 +1,6 @@
 package br.com.lablims.spring_lablims.service;
 
-import br.com.lablims.spring_lablims.controller.auth.custom.UserPrincipal;
+import br.com.lablims.spring_lablims.util.UserPrincipal;
 import br.com.lablims.spring_lablims.domain.Usuario;
 import br.com.lablims.spring_lablims.model.SimplePage;
 import br.com.lablims.spring_lablims.model.UsuarioDTO;

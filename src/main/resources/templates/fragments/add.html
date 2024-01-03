@@ -47,6 +47,13 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
+            //Colorpicker
+            $('.colorpicker1').colorpicker()
+            //color picker with addon
+            $('.colorpicker2').colorpicker()
+            $('.colorpicker2').on('colorpickerChange', function (event) {
+                $('.colorpicker2 .fa-square').css('color', event.color.toString());
+            })
         })
         $(document).ready(function () {
             $('input').attr('autocomplete', 'new-password');

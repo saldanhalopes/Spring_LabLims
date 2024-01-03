@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/list}" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title th:text="#{fabricante.list.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/templates/parameters}" th:text="#{parameters.title}"></a></li>
+        <li class="breadcrumb-item" th:text="#{fabricante.fabricante.label}"></li>
+    </ol>
+</div>
+<span layout:fragment="listHeadline">
+    <h2 th:text="#{fabricante.list.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="createNew">
+    <a th:href="@{/fabricantes/add}" th:text="#{fabricante.list.createNew}"
+       class="btn btn-success ms-2" sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER', 'POWERUSER')"/>
+</span>
+<span layout:fragment="listBackMenu">
+    <a th:href="@{/parameters}" th:text="#{back.menu}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="listErrors">
+    <div th:if="${fabricantes.empty}" th:text="#{fabricante.list.empty}"></div>
+</div>
+<span layout:fragment="listHeader">
+    <th th:text="#{fabricante.fabricante.label}" scope="col" />
+    <th th:text="#{fabricante.descricao.label}" scope="col" />
+    <th th:text="#{fabricante.obs.label}" scope="col" />
+</span>
+<span layout:fragment="listContent">
+    <tr th:each="fabricante : ${fabricantes}">
+        <td th:text="${fabricante.id}" />
+        <td th:text="${fabricante.version}" />
+        <td th:text="${fabricante.fabricante}" />
+        <td th:text="${fabricante.descricao}" />
+        <td th:text="${fabricante.obs}" />
+        <td>
+            <div class="float-end text-nowrap">
+                <a th:href="@{/fabricantes/details/{id}(id=${fabricante.id})}"
+                   class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i> </a>
+                <a th:href="@{/fabricantes/edit/{id}(id=${fabricante.id})}"
+                   th:text="#{fabricante.list.edit}" class="btn btn-sm btn-info"
+                   sec:authorize="hasAnyAuthority('ADMIN', 'MASTERUSER')"/>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                        th:attr="data-target='#remover_'+${fabricante.id}" th:text="#{delete.btn}"
+                        sec:authorize="hasAnyAuthority('ADMIN')"/>
+                <div th:replace="~{fragments/modal :: modalDelete(field=${fabricante.id}, link='fabricantes')}"></div>
+            </div>
+        </td>
+    </tr>
+</span>
+<span layout:fragment="listAudit">
+    <a th:href="@{/fabricantes/audit}" th:text="#{audit.list}" class="btn btn-warning ms-2" sec:authorize="hasAnyAuthority('ADMIN')"/>
+</span>
+</html>

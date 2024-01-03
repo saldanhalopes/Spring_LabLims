@@ -31,8 +31,8 @@ public class Material {
 	private String descricao;
 
 	@ManyToOne
-	@JoinColumn(name="produto_tipo_id")
-	private MaterialTipo materialTipo;
+	@JoinColumn(name="categoria_id")
+	private Categoria categoria;
 
 	@Column
 	private String partNumber;
@@ -46,8 +46,9 @@ public class Material {
 	@Column
 	private String numeroIdentificacao;
 
-	@Column
-	private String fabricante;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fabricante_id")
+	private Fabricante fabricante;
 
 	@Column
 	private String marca;

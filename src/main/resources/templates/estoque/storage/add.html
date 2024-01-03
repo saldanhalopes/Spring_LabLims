@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/add}">
+<head>
+    <title th:text="#{storage.add.headline}"/>
+</head>
+<div class="row mb-2" layout:fragment="breadcrumb">
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a href="/index">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/storages}" th:text="#{storage.storage.label}"></a></li>
+        <li class="breadcrumb-item active" th:text="#{storage.add.headline}"></li>
+    </ol>
+</div>
+<span layout:fragment="addHeadline">
+    <h1 th:text="#{storage.add.headline}" class="flex-grow-1"/>
+</span>
+<span layout:fragment="addBack">
+    <a th:href="@{/storages}" th:text="#{add.back}" class="btn btn-secondary float-right"/>
+</span>
+<div layout:fragment="addGlobalErrors">
+    <div th:replace="~{fragments/forms::globalErrors('storage')}"></div>
+</div>
+<div layout:fragment="addContent">
+    <div th:replace="~{fragments/forms::inputRow(object='storage', field='storage', required='required')}" ></div>
+    <div th:replace="~{fragments/forms::inputRow(object='storage', field='setor', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='storage', field='tipo', type='select', required='required')}"></div>
+    <div th:replace="~{fragments/forms::inputRow(object='storage', field='obs', maxlength='255')}"></div>
+</div>
+</html>

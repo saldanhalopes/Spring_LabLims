@@ -7,7 +7,7 @@
 <div class="row mb-2" layout:fragment="breadcrumb">
     <ol class="breadcrumb float-sm-left">
         <li class="breadcrumb-item"><a href="/index">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{/templates/estoque}" th:text="#{estoque.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/estoque}" th:text="#{estoque.title}"></a></li>
         <li class="breadcrumb-item"><a th:href="@{/materials}" th:text="#{material.material.label}"></a></li>
         <li class="breadcrumb-item active" th:text="#{material.list.headline}+ ' ' + Auditoria"></li>
     </ol>
@@ -19,18 +19,45 @@
     <a th:href="@{/materials}" th:text="#{edit.back}" class="btn btn-secondary float-right"/>
 </span>
 <span layout:fragment="auditHeads">
-    <th th:text="#{material.controleEspecial.label}" scope="col" />
-    <th th:text="#{material.fiscalizado.label}" scope="col" />
-    <th th:text="#{material.codigo.label}" scope="col" />
+    <th th:text="#{material.ativo.label}" scope="col" />
+    <th th:text="#{material.categoria.label}" scope="col" />
     <th th:text="#{material.material.label}" scope="col" />
-    <th th:text="#{material.tipoProduto.label}" scope="col" />
+    <th th:text="#{material.descricao.label}" scope="col" />
+    <th th:text="#{material.codigo.label}" scope="col" />
+    <th th:text="#{material.numeroIdentificacao.label}" scope="col" />
+    <th th:text="#{material.fornecedor.label}" scope="col" />
+    <th th:text="#{material.controlado.label}" scope="col" />
+    <th th:text="#{material.partNumber.label}" scope="col" />
+    <th th:text="#{material.casNumber.label}" scope="col" />
+    <th th:text="#{material.fabricante.label}" scope="col" />
+    <th th:text="#{material.marca.label}" scope="col" />
+    <th th:text="#{material.modelo.label}" scope="col" />
+    <th th:text="#{material.estoqueMin.label}" scope="col" />
+    <th th:text="#{material.estoqueMax.label}" scope="col" />
+    <th th:text="#{material.compraUnica.label}" scope="col" />
+    <th th:text="#{material.unidade.label}" scope="col" />
+    <th th:text="#{material.obs.label}" scope="col" />
 </span>
 <span layout:fragment="auditBody">
-    <td th:text="${a.getEntidade().getControleEspecial()}"></td>
-    <td th:text="${a.getEntidade().getFiscalizado()}"></td>
+    <td th:text="${a.getEntidade().getAtivo()}"></td>
+    <td th:text="${a.getEntidade().getCategoria().getId()}"></td>
+    <td th:text="${a.getEntidade().getMaterial()}"></td>
+    <td th:text="${a.getEntidade().getDescricao()}"></td>
     <td th:text="${a.getEntidade().getCodigo()}"></td>
-    <td th:text="${a.getEntidade().getProduto()}"></td>
-    <td th:text="${a.getEntidade().getTipoProduto()}"></td>
+    <td th:text="${a.getEntidade().getNumeroIdentificacao()}"></td>
+    <td th:text="${a.getEntidade().getFornecedor().getId()}"></td>
+    <td th:text="${a.getEntidade().getControlado()}"></td>
+    <td th:text="${a.getEntidade().getPartNumber()}"></td>
+    <td th:text="${a.getEntidade().getCasNumber()}"></td>
+    <td th:text="${a.getEntidade().getFabricante()}"></td>
+    <td th:text="${a.getEntidade().getMarca()}"></td>
+    <td th:text="${a.getEntidade().getModelo()}"></td>
+    <td th:text="${a.getEntidade().getEstoqueMin()}"></td>
+    <td th:text="${a.getEntidade().getEstoqueMax()}"></td>
+    <td th:text="${a.getEntidade().getCompraUnica()}"></td>
+    <td th:text="${a.getEntidade().getUnidade().getId()}"></td>
+    <td th:text="${a.getEntidade().getObs()}"></td>
+
+
 </span>
 </html>
-
